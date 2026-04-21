@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-04-21T18:00:00Z",
+  "memes": [
+    {
+      "id": "bjj_001",
+      "folder_name": "2026-04-21_17-56_MEME_bjj_001",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026-04-21_17-56_MEME_bjj_001/meme.png",
+      "caption": "When blue belt asks you to 'go light' but it's the only roll they have all week\n\n#bjj #jiujitsu #grappling #bluebelt #rollinglife",
+      "explanation": "Синий пояс просит катать легче, потому что это его единственная тренировка за неделю — классическая ситуация в зале, когда человек экономит силы на одну важную схватку.",
+      "category": "relatable"
+    },
+    {
+      "id": "bjj_002",
+      "folder_name": "2026-04-21_17-58_MEME_bjj_002",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026-04-21_17-58_MEME_bjj_002/meme.png",
+      "caption": "Me: I'll just do one more roll\nMe 4 rolls later, gi soaked, can't feel my fingers\n\n#bjj #openmat #addicted",
+      "explanation": "Шутка про бесконечный open mat — человек обещает себе одну схватку, а в итоге катает четыре, пока кимоно не промокает насквозь.",
+      "category": "lifestyle"
+    }
+  ]
+}

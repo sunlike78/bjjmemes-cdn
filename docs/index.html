@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>BJJ Memes Review</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1 class="title">BJJ Memes Review</h1>
+
+    <div class="counters" aria-live="polite">
+      <span class="counter" data-counter="pending">Pending: <b id="count-pending">0</b></span>
+      <span class="counter" data-counter="approved">Approved: <b id="count-approved">0</b></span>
+      <span class="counter" data-counter="rejected">Rejected: <b id="count-rejected">0</b></span>
+      <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
+    </div>
+
+    <div class="filters" role="tablist" aria-label="Filter">
+      <button class="filter-btn is-active" data-filter="all" type="button">All</button>
+      <button class="filter-btn" data-filter="pending" type="button">Pending</button>
+      <button class="filter-btn" data-filter="approved" type="button">Approved</button>
+      <button class="filter-btn" data-filter="rejected" type="button">Rejected</button>
+    </div>
+
+    <div class="topbar-right">
+      <span id="save-status" class="save-status" aria-live="polite">idle</span>
+      <button id="reset-pat" class="btn btn-ghost" type="button">Reset PAT</button>
+    </div>
+  </div>
+</header>
+
+<main id="gallery" class="gallery" aria-live="polite">
+  <div class="empty-state" id="empty-state" hidden>
+    <p>Loading...</p>
+  </div>
+</main>
+
+<!-- PAT prompt modal -->
+<div id="pat-modal" class="modal" hidden aria-modal="true" role="dialog" aria-labelledby="pat-modal-title">
+  <div class="modal-backdrop"></div>
+  <div class="modal-card">
+    <h2 id="pat-modal-title">GitHub Personal Access Token</h2>
+    <p class="modal-body">
+      Enter a fine-grained GitHub PAT with <b>Contents: read/write</b>
+      on <code>sunlike78/bjjmemes-cdn</code>. Stored only in this browser's localStorage.
+    </p>
+    <form id="pat-form" autocomplete="off">
+      <input type="password" id="pat-input" name="pat" placeholder="github_pat_..." required autocomplete="new-password" spellcheck="false" />
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Row template -->
+<template id="row-template">
+  <article class="row" data-id="">
+    <div class="row-image">
+      <a class="thumb-link" target="_blank" rel="noopener">
+        <img class="thumb" loading="lazy" alt="" />
+      </a>
+    </div>
+    <div class="row-body">
+      <div class="row-meta">
+        <span class="category-badge"></span>
+        <span class="status-pill" data-status="pending">
+          <span class="status-glyph"></span>
+          <span class="status-label"></span>
+        </span>
+        <span class="row-id"></span>
+      </div>
+      <pre class="caption"></pre>
+      <details class="explanation">
+        <summary>Explanation</summary>
+        <div class="explanation-body"></div>
+      </details>
+      <label class="comment-label">
+        <span class="sr-only">Comment</span>
+        <textarea class="comment" rows="1" placeholder="Comment (optional)"></textarea>
+      </label>
+      <div class="actions">
+        <button class="btn btn-approve" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Approve
+        </button>
+        <button class="btn btn-reject" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reject
+        </button>
+      </div>
+    </div>
+  </article>
+</template>
+
+<template id="broken-row-template">
+  <article class="row row-broken">
+    <div class="row-body">
+      <div class="row-meta">
+        <span class="status-pill" data-status="broken"><span class="status-glyph">!</span><span class="status-label">broken</span></span>
+        <span class="row-id"></span>
+      </div>
+      <p class="broken-msg">This meme record is malformed and cannot be reviewed.</p>
+    </div>
+  </article>
+</template>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
