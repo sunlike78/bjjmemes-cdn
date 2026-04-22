@@ -7,6 +7,8 @@ const SOURCES = {
   accepted: "docs/accepted.json",
   published: "docs/published.json",
   rejected: "docs/rejected.json",
+  profile: "docs/profile.json",
+  approvals: "docs/approvals.json",
 };
 
 const SERIOUS_CATEGORIES = new Set([
@@ -15,7 +17,10 @@ const SERIOUS_CATEGORIES = new Set([
 ]);
 
 // Muted single-accent palette.
-const COLORS = { memes: "#0f766e", serious: "#b45309", bar: "#1e3a8a" };
+const COLORS = {
+  memes: "#0f766e", serious: "#b45309", bar: "#1e3a8a",
+  navy: "#4a6fa5", teal: "#2d8a7f", amber: "#c89840", rose: "#b45a7a",
+};
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -449,6 +454,289 @@ function renderRatingDistribution(data) {
   c.appendChild(svg);
 }
 
+// --- Profile header ---
+function renderProfileHeader(data) {
+  const host = $("#profile-header");
+  host.textContent = "";
+  const payload = data.profile;
+  if (data.errors.profile || !payload || payload.error || !payload.profile) {
+    host.appendChild(el("div", { cls: "warn-pill", text: "Profile unavailable" }));
+    return;
+  }
+  const p = payload.profile;
+  const username = String(p.username || "").trim();
+  const name = String(p.name || username || "").trim();
+  const bioRaw = String(p.biography || "").trim();
+  const bio = bioRaw.length > 100 ? bioRaw.slice(0, 99).trimEnd() + "\u2026" : bioRaw;
+  const nn = v => (typeof v === "number" ? v : null);
+
+  const avatarWrap = el("div", { cls: "profile-avatar-wrap" });
+  const placeholder = el("div", { cls: "profile-avatar-placeholder",
+    text: (name || username || "?").slice(0, 1).toUpperCase() });
+  avatarWrap.appendChild(placeholder);
+  if (p.profile_picture_url) {
+    const img = el("img", { cls: "profile-avatar",
+      attrs: { alt: name || username || "profile picture", loading: "lazy" } });
+    img.addEventListener("load", () => { placeholder.style.display = "none"; });
+    img.addEventListener("error", () => img.remove());
+    img.src = String(p.profile_picture_url);
+    avatarWrap.appendChild(img);
+  }
+
+  const nameRow = el("div", { cls: "profile-name" });
+  if (name) nameRow.appendChild(el("span", { cls: "profile-name-full", text: name }));
+  if (username) nameRow.appendChild(el("span", { cls: "profile-handle", text: `@${username}` }));
+
+  const stat = (v, label) => el("div", { cls: "profile-stat", children: [
+    el("div", { cls: "profile-stat-value", text: v === null ? "\u2014" : Number(v).toLocaleString() }),
+    el("div", { cls: "profile-stat-label", text: label }),
+  ] });
+  const stats = el("div", { cls: "profile-stats", children: [
+    stat(nn(p.followers_count), "followers"),
+    stat(nn(p.follows_count), "following"),
+    stat(nn(p.media_count), "posts"),
+  ] });
+
+  const extras = el("div", { cls: "profile-extras" });
+  if (bio) extras.appendChild(el("p", { cls: "profile-bio", text: bio }));
+  if (username) {
+    const link = el("a", { cls: "profile-link", text: "Instagram profile \u2192" });
+    link.href = `https://www.instagram.com/${username}/`;
+    link.target = "_blank"; link.rel = "noopener";
+    extras.appendChild(link);
+  }
+  host.appendChild(el("div", { cls: "profile-card", children: [avatarWrap,
+    el("div", { cls: "profile-info", children: [nameRow, stats, extras] })] }));
+}
+
+// --- Follower growth chart (30-day line+area) ---
+function pickTrendSeries(trend) {
+  const src = [["follower_count", null], ["accounts_engaged", "accounts engaged"],
+    ["reach", "reach"]];
+  for (const [k, proxy] of src) {
+    const arr = trend && Array.isArray(trend[k]) ? trend[k] : [];
+    if (arr.length > 0) return { series: arr, proxy };
+  }
+  return { series: [], proxy: null };
+}
+
+function renderFollowerGrowth(data) {
+  const host = $("#follower-growth");
+  host.textContent = "";
+  const payload = data.profile;
+  if (data.errors.profile || !payload || payload.error) {
+    host.appendChild(noteP("(profile data unavailable)")); return;
+  }
+  const { series, proxy } = pickTrendSeries(payload.trend);
+  const points = series
+    .map(e => ({ date: e && e.date, value: Number(e && e.value) }))
+    .filter(e => e.date && Number.isFinite(e.value))
+    .slice(-30);
+
+  if (proxy) host.appendChild(el("p", { cls: "chart-subtitle",
+    text: `Showing ${proxy} (proxy metric)` }));
+  if (points.length < 3) {
+    host.appendChild(noteP("Collecting data \u2014 chart will fill in over the next 30 days."));
+    return;
+  }
+
+  const W = 600, H = 180, padL = 34, padR = 10, padT = 14, padB = 26;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const values = points.map(p => p.value);
+  const maxV = Math.max(1, ...values), minV = Math.min(0, ...values);
+  const yScale = v => padT + plotH - ((v - minV) / (maxV - minV || 1)) * plotH;
+  const xScale = i => padL + (i / (points.length - 1)) * plotW;
+
+  const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, class: "growth-svg",
+    preserveAspectRatio: "xMinYMid meet", role: "img",
+    "aria-label": "Follower growth over last 30 days" });
+
+  for (const gv of [Math.ceil(maxV / 2), maxV]) {
+    const y = yScale(gv);
+    svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: y, y2: y,
+      stroke: "var(--border)", "stroke-width": 1, "stroke-dasharray": "2 3" }));
+    const lbl = svgEl("text", { x: padL - 6, y: y + 3, "text-anchor": "end", class: "axis-label" });
+    lbl.textContent = String(gv);
+    svg.appendChild(lbl);
+  }
+
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xScale(i).toFixed(2)},${yScale(p.value).toFixed(2)}`).join(" ");
+  const baseY = (padT + plotH).toFixed(2);
+  const areaPath = `${linePath} L${xScale(points.length - 1).toFixed(2)},${baseY} L${xScale(0).toFixed(2)},${baseY} Z`;
+  svg.appendChild(svgEl("path", { d: areaPath, fill: COLORS.navy, "fill-opacity": "0.16", stroke: "none" }));
+  svg.appendChild(svgEl("path", { d: linePath, fill: "none", stroke: COLORS.navy,
+    "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+
+  for (let i = 0; i < points.length; i++) {
+    const c = svgEl("circle", { cx: xScale(i), cy: yScale(points[i].value), r: 3, fill: COLORS.navy });
+    const t = svgEl("title", {});
+    t.textContent = `${points[i].date}: ${points[i].value.toLocaleString()}`;
+    c.appendChild(t); svg.appendChild(c);
+  }
+  for (const i of [0, Math.floor(points.length / 2), points.length - 1]) {
+    const txt = svgEl("text", { x: xScale(i), y: H - 8, "text-anchor": "middle", class: "axis-label" });
+    txt.textContent = String(points[i].date).slice(5);
+    svg.appendChild(txt);
+  }
+  host.appendChild(svg);
+}
+
+// --- Approval funnel ---
+function renderApprovalFunnel(data) {
+  const host = $("#approval-funnel");
+  host.textContent = "";
+  const nD = asList(data.data).length, nA = asList(data.accepted).length;
+  const nP = asList(data.published).length, nR = asList(data.rejected).length;
+  const drafted = nD + nA + nP + nR;
+  const approvals = data.approvals && typeof data.approvals === "object" ? data.approvals : {};
+  let approvedFromDecisions = 0;
+  for (const v of Object.values(approvals)) {
+    if (v && typeof v === "object" && v.status === "approved") approvedFromDecisions++;
+  }
+  const approved = approvedFromDecisions + nA + nP;
+  const steps = [
+    { label: "Drafted", value: drafted },
+    { label: "Approved", value: approved },
+    { label: "Queued", value: nA },
+    { label: "Published", value: nP },
+    { label: "Rejected", value: nR, reject: true },
+  ];
+  const maxV = Math.max(1, ...steps.map(s => s.value));
+  const wrap = el("div", { cls: "funnel-wrap" });
+
+  for (let i = 0; i < steps.length; i++) {
+    const s = steps[i];
+    const bar = el("div", { cls: "funnel-bar" });
+    bar.style.width = `${Math.max(2, (s.value / maxV) * 100)}%`;
+    if (s.reject) bar.classList.add("is-reject");
+    const barWrap = el("div", { cls: "funnel-bar-wrap", children: [bar,
+      el("span", { cls: "funnel-value", text: s.value.toLocaleString() })] });
+    wrap.appendChild(el("div", { cls: "funnel-row", children: [
+      el("div", { cls: "funnel-label", text: s.label }), barWrap] }));
+    if (i < steps.length - 1 && !steps[i + 1].reject && s.value > 0) {
+      const p = Math.round((steps[i + 1].value / s.value) * 100);
+      wrap.appendChild(el("div", { cls: "funnel-pill-wrap",
+        children: [el("span", { cls: "funnel-pill", text: `${p}%` })] }));
+    }
+  }
+  host.appendChild(wrap);
+}
+
+// --- AI recommendations (five rules) ---
+function medianOf(arr) {
+  if (!arr.length) return null;
+  const s = arr.slice().sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+function likesReachArr(memes) {
+  const out = [];
+  for (const m of memes) {
+    const s = m && m.stats;
+    if (!s || s.error) continue;
+    const reach = getReachLike(s);
+    if (reach && reach > 0) out.push((typeof s.likes === "number" ? s.likes : 0) / reach);
+  }
+  return out;
+}
+function lastRejectionTs(m) {
+  const evts = Array.isArray(m && m.action_log) ? m.action_log : [];
+  let latest = null;
+  for (const e of evts) {
+    if (!e || e.event !== "rejected_by_user") continue;
+    const t = e.ts ? new Date(e.ts).getTime() : NaN;
+    if (Number.isFinite(t) && (latest === null || t > latest)) latest = t;
+  }
+  return latest;
+}
+
+function evaluateRecommendations(data) {
+  const recs = [];
+  const published = asList(data.published), accepted = asList(data.accepted),
+    rejected = asList(data.rejected);
+  const weekAgo = Date.now() - 7 * 86400000;
+  const pubLast7 = published.filter(m => {
+    const t = m && m.posted_at ? new Date(m.posted_at).getTime() : NaN;
+    return Number.isFinite(t) && t >= weekAgo;
+  }).length;
+
+  if (pubLast7 < 3) recs.push({ rule: "Rule 1",
+    text: "\ud83d\udcc8 Increase output: publish 3\u20135 more posts this week." });
+  if (accepted.length > 5 && pubLast7 < 3) recs.push({ rule: "Rule 2",
+    text: "\u23f3 Review bottleneck: queue is piling up." });
+
+  const memePosts = [], seriousPosts = [];
+  for (const m of published) (classifyMix(m.category) === "serious" ? seriousPosts : memePosts).push(m);
+  if (memePosts.length >= 5 && seriousPosts.length >= 5) {
+    const mm = medianOf(likesReachArr(memePosts)), sm = medianOf(likesReachArr(seriousPosts));
+    if (mm !== null && sm !== null && sm > 0 && mm > sm
+        && ((mm - sm) / sm) * 100 >= 20) {
+      recs.push({ rule: "Rule 3", text: "\ud83c\udfaf Bias schedule toward memes next week." });
+    }
+  }
+
+  const recent = rejected
+    .map(m => ({ m, ts: lastRejectionTs(m) })).filter(x => x.ts !== null)
+    .sort((a, b) => b.ts - a.ts).slice(0, 20).map(x => x.m);
+  if (recent.length >= 1) {
+    const words = new Map();
+    for (const m of recent) {
+      const evts = (Array.isArray(m.action_log) ? m.action_log : [])
+        .filter(e => e && e.event === "rejected_by_user");
+      const e = evts[evts.length - 1];
+      const txt = e && e.comment ? String(e.comment).trim() : "";
+      if (!txt) continue;
+      const first = tokenizeComment(txt).find(t => t && !STOPWORDS.has(t));
+      if (first) words.set(first, (words.get(first) || 0) + 1);
+    }
+    let topW = null, topN = 0;
+    for (const [w, n] of words) if (n > topN) { topW = w; topN = n; }
+    if (topW && topN / recent.length >= 0.30) recs.push({ rule: "Rule 4",
+      text: `\ud83d\udeab Common rejection reason: '${topW}' \u2014 add pre-check.` });
+  }
+
+  const slots = new Map();
+  for (const m of published) {
+    if (!m.posted_at) continue;
+    const d = new Date(m.posted_at);
+    if (Number.isNaN(d.getTime())) continue;
+    const key = `${String(d.getUTCHours()).padStart(2, "0")}:${d.getUTCMinutes() < 30 ? "00" : "30"}`;
+    if (!slots.has(key)) slots.set(key, []);
+    slots.get(key).push(m);
+  }
+  const qual = Array.from(slots.entries()).filter(([, a]) => a.length >= 5);
+  if (qual.length > 0) {
+    const overall = medianOf(likesReachArr(published));
+    if (overall !== null && overall > 0) {
+      let bestSlot = null, bestMed = 0;
+      for (const [slot, arr] of qual) {
+        const med = medianOf(likesReachArr(arr));
+        if (med !== null && med > bestMed) { bestMed = med; bestSlot = slot; }
+      }
+      if (bestSlot && bestMed > overall && ((bestMed - overall) / overall) * 100 >= 20) {
+        recs.push({ rule: "Rule 5",
+          text: `\ud83d\udd53 Window ${bestSlot} outperforms \u2014 test as default.` });
+      }
+    }
+  }
+  return recs;
+}
+
+function renderRecommendations(data) {
+  const host = $("#recommendations");
+  host.textContent = "";
+  $("#recs-subline").textContent = "(rule-based, refreshed on each page load)";
+  const recs = evaluateRecommendations(data);
+  if (!recs.length) {
+    host.appendChild(noteP("Keep publishing \u2014 not enough data yet for meaningful recommendations."));
+    return;
+  }
+  for (const r of recs) host.appendChild(el("div", { cls: "rec-row", children: [
+    el("span", { cls: "rec-pill", text: r.rule }),
+    el("span", { cls: "rec-text", text: r.text }),
+  ] }));
+}
+
 // --- Header wiring ---
 function wireRefresh(reload) {
   const btn = $("#refresh-btn");
@@ -468,7 +756,8 @@ function renderGeneratedAt(data) {
 }
 function renderLoadErrors(data) {
   const box = $("#load-error");
-  const errs = Object.entries(data.errors);
+  // Profile + approvals errors are surfaced inline (pill / funnel fallback).
+  const errs = Object.entries(data.errors).filter(([k]) => k !== "profile" && k !== "approvals");
   if (!errs.length) { box.hidden = true; box.textContent = ""; return; }
   box.hidden = false;
   box.textContent = "";
@@ -484,13 +773,17 @@ async function renderAll() {
   const data = await fetchAll();
   renderLoadErrors(data);
   renderGeneratedAt(data);
+  renderProfileHeader(data);
   renderSummary(data);
   renderContentMix(data);
   renderTimeline(data);
+  renderFollowerGrowth(data);
+  renderApprovalFunnel(data);
   renderTopPosts(data);
   renderCategoryTable(data);
   renderRejectionReasons(data);
   renderRatingDistribution(data);
+  renderRecommendations(data);
 }
 
 wireCategorySort();
