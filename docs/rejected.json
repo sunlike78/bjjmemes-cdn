@@ -1,6 +1,52 @@
 {
-  "generated_at": "2026-04-22T13:12:50.195453+00:00",
+  "generated_at": "2026-04-22T13:13:10.684937+00:00",
   "memes": [
+    {
+      "id": "bjj_little_shark_1348",
+      "folder_name": "2026-04-22_13-48_MEME_bjj_little_shark_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143858_image.png",
+      "caption": "everyone at the gym underestimates the 65kg guy\nthen the 65kg guy takes their back in 8 seconds\n\nthere is no such thing as an 'easy roll'\nstop assuming and start tapping\n\n#bjj #bjjmemes #smallbutmighty #bjjshark",
+      "explanation": "Классический stereotype: маленький грэпплер выглядит как лёгкая добыча, а оказывается акулой, которая берёт спину за 8 секунд. Шутка разбивает иллюзию 'лёгкого роллинга' и напоминает: никто в БЖЖ не лёгкий. Заряд-предостережение для новичков.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:50:28.832810+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:50:54.792165+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 26.0
+        },
+        {
+          "ts": "2026-04-22T11:54:04.268648+00:00",
+          "event": "qa_failed",
+          "reviewer": "claude",
+          "note": "belt color lock FAILED: big guy and small guy both show no visible blue/brown belt respectively. RNC position anatomically OK but belts invisible — regen required."
+        },
+        {
+          "ts": "2026-04-22T13:13:02.289721+00:00",
+          "event": "rejected_by_user",
+          "comment": "Тут очевидно должно быть что-то типа заломанные руки, чтобы было понятно почему чувак кричит от боли. Они просто лежит, когда на нем кто-то сидит.",
+          "reviewed_at": "2026-04-22T13:13:02.289721+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:13:02.289721+00:00",
+        "event": "rejected_by_user",
+        "comment": "Тут очевидно должно быть что-то типа заломанные руки, чтобы было понятно почему чувак кричит от боли. Они просто лежит, когда на нем кто-то сидит.",
+        "reviewed_at": "2026-04-22T13:13:02.289721+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:13:02.289721+00:00",
+        "event": "rejected_by_user",
+        "comment": "Тут очевидно должно быть что-то типа заломанные руки, чтобы было понятно почему чувак кричит от боли. Они просто лежит, когда на нем кто-то сидит.",
+        "reviewed_at": "2026-04-22T13:13:02.289721+00:00"
+      }
+    },
     {
       "id": "bjj_just_move_1348",
       "folder_name": "2026-04-22_13-48_MEME_bjj_just_move_1348",
