@@ -1,1 +1,26 @@
-{}
+{
+  "hard_truth_tech_vs_str_1224": {
+    "status": "rejected",
+    "comment": "Буквы прокрасились у strength сила не полностью.",
+    "reviewed_at": "2026-04-22T12:58:54.720Z",
+    "rating": 1
+  },
+  "bjj_academy_red_flags_1348": {
+    "status": "rejected",
+    "comment": "На картинке нет ни одного упомянутого белого пояса с ашрамами.",
+    "reviewed_at": "2026-04-22T12:59:51.694Z",
+    "rating": 3
+  },
+  "bjj_gi_smell_1348": {
+    "status": "approved",
+    "comment": "",
+    "reviewed_at": "2026-04-22T13:00:15.656Z",
+    "rating": 4
+  },
+  "bjj_just_move_1348": {
+    "status": "rejected",
+    "comment": "Не хватает точности на картинки. Картинка пишет про белые поясы, но на картинке у всех пояса черные. Помнишь, я говорил, надо всегда детально описывать картинку.",
+    "reviewed_at": "2026-04-22T13:01:46.847Z",
+    "rating": 1
+  }
+}
