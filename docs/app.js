@@ -1,18 +1,22 @@
 // BJJ Memes Review Gallery - vanilla JS
-const REPO = "sunlike78/bjjmemes-cdn";
+// Behavior: all edits stay local until the user clicks the Save FAB.
+// That's the difference from the old version, which debounced + auto-saved
+// every 1.5s after the last edit.
+import {
+  getPat, setPat, clearPat,
+  ghGetJson, ghPutJson,
+  isNetworkError,
+} from "./auth.js";
+
 const APPROVALS_PATH = "docs/approvals.json";
-const API_BASE = `https://api.github.com/repos/${REPO}/contents/${APPROVALS_PATH}`;
-const DEBOUNCE_MS = 1500;
-const PAT_KEY = "github_pat";
 const PENDING_WRITES_KEY = "pending_writes";
 
 const state = {
-  memes: [],          // array of raw meme objects from data.json
-  records: {},        // id -> approval record {status, comment, reviewed_at}
-  sha: null,          // current sha of approvals.json
+  memes: [],             // raw meme objects from data.json
+  records: {},           // id -> approval record {status, comment, reviewed_at}
+  sha: null,             // current sha of approvals.json on GitHub
   filter: "all",
-  saveTimer: null,
-  dirty: false,
+  dirtyIds: new Set(),   // which record ids have unsaved edits
   saving: false,
   offline: false,
   lastError: null,
@@ -21,11 +25,7 @@ const state = {
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-// --- PAT management ---
-function getPat() { return localStorage.getItem(PAT_KEY); }
-function setPat(v) { localStorage.setItem(PAT_KEY, v); }
-function clearPat() { localStorage.removeItem(PAT_KEY); }
-
+// --- PAT modal ---
 function showPatModal() {
   const modal = $("#pat-modal");
   modal.hidden = false;
@@ -36,16 +36,7 @@ function hidePatModal() {
   $("#pat-input").value = "";
 }
 
-// --- Base64 helpers (UTF-8 safe) ---
-function b64encode(str) {
-  return btoa(unescape(encodeURIComponent(str)));
-}
-function b64decode(str) {
-  // GitHub returns base64 with line breaks
-  return decodeURIComponent(escape(atob(str.replace(/\s/g, ""))));
-}
-
-// --- Save status UI ---
+// --- Save status UI (header pill) ---
 function setSaveStatus(state_, msg) {
   const el = $("#save-status");
   el.dataset.state = state_;
@@ -55,110 +46,90 @@ function setSaveStatus(state_, msg) {
     offline: "offline",
     error: msg ? `error: ${msg}` : "error",
     idle: "idle",
+    dirty: "unsaved",
   };
   el.textContent = labels[state_] ?? state_;
 }
 
-// --- GitHub API ---
-async function ghGet() {
-  const pat = getPat();
-  const res = await fetch(`${API_BASE}?ref=main`, {
-    headers: {
-      "Authorization": `Bearer ${pat}`,
-      "Accept": "application/vnd.github+json",
-    },
-    cache: "no-store",
-  });
-  if (res.status === 401) {
-    clearPat();
-    setSaveStatus("error", "401");
-    showPatModal();
-    throw new Error("401");
+// --- Save FAB UI ---
+function updateSaveFab() {
+  const fab = $("#save-fab");
+  const label = $("#save-fab-label");
+  const n = state.dirtyIds.size;
+  if (state.saving) {
+    fab.disabled = true;
+    fab.dataset.state = "saving";
+    label.textContent = "Saving\u2026";
+    return;
   }
-  if (res.status === 404) {
-    // File missing on server - treat as empty
-    return { records: {}, sha: null };
+  if (n === 0) {
+    fab.disabled = true;
+    fab.dataset.state = "clean";
+    label.textContent = "No changes to save";
+  } else {
+    fab.disabled = false;
+    fab.dataset.state = state.offline ? "offline" : "dirty";
+    label.textContent = `Save changes (${n})`;
   }
-  if (!res.ok) throw new Error(`GET ${res.status}`);
-  const data = await res.json();
-  const decoded = b64decode(data.content);
-  let records = {};
-  try { records = JSON.parse(decoded) || {}; } catch { records = {}; }
-  return { records, sha: data.sha };
 }
 
-async function ghPut(records, sha) {
-  const pat = getPat();
-  const body = {
-    message: `review: update approvals (${new Date().toISOString()})`,
-    content: b64encode(JSON.stringify(records, null, 2) + "\n"),
-    branch: "main",
-  };
-  if (sha) body.sha = sha;
-  const res = await fetch(API_BASE, {
-    method: "PUT",
-    headers: {
-      "Authorization": `Bearer ${pat}`,
-      "Accept": "application/vnd.github+json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-  if (res.status === 401) {
-    clearPat();
-    showPatModal();
-    throw new Error("401");
-  }
-  if (res.status === 409 || res.status === 422) {
-    throw Object.assign(new Error("conflict"), { code: "conflict" });
-  }
-  if (!res.ok) {
-    const txt = await res.text().catch(() => "");
-    throw new Error(`PUT ${res.status}${txt ? `: ${txt.slice(0, 80)}` : ""}`);
-  }
-  const data = await res.json();
-  return data.content.sha;
+function markDirty(id) {
+  state.dirtyIds.add(id);
+  setSaveStatus("dirty");
+  updateSaveFab();
+  queuePendingWrite();
 }
 
-// --- Save flow ---
-function scheduleSave() {
-  state.dirty = true;
-  clearTimeout(state.saveTimer);
-  state.saveTimer = setTimeout(doSave, DEBOUNCE_MS);
+function clearDirty() {
+  state.dirtyIds.clear();
+  updateSaveFab();
 }
 
+// --- Save flow (explicit, no debounce) ---
 async function doSave() {
-  if (state.saving) { scheduleSave(); return; }
-  if (!state.dirty) return;
+  if (state.saving) return;
+  if (state.dirtyIds.size === 0) return;
   if (!getPat()) { showPatModal(); return; }
 
   state.saving = true;
   setSaveStatus("saving");
-  const snapshotDirty = { ...state.records };
+  updateSaveFab();
+
+  // Snapshot what we're about to commit. New edits during the PUT create new
+  // dirty ids, so we only clear the ones we actually saved.
+  const inFlight = new Set(state.dirtyIds);
+  const snapshot = { ...state.records };
+
   try {
     let newSha;
     try {
-      newSha = await ghPut(snapshotDirty, state.sha);
+      newSha = await ghPutJson(APPROVALS_PATH, snapshot, state.sha, `review: update approvals (${new Date().toISOString()})`);
     } catch (e) {
       if (e.code === "conflict") {
-        // re-GET and retry once, re-applying dirty records over remote
-        const remote = await ghGet();
-        const merged = { ...remote.records, ...snapshotDirty };
-        newSha = await ghPut(merged, remote.sha);
+        // Re-GET and retry once, applying our dirty records on top of remote.
+        const remote = await ghGetJson(APPROVALS_PATH);
+        const merged = { ...remote.records };
+        for (const id of inFlight) {
+          if (state.records[id]) merged[id] = state.records[id];
+        }
+        newSha = await ghPutJson(APPROVALS_PATH, merged, remote.sha, `review: update approvals (conflict retry) (${new Date().toISOString()})`);
         state.records = merged;
-        renderAll(); // re-render because remote may have added records
+        renderAll();
       } else {
         throw e;
       }
     }
     state.sha = newSha;
-    state.dirty = false;
+    for (const id of inFlight) state.dirtyIds.delete(id);
     state.offline = false;
     state.lastError = null;
-    clearPendingWrites();
+    if (state.dirtyIds.size === 0) clearPendingWrites();
     setSaveStatus("saved");
   } catch (e) {
-    if (isNetworkError(e)) {
+    if (e.message === "401") {
+      setSaveStatus("error", "401");
+      showPatModal();
+    } else if (isNetworkError(e)) {
       state.offline = true;
       queuePendingWrite();
       setSaveStatus("offline");
@@ -168,17 +139,15 @@ async function doSave() {
     }
   } finally {
     state.saving = false;
+    updateSaveFab();
   }
-}
-
-function isNetworkError(e) {
-  return e instanceof TypeError || /NetworkError|Failed to fetch/i.test(e.message || "");
 }
 
 function queuePendingWrite() {
   try {
     localStorage.setItem(PENDING_WRITES_KEY, JSON.stringify({
       records: state.records,
+      dirty_ids: Array.from(state.dirtyIds),
       at: new Date().toISOString(),
     }));
   } catch {}
@@ -186,13 +155,9 @@ function queuePendingWrite() {
 function clearPendingWrites() {
   try { localStorage.removeItem(PENDING_WRITES_KEY); } catch {}
 }
-function hasPendingWrites() {
-  return !!localStorage.getItem(PENDING_WRITES_KEY);
-}
 
 // --- Data loading ---
 async function loadData() {
-  // data.json (public, no auth needed for Pages file)
   let data = null;
   try {
     const res = await fetch(`data.json?t=${Date.now()}`, { cache: "no-store" });
@@ -209,16 +174,23 @@ async function loadData() {
   }
   state.memes = (data && Array.isArray(data.memes)) ? data.memes : [];
 
-  // approvals.json via GitHub API (authoritative, read latest)
+  // approvals.json via GitHub API (authoritative, read latest).
   try {
-    const { records, sha } = await ghGet();
-    state.records = records;
+    const { records, sha } = await ghGetJson(APPROVALS_PATH);
+    // If we have local dirty edits, keep them overlaid on top of remote.
+    const merged = { ...records };
+    for (const id of state.dirtyIds) {
+      if (state.records[id]) merged[id] = state.records[id];
+    }
+    state.records = merged;
     state.sha = sha;
   } catch (e) {
-    if (e.message !== "401") {
-      state.lastError = e.message;
-      setSaveStatus("error", e.message.slice(0, 40));
+    if (e.message === "401") {
+      showPatModal();
+      return;
     }
+    state.lastError = e.message;
+    setSaveStatus("error", e.message.slice(0, 40));
     return;
   }
 
@@ -230,8 +202,9 @@ async function loadData() {
     }
   }
 
-  setSaveStatus("saved");
+  setSaveStatus(state.dirtyIds.size ? "dirty" : "saved");
   renderAll();
+  updateSaveFab();
 }
 
 // --- Render ---
@@ -261,7 +234,6 @@ function renderCounters() {
 function renderCaption(preEl, text) {
   preEl.textContent = "";
   if (!text) return;
-  // Split preserving whitespace; mark tokens starting with # muted
   const tokens = String(text).split(/(\s+)/);
   for (const tok of tokens) {
     if (tok.startsWith("#") && tok.length > 1) {
@@ -294,7 +266,6 @@ function renderRow(meme) {
   const rec = state.records[meme.id] || { status: "pending", comment: "", reviewed_at: "" };
   tpl.dataset.status = rec.status || "pending";
 
-  // Image
   const img = tpl.querySelector(".thumb");
   const link = tpl.querySelector(".thumb-link");
   if (meme.image_url) {
@@ -306,20 +277,15 @@ function renderRow(meme) {
     link.removeAttribute("href");
   }
 
-  // Category
   const catEl = tpl.querySelector(".category-badge");
   if (meme.category) catEl.textContent = String(meme.category);
 
-  // ID
   tpl.querySelector(".row-id").textContent = String(meme.id);
 
-  // Status pill
   updatePill(tpl, rec.status || "pending");
 
-  // Caption
   renderCaption(tpl.querySelector(".caption"), meme.caption || "");
 
-  // Explanation
   const expBody = tpl.querySelector(".explanation-body");
   if (meme.explanation) {
     expBody.textContent = String(meme.explanation);
@@ -327,7 +293,6 @@ function renderRow(meme) {
     tpl.querySelector(".explanation").hidden = true;
   }
 
-  // Comment
   const ta = tpl.querySelector(".comment");
   ta.value = rec.comment || "";
   requestAnimationFrame(() => autosizeTextarea(ta));
@@ -337,11 +302,10 @@ function renderRow(meme) {
     if (r.comment !== ta.value) {
       r.comment = ta.value;
       r.reviewed_at = new Date().toISOString();
-      scheduleSave();
+      markDirty(meme.id);
     }
   });
 
-  // Buttons
   const approveBtn = tpl.querySelector(".btn-approve");
   const rejectBtn = tpl.querySelector(".btn-reject");
   updateButtonStates(tpl, rec.status || "pending");
@@ -349,7 +313,6 @@ function renderRow(meme) {
   approveBtn.addEventListener("click", () => toggleStatus(meme.id, "approved", tpl));
   rejectBtn.addEventListener("click", () => toggleStatus(meme.id, "rejected", tpl));
 
-  // Filter visibility
   applyFilterToRow(tpl, rec.status || "pending");
   return tpl;
 }
@@ -363,7 +326,6 @@ function ensureRecord(id) {
 
 function toggleStatus(id, target, rowEl) {
   const r = ensureRecord(id);
-  // Clicking same status toggles back to pending
   r.status = (r.status === target) ? "pending" : target;
   r.reviewed_at = new Date().toISOString();
   rowEl.dataset.status = r.status;
@@ -371,7 +333,7 @@ function toggleStatus(id, target, rowEl) {
   updateButtonStates(rowEl, r.status);
   applyFilterToRow(rowEl, r.status);
   renderCounters();
-  scheduleSave();
+  markDirty(id);
 }
 
 function updatePill(rowEl, status) {
@@ -396,7 +358,6 @@ function applyFilterToRow(rowEl, status) {
 
 function renderAll() {
   const gallery = $("#gallery");
-  // Clear previous rows (keep empty state)
   $$(".row", gallery).forEach(n => n.remove());
   const empty = $("#empty-state");
 
@@ -430,7 +391,6 @@ function reapplyFilter() {
 
 // --- Event wiring ---
 function wireEvents() {
-  // Filters
   $$(".filter-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       state.filter = btn.dataset.filter;
@@ -439,14 +399,12 @@ function wireEvents() {
     });
   });
 
-  // Reset PAT
   $("#reset-pat").addEventListener("click", () => {
     if (!confirm("Clear stored PAT from this browser?")) return;
     clearPat();
     showPatModal();
   });
 
-  // PAT form
   $("#pat-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const v = $("#pat-input").value.trim();
@@ -455,13 +413,37 @@ function wireEvents() {
     hidePatModal();
     setSaveStatus("saving");
     await loadData();
-    if (hasPendingWrites() && state.dirty) scheduleSave();
   });
 
-  // Retry pending writes on focus
+  $("#save-fab").addEventListener("click", () => {
+    doSave();
+  });
+
+  // Keyboard shortcut: Ctrl/Cmd+S triggers save when there are dirty changes.
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")) {
+      if (state.dirtyIds.size > 0) {
+        e.preventDefault();
+        doSave();
+      }
+    }
+  });
+
+  // Before-unload guard: warn if the user tries to leave with unsaved edits.
+  window.addEventListener("beforeunload", (e) => {
+    if (state.dirtyIds.size > 0) {
+      e.preventDefault();
+      // Modern browsers ignore the message text, but a truthy returnValue
+      // still triggers the native "Leave site?" confirmation.
+      e.returnValue = "You have unsaved changes. Leave anyway?";
+      return e.returnValue;
+    }
+  });
+
+  // Retry on focus if we went offline mid-save.
   window.addEventListener("focus", () => {
-    if (state.offline && state.dirty) {
-      scheduleSave();
+    if (state.offline && state.dirtyIds.size > 0) {
+      doSave();
     }
   });
 }
@@ -469,24 +451,30 @@ function wireEvents() {
 // --- Bootstrap ---
 (async function init() {
   wireEvents();
+  updateSaveFab();
 
-  // Restore pending writes if any
+  // Restore any pending writes from a previous session.
   try {
     const pending = localStorage.getItem(PENDING_WRITES_KEY);
     if (pending) {
       const parsed = JSON.parse(pending);
       if (parsed && parsed.records) {
         state.records = parsed.records;
-        state.dirty = true;
+        if (Array.isArray(parsed.dirty_ids)) {
+          for (const id of parsed.dirty_ids) state.dirtyIds.add(id);
+        } else {
+          // Legacy format: no id list - mark all keys dirty as a safe fallback.
+          for (const id of Object.keys(parsed.records)) state.dirtyIds.add(id);
+        }
       }
     }
   } catch {}
 
   if (!getPat()) {
     showPatModal();
+    updateSaveFab();
     return;
   }
 
   await loadData();
-  if (state.dirty) scheduleSave();
 })();

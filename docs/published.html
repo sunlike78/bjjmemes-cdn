@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Published memes</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1 class="title">Published memes</h1>
+    <div class="counters" aria-live="polite">
+      <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
+      <span class="counter" id="generated-at"></span>
+    </div>
+    <div class="topbar-right">
+      <a class="nav-link" href="index.html">&larr; Review</a>
+      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
+    </div>
+  </div>
+</header>
+
+<main id="gallery" class="gallery gallery-grid" aria-live="polite">
+  <div class="empty-state" id="empty-state" hidden>
+    <p>Loading&hellip;</p>
+  </div>
+</main>
+
+<template id="card-template">
+  <article class="card" data-id="">
+    <a class="card-thumb-link" target="_blank" rel="noopener">
+      <img class="card-thumb" loading="lazy" alt="" />
+    </a>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="category-badge"></span>
+        <span class="card-posted"></span>
+      </div>
+      <div class="card-links">
+        <a class="permalink" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+          <span>Instagram</span>
+        </a>
+        <span class="card-id"></span>
+      </div>
+      <pre class="caption caption-collapsible" data-collapsed="true"></pre>
+      <button class="caption-toggle btn btn-ghost" type="button" hidden>Expand caption</button>
+      <details class="history">
+        <summary>History</summary>
+        <ol class="timeline"></ol>
+      </details>
+    </div>
+  </article>
+</template>
+
+<template id="timeline-item-template">
+  <li class="timeline-item">
+    <span class="timeline-dot" aria-hidden="true"></span>
+    <div class="timeline-body">
+      <div class="timeline-row">
+        <span class="timeline-event"></span>
+        <span class="timeline-rel"></span>
+      </div>
+      <div class="timeline-ts"></div>
+      <div class="timeline-extra"></div>
+    </div>
+  </li>
+</template>
+
+<script type="module" src="published.js"></script>
+</body>
+</html>

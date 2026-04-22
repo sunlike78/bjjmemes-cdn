@@ -29,9 +29,22 @@
     <div class="topbar-right">
       <span id="save-status" class="save-status" aria-live="polite">idle</span>
       <button id="reset-pat" class="btn btn-ghost" type="button">Reset PAT</button>
+      <a class="nav-link" href="published.html">Published &rarr;</a>
+      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
     </div>
   </div>
 </header>
+
+<!-- Floating Save button (FAB) -->
+<button id="save-fab" class="save-fab" type="button" disabled aria-live="polite">
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path d="M5 3h12l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M8 3v6h8V3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <rect x="7" y="13" width="10" height="8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </svg>
+  <span id="save-fab-label">No changes to save</span>
+</button>
 
 <main id="gallery" class="gallery" aria-live="polite">
   <div class="empty-state" id="empty-state" hidden>

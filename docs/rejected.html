@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Rejected memes</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1 class="title">Rejected memes</h1>
+    <div class="counters" aria-live="polite">
+      <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
+      <span class="counter" id="generated-at"></span>
+    </div>
+    <div class="topbar-right">
+      <a class="nav-link" href="index.html">&larr; Review</a>
+      <a class="nav-link" href="published.html">Published &rarr;</a>
+    </div>
+  </div>
+</header>
+
+<main id="gallery" class="gallery gallery-grid" aria-live="polite">
+  <div class="empty-state" id="empty-state" hidden>
+    <p>Loading&hellip;</p>
+  </div>
+</main>
+
+<template id="card-template">
+  <article class="card card-rejected" data-id="">
+    <a class="card-thumb-link" target="_blank" rel="noopener">
+      <img class="card-thumb" loading="lazy" alt="" />
+    </a>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="category-badge"></span>
+        <span class="card-rejected-at"></span>
+      </div>
+      <div class="card-links">
+        <span class="card-id"></span>
+      </div>
+      <div class="rejection-box">
+        <div class="rejection-label">Rejection comment</div>
+        <div class="rejection-text"></div>
+      </div>
+      <pre class="caption caption-collapsible" data-collapsed="true"></pre>
+      <button class="caption-toggle btn btn-ghost" type="button" hidden>Expand caption</button>
+      <details class="history">
+        <summary>History</summary>
+        <ol class="timeline"></ol>
+      </details>
+    </div>
+  </article>
+</template>
+
+<template id="timeline-item-template">
+  <li class="timeline-item">
+    <span class="timeline-dot" aria-hidden="true"></span>
+    <div class="timeline-body">
+      <div class="timeline-row">
+        <span class="timeline-event"></span>
+        <span class="timeline-rel"></span>
+      </div>
+      <div class="timeline-ts"></div>
+      <div class="timeline-extra"></div>
+    </div>
+  </li>
+</template>
+
+<script type="module" src="rejected.js"></script>
+</body>
+</html>
