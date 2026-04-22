@@ -1,6 +1,93 @@
 {
-  "generated_at": "2026-04-22T15:36:11.704810+00:00",
+  "generated_at": "2026-04-22T17:00:23.397402+00:00",
   "memes": [
+    {
+      "id": "bjj_inj_esc_1224",
+      "folder_name": "2026-04-22_12-24_MEME_bjj_inj_esc_1224",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_133300_image.png",
+      "caption": "'it's fine' is a spectrum\nday one: actually fine\nweek two: it's fine\nmonth six: i'll get it looked at after the competition\ntag your training partner\n\n#bjj #bjjmemes #itsfine #grapplinglife",
+      "explanation": "Классическая болезнь всех бжжистов — игнорировать травму с обещанием 'разберусь потом'. Шутка играет на том, что слово 'fine' деградирует из реальной оценки в ритуальную фразу, повторяемую механически. Три панели показывают эскалацию: здоровый → слегка потрёпанный → ходячая катастрофа, но 'IT'S FINE' неизменно.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T10:24:55.553426+00:00",
+          "event": "generated",
+          "source": "manual_regen_v2"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.976881+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T10:59:47.976460+00:00"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.982859+00:00",
+          "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T11:29:41.832687+00:00",
+          "event": "image_replaced",
+          "source": "chatgpt_gpt_image_1",
+          "note": "manual gpt regen"
+        },
+        {
+          "ts": "2026-04-22T11:32:59.828030+00:00",
+          "event": "image_replaced",
+          "source": "chatgpt_gpt_image_1",
+          "note": "belt color fixed: white (matches day-1 beginner)"
+        },
+        {
+          "ts": "2026-04-22T11:32:59.840551+00:00",
+          "event": "qa_passed",
+          "note": "white belt consistent across panels, BJJ physics OK"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 9,
+          "reasoning": "classic 3-panel IT'S FINE escalation. White belt correct throughout, expressions land, memorable tile. ChatGPT-assisted regen — best tile in the batch."
+        },
+        {
+          "ts": "2026-04-22T17:00:15.047285+00:00",
+          "event": "posted",
+          "media_id": "18041212979780965",
+          "permalink": "https://www.instagram.com/p/DXcQi9jDTvo/",
+          "posted_at": "2026-04-22T17:00:15.047285+00:00"
+        }
+      ],
+      "posted": {
+        "ts": "2026-04-22T17:00:15.047285+00:00",
+        "event": "posted",
+        "media_id": "18041212979780965",
+        "permalink": "https://www.instagram.com/p/DXcQi9jDTvo/",
+        "posted_at": "2026-04-22T17:00:15.047285+00:00"
+      },
+      "rejected_by_user": null,
+      "media_id": "18041212979780965",
+      "permalink": "https://www.instagram.com/p/DXcQi9jDTvo/",
+      "posted_at": "2026-04-22T17:00:15.047285+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 9,
+        "reasoning": "classic 3-panel IT'S FINE escalation. White belt correct throughout, expressions land, memorable tile. ChatGPT-assisted regen — best tile in the batch.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      },
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reach": 0,
+        "saved": 0,
+        "views": 0,
+        "impressions": null,
+        "fetched_at": "2026-04-22T17:00:17.400676+00:00",
+        "_refused_metrics": [
+          "impressions"
+        ]
+      }
+    },
     {
       "id": "hard_truth_teach_down_1224",
       "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_teach_down_1224",
@@ -82,7 +169,7 @@
         "saved": 1,
         "views": 8,
         "impressions": null,
-        "fetched_at": "2026-04-22T15:36:11.704810+00:00",
+        "fetched_at": "2026-04-22T17:00:23.394899+00:00",
         "_refused_metrics": [
           "impressions"
         ]
