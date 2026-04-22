@@ -433,43 +433,47 @@ body {
 }
 .nav-link:hover { background: var(--surface-2); color: var(--text); }
 
-/* ------ Floating Save button ------ */
-.save-fab {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 80;
+/* ------ Inline Save bar (at bottom of list) ------ */
+.save-bar {
+  max-width: 1040px;
+  margin: 32px auto 64px;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px dashed var(--border);
+}
+.save-inline-btn {
   font: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  padding: 12px 20px;
-  min-height: 48px;
-  border-radius: 999px;
+  padding: 14px 28px;
+  min-height: 52px;
+  border-radius: 10px;
   border: 1px solid var(--accent);
   background: var(--accent);
   color: #fff;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.14);
-  transition: transform 0.12s, filter 0.12s, background 0.12s, border-color 0.12s, opacity 0.12s;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transition: transform 0.12s, filter 0.12s, background 0.12s, border-color 0.12s;
 }
-.save-fab:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
-.save-fab:active:not(:disabled) { transform: translateY(0); }
-.save-fab:disabled {
+.save-inline-btn:hover:not(:disabled) { filter: brightness(1.05); transform: translateY(-1px); }
+.save-inline-btn:active:not(:disabled) { transform: translateY(0); }
+.save-inline-btn:disabled {
   background: var(--surface-2);
   color: var(--text-muted);
   border-color: var(--border);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   cursor: not-allowed;
 }
-.save-fab[data-state="saving"] {
+.save-inline-btn[data-state="saving"] {
   background: var(--surface-2);
   color: var(--accent);
   border-color: var(--accent);
 }
-.save-fab[data-state="offline"] {
+.save-inline-btn[data-state="offline"] {
   background: var(--pending-bg);
   color: var(--text-muted);
   border-color: var(--border);
@@ -478,12 +482,13 @@ body {
 .save-status[data-state="dirty"] { color: var(--accent); }
 
 @media (max-width: 720px) {
-  .save-fab {
-    right: 12px;
-    bottom: 12px;
-    padding: 10px 14px;
-    font-size: 13px;
-    min-height: 44px;
+  .save-bar { margin: 20px auto 40px; padding: 16px; }
+  .save-inline-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 46px;
+    width: 100%;
+    justify-content: center;
   }
 }
 
