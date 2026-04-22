@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-22T11:22:11.966372+00:00",
+  "generated_at": "2026-04-22T11:29:51.603297+00:00",
   "memes": [
     {
       "id": "bjj_inj_esc_1224",
       "folder_name": "2026-04-22_12-24_MEME_bjj_inj_esc_1224",
-      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_122538_image.png",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_132947_image.png",
       "caption": "'it's fine' is a spectrum\nday one: actually fine\nweek two: it's fine\nmonth six: i'll get it looked at after the competition\ntag your training partner\n\n#bjj #bjjmemes #itsfine #grapplinglife",
       "explanation": "Классическая болезнь всех бжжистов — игнорировать травму с обещанием 'разберусь потом'. Шутка играет на том, что слово 'fine' деградирует из реальной оценки в ритуальную фразу, повторяемую механически. Три панели показывают эскалацию: здоровый → слегка потрёпанный → ходячая катастрофа, но 'IT'S FINE' неизменно.",
       "category": null,
@@ -23,6 +23,12 @@
         {
           "ts": "2026-04-22T10:59:47.982859+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T11:29:41.832687+00:00",
+          "event": "image_replaced",
+          "source": "chatgpt_gpt_image_1",
+          "note": "manual gpt regen"
         }
       ],
       "posted": null,
