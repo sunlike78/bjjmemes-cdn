@@ -48,6 +48,61 @@ function wireCaptionToggle(preEl, toggleBtn, fullText) {
   });
 }
 
+// Inline SVG icons for the stats strip (heart, speech bubble, bookmark, eye).
+// Kept inline (not emoji) so rendering is identical on every platform.
+const STATS_ICONS = {
+  likes: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 21s-7.5-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2 4.5-9.5 9-9.5 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  comments: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M4 5h16v11H8l-4 4V5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  saved: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  reach: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+};
+
+function renderStats(containerEl, stats) {
+  containerEl.textContent = "";
+  if (!stats || typeof stats !== "object") {
+    containerEl.hidden = true;
+    return;
+  }
+  if (stats.error) {
+    containerEl.hidden = false;
+    const span = document.createElement("span");
+    span.className = "stats-unavailable";
+    span.textContent = "stats unavailable";
+    containerEl.appendChild(span);
+    return;
+  }
+  // Prefer `reach`; fall back to `views` or `impressions` if the API gave us one of those instead.
+  const reachLike = stats.reach ?? stats.views ?? stats.impressions;
+  const fields = [
+    ["likes", stats.likes, "likes"],
+    ["comments", stats.comments, "comments"],
+    ["saved", stats.saved, "saves"],
+    ["reach", reachLike, "reach"],
+  ];
+  let rendered = 0;
+  for (const [iconKey, value, label] of fields) {
+    if (value === null || value === undefined) continue;
+    const cell = document.createElement("span");
+    cell.className = "stat-cell";
+    cell.title = label;
+    cell.innerHTML = STATS_ICONS[iconKey];
+    const num = document.createElement("span");
+    num.className = "stat-num";
+    num.textContent = Number(value).toLocaleString();
+    cell.appendChild(num);
+    containerEl.appendChild(cell);
+    rendered++;
+  }
+  if (stats.fetched_at) {
+    const age = document.createElement("span");
+    age.className = "stat-age";
+    age.textContent = `(\u21bb ${relativeTime(stats.fetched_at)})`;
+    age.title = formatTimestamp(stats.fetched_at);
+    containerEl.appendChild(age);
+  }
+  containerEl.hidden = rendered === 0 && !stats.fetched_at;
+}
+
 function eventLabel(event) {
   switch (event) {
     case "generated": return "Generated";
@@ -129,6 +184,9 @@ function renderCard(meme) {
   const toggleBtn = tpl.querySelector(".caption-toggle");
   renderCaption(pre, meme.caption || "");
   wireCaptionToggle(pre, toggleBtn, meme.caption || "");
+
+  const statsRow = tpl.querySelector(".stats-row");
+  if (statsRow) renderStats(statsRow, meme.stats);
 
   renderTimeline(tpl.querySelector(".timeline"), meme.action_log || []);
 
