@@ -1,6 +1,84 @@
 {
-  "generated_at": "2026-04-22T13:16:02.509712+00:00",
+  "generated_at": "2026-04-22T13:58:09.315723+00:00",
   "memes": [
+    {
+      "id": "bjj_tap_gauge_1544",
+      "folder_name": "2026-04-22_15-44_MEME_bjj_tap_gauge_1544",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_154626_image.png",
+      "caption": "TAP COUNTER EXCUSES\n\n0 taps: \"I WON\"\n3 taps: \"close round\"\n8 taps: \"i was tired\"\n15 taps: \"GOOD ROLL BRO\"\n30+ taps: \"coaching opportunity\"\n\nevery tap earns a new story\n\n#bjj #bjjmemes #tapcounter #excuses",
+      "explanation": "Speedometer-метафора: каждая tap-зона — отмазка. Зелёная '0 taps' vs красная '30+ taps'. Стрелка указывает на 15 (красная зона) + подпись 'that one was my fault' — показывает главную шутку: чем больше тапнул, тем выше искусство объяснения.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T13:44:17.357423+00:00",
+          "event": "generated",
+          "source": "claude_pillow_v2_entertainment"
+        },
+        {
+          "ts": "2026-04-22T13:44:17.425020+00:00",
+          "event": "image_rendered",
+          "source": "claude_pillow_v2"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.406002+00:00",
+          "event": "rejected_by_user",
+          "comment": "bukva ne vidny izza liniy. eshe slishkim melko",
+          "reviewed_at": "2026-04-22T13:58:02.406002+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:58:02.406002+00:00",
+        "event": "rejected_by_user",
+        "comment": "bukva ne vidny izza liniy. eshe slishkim melko",
+        "reviewed_at": "2026-04-22T13:58:02.406002+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:58:02.406002+00:00",
+        "event": "rejected_by_user",
+        "comment": "bukva ne vidny izza liniy. eshe slishkim melko",
+        "reviewed_at": "2026-04-22T13:58:02.406002+00:00"
+      }
+    },
+    {
+      "id": "bjj_polaroid_excuses_1544",
+      "folder_name": "2026-04-22_15-44_MEME_bjj_polaroid_excuses_1544",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_154623_image.png",
+      "caption": "drilling excuses: a field guide\n\n\"tying my belt\" = can't do de la riva\n\"water break\" = got smashed last round\n\"gi adjustment\" = avoiding the wrestler\n\"stretching\" = scared of open guard\n\ntag the guy who only drills what he's already good at\n\n#bjj #bjjmemes #drillexcuses #fieldguide",
+      "explanation": "4 наклонённые polaroid-карточки с жёлтым highlighter на 'ACTUAL' — как уличные доказательства. Контраст лиц (rule-book) с реальностью (highlighter-правда). Визуально живой стэк, варьирующиеся углы поворота.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T13:44:17.071497+00:00",
+          "event": "generated",
+          "source": "claude_pillow_v2_entertainment"
+        },
+        {
+          "ts": "2026-04-22T13:44:17.187333+00:00",
+          "event": "image_rendered",
+          "source": "claude_pillow_v2"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.405207+00:00",
+          "event": "rejected_by_user",
+          "comment": "mem norm no watermark naehal na bukvy",
+          "reviewed_at": "2026-04-22T13:58:02.403169+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:58:02.405207+00:00",
+        "event": "rejected_by_user",
+        "comment": "mem norm no watermark naehal na bukvy",
+        "reviewed_at": "2026-04-22T13:58:02.403169+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:58:02.405207+00:00",
+        "event": "rejected_by_user",
+        "comment": "mem norm no watermark naehal na bukvy",
+        "reviewed_at": "2026-04-22T13:58:02.403169+00:00"
+      }
+    },
     {
       "id": "bjj_little_shark_1348",
       "folder_name": "2026-04-22_13-48_MEME_bjj_little_shark_1348",
