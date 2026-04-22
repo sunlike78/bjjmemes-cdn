@@ -66,11 +66,59 @@ function markDirty(id) {
   queuePendingWrite();
 }
 
+// --- Validation: block save until each decision is complete ---
+function validateBeforeSave() {
+  const errors = [];
+  for (const [id, r] of Object.entries(state.records)) {
+    if (!r) continue;
+    if (r.status === "approved") {
+      const rating = typeof r.rating === "number" ? r.rating : 0;
+      if (rating < 1) errors.push({ id, reason: "approved — rating required (click a star)" });
+    }
+    if (r.status === "rejected") {
+      const comment = (r.comment || "").trim();
+      if (comment.length === 0) errors.push({ id, reason: "rejected — comment required (explain why)" });
+    }
+  }
+  return errors;
+}
+
+function highlightInvalidRows(errors) {
+  // Clear old markers
+  document.querySelectorAll(".row[data-invalid='true']").forEach(r => {
+    r.removeAttribute("data-invalid");
+    const old = r.querySelector(".row-invalid-msg");
+    if (old) old.remove();
+  });
+  if (!errors.length) return;
+  const byId = new Map(errors.map(e => [e.id, e.reason]));
+  document.querySelectorAll(".row").forEach(row => {
+    const id = row.dataset.id;
+    if (!byId.has(id)) return;
+    row.dataset.invalid = "true";
+    const msg = document.createElement("div");
+    msg.className = "row-invalid-msg";
+    msg.textContent = "⚠ " + byId.get(id);
+    const body = row.querySelector(".row-body");
+    if (body) body.appendChild(msg);
+  });
+  // Scroll to first offender
+  const first = document.querySelector(".row[data-invalid='true']");
+  if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 // --- Save flow (explicit, no debounce) ---
 async function doSave() {
   if (state.saving) return;
   if (state.dirtyIds.size === 0) return;
   if (!getPat()) { showPatModal(); return; }
+
+  const errors = validateBeforeSave();
+  highlightInvalidRows(errors);
+  if (errors.length) {
+    setSaveStatus("error", `${errors.length} row(s) incomplete`);
+    return;
+  }
 
   state.saving = true;
   setSaveStatus("saving");

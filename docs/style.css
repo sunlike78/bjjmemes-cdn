@@ -371,6 +371,21 @@ body {
 .row-broken { grid-template-columns: 1fr; }
 .broken-msg { color: var(--reject); font-size: 14px; margin: 0; }
 
+/* Invalid-row highlight (set by validateBeforeSave) */
+.row[data-invalid="true"] {
+  border-color: var(--reject);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--reject) 35%, transparent);
+}
+.row-invalid-msg {
+  color: var(--reject);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: var(--reject-bg);
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
 /* Quality-rating stars (used for self-learning) */
 .rating {
   display: flex;
