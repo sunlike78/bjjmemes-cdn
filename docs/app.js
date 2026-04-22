@@ -478,7 +478,21 @@ function updateButtonStates(rowEl, status) {
 }
 
 function applyFilterToRow(rowEl, status) {
-  rowEl.dataset.hidden = (state.filter !== "all" && state.filter !== status) ? "true" : "false";
+  // Terminal statuses (accepted/rejected/published) live on their dedicated
+  // pages. Under the default "All" filter on Page 1 we show only items that
+  // still need attention (pending + locally-edited approved/rejected that
+  // have not been Saved yet — those are marked data-editable="true").
+  // The explicit filter tabs (Accepted / Rejected / Published) still reveal
+  // them for audit.
+  const editable = rowEl.dataset.editable === "true";
+  const isTerminal = status === "accepted" || status === "published"
+    || (status === "rejected" && !editable);
+
+  if (state.filter === "all") {
+    rowEl.dataset.hidden = isTerminal ? "true" : "false";
+    return;
+  }
+  rowEl.dataset.hidden = state.filter !== status ? "true" : "false";
 }
 
 function renderAll() {
