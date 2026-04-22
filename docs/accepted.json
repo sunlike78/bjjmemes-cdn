@@ -1,6 +1,138 @@
 {
-  "generated_at": "2026-04-22T14:42:38.801472+00:00",
+  "generated_at": "2026-04-22T15:13:13.597740+00:00",
   "memes": [
+    {
+      "id": "bjj_open_mat_greeting_1624",
+      "folder_name": "2026-04-22_16-24_MEME_bjj_open_mat_greeting_1624",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_164232_image.png",
+      "caption": "open mat greeting\n\nexpectation: \"good roll, brother\"\nreality: me trying to keep my spine inside my body\n\ntag someone you 'flow-rolled' with last weekend\n\n#bjj #bjjmemes #openmat #flowroll",
+      "explanation": "Контраст между дружелюбным рукопожатием перед роллингом и тотальным уничтожением через 30 секунд. Стандартный expectation-vs-reality шаблон, но конкретно про open mat — где 'light roll' ничего не значит.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T14:24:49.163327+00:00",
+          "event": "generated",
+          "source": "batch5_funny_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T14:25:13.053573+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 23.9
+        },
+        {
+          "ts": "2026-04-22T14:28:04.271846+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "belts correct, physics ok, TAP motion landed"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.586825+00:00",
+          "event": "approved_by_user",
+          "comment": "нарисованная, более-менее нормальная, но это опять та же самая шутка про Let's Go Light.",
+          "reviewed_at": "2026-04-22T15:13:02.586262+00:00"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.597597+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T15:13:02.597597+00:00"
+    },
+    {
+      "id": "bjj_dont_grab_gi_1624",
+      "folder_name": "2026-04-22_16-24_MEME_bjj_dont_grab_gi_1624",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_164226_image.png",
+      "caption": "coach: \"don't grab the gi like that\"\n\nme, three seconds later: *grabs the gi exactly like that*\n\nmy hands have their own gym membership\n\n#bjj #bjjmemes #muscleMemory #instinct",
+      "explanation": "Универсальная BJJ-правда: рефлексы сильнее инструкций. Три панели: тренер запрещает, ты киваешь и клянешься, через секунду делаешь то же самое. Шутка в разрыве между пониманием и привычкой.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T14:25:36.674656+00:00",
+          "event": "generated",
+          "source": "batch5_funny_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T14:26:02.103524+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 25.4
+        },
+        {
+          "ts": "2026-04-22T14:28:04.274854+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "GPT rendered 2x2 grid with empty 4th panel instead of 3 horizontal — still works, blue belt ok"
+        },
+        {
+          "ts": "2026-04-22T14:40:35.424901+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1_high",
+          "reason": "higher quality + stricter layout/text rules"
+        },
+        {
+          "ts": "2026-04-22T14:42:23.978410+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "high quality: 3 horizontal panels correct, all text crisp, blue belt consistent all 3 panels, coach black belt ok"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.573141+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T15:13:02.573141+00:00"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.583027+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T15:13:02.583027+00:00"
+    },
+    {
+      "id": "bjj_comp_morning_1624",
+      "folder_name": "2026-04-22_16-24_MEME_bjj_comp_morning_1624",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_164224_image.png",
+      "caption": "competition day: \"it's just another roll\"\n\n3:47 AM: checking weight for the 9th time\n4:12 AM: re-folding the same gi\n4:33 AM: googling my first-round opponent's instagram\n5:01 AM: writing a will\n\ntotally chill. just another roll.\n\n#bjj #bjjmemes #competitionday #notnervousnope",
+      "explanation": "Single-panel сцена ночной panic-montage с множеством мелких деталей: весы, кимоно, ноутбук с профилем противника, рукописный will на салфетке. Вся 'это просто ещё один роллинг' ложь — в визуале. Много decorative elements — создаёт chaotic night-before energy.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T14:26:02.105062+00:00",
+          "event": "generated",
+          "source": "batch5_funny_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T14:26:30.208996+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 28.1
+        },
+        {
+          "ts": "2026-04-22T14:28:04.274854+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "single-panel 4 AM scene, timestamps crisp, abundant detail"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.560237+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T15:13:02.560237+00:00"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.572142+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T15:13:02.572142+00:00"
+    },
     {
       "id": "bjj_injury_bingo_1546",
       "folder_name": "2026-04-22_15-46_MEME_bjj_injury_bingo_1546",
