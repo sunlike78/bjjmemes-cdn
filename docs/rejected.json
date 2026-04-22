@@ -1,6 +1,52 @@
 {
-  "generated_at": "2026-04-22T11:22:10.739683+00:00",
+  "generated_at": "2026-04-22T12:08:04.287772+00:00",
   "memes": [
+    {
+      "id": "bjj_back_years_1348",
+      "folder_name": "2026-04-22_13-48_MEME_bjj_back_years_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_135406_image.png",
+      "caption": "my back: a timeline\n\nyear 1: i didn't know this muscle existed\nyear 2: it exists and it's mad\nyear 5: i am 50% back pain and 50% coffee\n\ntag a training partner whose back is also a crime scene\n\n#bjj #bjjmemes #bjjback #grapplinglife",
+      "explanation": "Хроническая боль в спине — общий опыт всех грэпплеров. Шутка разворачивается через временную шкалу: год 1 — неведение, год 2 — знакомство, год 5 — полное перерождение. Играет на тёмном юморе о том, что ты буквально состоишь наполовину из боли, наполовину из кофе, и воспринимаешь это как норму.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:48:34.424549+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:48:55.684578+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 21.3
+        },
+        {
+          "ts": "2026-04-22T11:54:04.267641+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "typos in image text: IGNORRANT (should be IGNORANT), GOFFEE (should be COFFEE). Blue belt OK."
+        },
+        {
+          "ts": "2026-04-22T12:08:02.163694+00:00",
+          "event": "rejected_by_user",
+          "comment": "Водяной знак наезжает на надпись про 50% кофе и 50% боли в правом нижнем углу. В таких ситуациях надо поменять алгоритм так, чтобы водяной знак не заслонял никогда цифры, буквы и то, что люди могут даже не читать.",
+          "reviewed_at": "2026-04-22T12:08:02.163694+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T12:08:02.163694+00:00",
+        "event": "rejected_by_user",
+        "comment": "Водяной знак наезжает на надпись про 50% кофе и 50% боли в правом нижнем углу. В таких ситуациях надо поменять алгоритм так, чтобы водяной знак не заслонял никогда цифры, буквы и то, что люди могут даже не читать.",
+        "reviewed_at": "2026-04-22T12:08:02.163694+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T12:08:02.163694+00:00",
+        "event": "rejected_by_user",
+        "comment": "Водяной знак наезжает на надпись про 50% кофе и 50% боли в правом нижнем углу. В таких ситуациях надо поменять алгоритм так, чтобы водяной знак не заслонял никогда цифры, буквы и то, что люди могут даже не читать.",
+        "reviewed_at": "2026-04-22T12:08:02.163694+00:00"
+      }
+    },
     {
       "id": "hard_truth_belt_lag_1224",
       "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_belt_lag_1224",
