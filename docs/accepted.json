@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22T15:13:13.597740+00:00",
+  "generated_at": "2026-04-22T15:36:14.574760+00:00",
   "memes": [
     {
       "id": "bjj_open_mat_greeting_1624",
@@ -35,11 +35,26 @@
         {
           "ts": "2026-04-22T15:13:02.597597+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 7,
+          "image_score": 8,
+          "reasoning": "gpt-image-1: 2-panel expectation-vs-reality, purple+blue belts correct, TAP TAP TAP motion sells the second panel. Solid format, safe humor."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T15:13:02.597597+00:00"
+      "queued_at": "2026-04-22T15:13:02.597597+00:00",
+      "claude_score": {
+        "text_score": 7,
+        "image_score": 8,
+        "reasoning": "gpt-image-1: 2-panel expectation-vs-reality, purple+blue belts correct, TAP TAP TAP motion sells the second panel. Solid format, safe humor.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "bjj_dont_grab_gi_1624",
@@ -87,11 +102,26 @@
         {
           "ts": "2026-04-22T15:13:02.583027+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 8,
+          "reasoning": "gpt-image-1 HIGH regen: 3 horizontal panels as requested, COACH SAYS / ME UNDERSTOOD / THREE SECONDS LATER. Blue belt consistent, halo + cartoon horror land well."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T15:13:02.583027+00:00"
+      "queued_at": "2026-04-22T15:13:02.583027+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 8,
+        "reasoning": "gpt-image-1 HIGH regen: 3 horizontal panels as requested, COACH SAYS / ME UNDERSTOOD / THREE SECONDS LATER. Blue belt consistent, halo + cartoon horror land well.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "bjj_comp_morning_1624",
@@ -127,11 +157,26 @@
         {
           "ts": "2026-04-22T15:13:02.572142+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 9,
+          "reasoning": "gpt-image-1: rich single-panel 4 AM panic montage, lots of zoom-in details (laptop, will on napkin, Brazilian flag), readable timestamps in 4 corners. Top-tier in the batch."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T15:13:02.572142+00:00"
+      "queued_at": "2026-04-22T15:13:02.572142+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 9,
+        "reasoning": "gpt-image-1: rich single-panel 4 AM panic montage, lots of zoom-in details (laptop, will on napkin, Brazilian flag), readable timestamps in 4 corners. Top-tier in the batch.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "bjj_injury_bingo_1546",
@@ -160,11 +205,26 @@
         {
           "ts": "2026-04-22T13:58:02.416039+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 7,
+          "reasoning": "claude-v2: 5x5 grid with 8 X-stamped cells, EGO free-space highlighted yellow. Some cells text obscured by the X marks — acceptable as visual chaos but could be cleaner. Engagement hook strong (how many do you have?)."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:58:02.416039+00:00"
+      "queued_at": "2026-04-22T13:58:02.416039+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 7,
+        "reasoning": "claude-v2: 5x5 grid with 8 X-stamped cells, EGO free-space highlighted yellow. Some cells text obscured by the X marks — acceptable as visual chaos but could be cleaner. Engagement hook strong (how many do you have?).",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "bjj_lie_detector_1544",
@@ -193,11 +253,26 @@
         {
           "ts": "2026-04-22T13:58:02.403169+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 8,
+          "reasoning": "claude-v2: split-canvas teal/magenta, LIE DETECTOR angled banner, 4 rounded contrast cards, yellow pill footer. Clean entertainment energy."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:58:02.403169+00:00"
+      "queued_at": "2026-04-22T13:58:02.403169+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 8,
+        "reasoning": "claude-v2: split-canvas teal/magenta, LIE DETECTOR angled banner, 4 rounded contrast cards, yellow pill footer. Clean entertainment energy.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "bjj_belt_prophecy_1544",
@@ -226,11 +301,26 @@
         {
           "ts": "2026-04-22T13:58:02.393558+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.094143+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 8,
+          "reasoning": "claude-v2 entertainment-design: rainbow gradient timeline + belt-shaped bars + red STILL BLUE stamp. Visually diverse from others in the batch, palette bold."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:58:02.393558+00:00"
+      "queued_at": "2026-04-22T13:58:02.393558+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 8,
+        "reasoning": "claude-v2 entertainment-design: rainbow gradient timeline + belt-shaped bars + red STILL BLUE stamp. Visually diverse from others in the batch, palette bold.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.094143+00:00"
+      }
     },
     {
       "id": "hard_truth_mat_time_1348",
@@ -266,11 +356,26 @@
         {
           "ts": "2026-04-22T13:13:02.356161+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.092930+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 9,
+          "image_score": 7,
+          "reasoning": "TROPHIES ARE A SNAPSHOT / MAT TIME IS THE FILM — excellent rhythm. Red accent on TROPHIES. Grounded editorial poster vibe, works for serious lane."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.356161+00:00"
+      "queued_at": "2026-04-22T13:13:02.356161+00:00",
+      "claude_score": {
+        "text_score": 9,
+        "image_score": 7,
+        "reasoning": "TROPHIES ARE A SNAPSHOT / MAT TIME IS THE FILM — excellent rhythm. Red accent on TROPHIES. Grounded editorial poster vibe, works for serious lane.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.092930+00:00"
+      }
     },
     {
       "id": "hard_truth_injury_tax_1348",
@@ -306,11 +411,26 @@
         {
           "ts": "2026-04-22T13:13:02.347227+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.092930+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 9,
+          "image_score": 7,
+          "reasoning": "sharp hard-truth quote — INJURIES ARE NOT BADGES, THEY ARE DEBT. DEBT in red accent works. Text is the star; visual support is quiet but appropriate for serious lane."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.347227+00:00"
+      "queued_at": "2026-04-22T13:13:02.347227+00:00",
+      "claude_score": {
+        "text_score": 9,
+        "image_score": 7,
+        "reasoning": "sharp hard-truth quote — INJURIES ARE NOT BADGES, THEY ARE DEBT. DEBT in red accent works. Text is the star; visual support is quiet but appropriate for serious lane.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.092930+00:00"
+      }
     },
     {
       "id": "bjj_water_bottle_tactics_1348",
@@ -346,11 +466,26 @@
         {
           "ts": "2026-04-22T13:13:02.332413+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 7,
+          "image_score": 5,
+          "reasoning": "joke concept strong (3 tactics) but panel 1 has truncated thought bubble (please don't see the) and garbled brand text on bottle (pobse dole) — cosmetic but visible. Skip unless cropped carefully."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.332413+00:00"
+      "queued_at": "2026-04-22T13:13:02.332413+00:00",
+      "claude_score": {
+        "text_score": 7,
+        "image_score": 5,
+        "reasoning": "joke concept strong (3 tactics) but panel 1 has truncated thought bubble (please don't see the) and garbled brand text on bottle (pobse dole) — cosmetic but visible. Skip unless cropped carefully.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      }
     },
     {
       "id": "bjj_one_more_round_1348",
@@ -399,11 +534,26 @@
         {
           "ts": "2026-04-22T13:13:02.318312+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 8,
+          "reasoning": "purple + black belt correct, I CAN SEE SOUNDS NOW bottom-left placement after safe-zone regen, coach + exhausted student chemistry works."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.318312+00:00"
+      "queued_at": "2026-04-22T13:13:02.318312+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 8,
+        "reasoning": "purple + black belt correct, I CAN SEE SOUNDS NOW bottom-left placement after safe-zone regen, coach + exhausted student chemistry works.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      }
     },
     {
       "id": "bjj_new_belt_reality_1348",
@@ -439,11 +589,26 @@
         {
           "ts": "2026-04-22T13:13:02.305037+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 7,
+          "image_score": 8,
+          "reasoning": "ceremony vs reality 2-panel, purple belt consistent both panels, side-control anatomically correct. Classic expectation-reality format but well-executed."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.305037+00:00"
+      "queued_at": "2026-04-22T13:13:02.305037+00:00",
+      "claude_score": {
+        "text_score": 7,
+        "image_score": 8,
+        "reasoning": "ceremony vs reality 2-panel, purple belt consistent both panels, side-control anatomically correct. Classic expectation-reality format but well-executed.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      }
     },
     {
       "id": "bjj_gi_smell_1348",
@@ -479,11 +644,26 @@
         {
           "ts": "2026-04-22T13:03:02.353536+00:00",
           "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 7,
+          "image_score": 8,
+          "reasoning": "3 gi progression MONDAY/WEDNESDAY/FRIDAY — biohazard joke lands. Static composition is OK for gear-transformation trope."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:03:02.353536+00:00"
+      "queued_at": "2026-04-22T13:03:02.353536+00:00",
+      "claude_score": {
+        "text_score": 7,
+        "image_score": 8,
+        "reasoning": "3 gi progression MONDAY/WEDNESDAY/FRIDAY — biohazard joke lands. Static composition is OK for gear-transformation trope.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      }
     },
     {
       "id": "bjj_inj_esc_1224",
@@ -524,11 +704,26 @@
           "ts": "2026-04-22T11:32:59.840551+00:00",
           "event": "qa_passed",
           "note": "white belt consistent across panels, BJJ physics OK"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 8,
+          "image_score": 9,
+          "reasoning": "classic 3-panel IT'S FINE escalation. White belt correct throughout, expressions land, memorable tile. ChatGPT-assisted regen — best tile in the batch."
         }
       ],
       "posted": null,
       "rejected_by_user": null,
-      "queued_at": "2026-04-22T10:59:47.982859+00:00"
+      "queued_at": "2026-04-22T10:59:47.982859+00:00",
+      "claude_score": {
+        "text_score": 8,
+        "image_score": 9,
+        "reasoning": "classic 3-panel IT'S FINE escalation. White belt correct throughout, expressions land, memorable tile. ChatGPT-assisted regen — best tile in the batch.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      }
     }
   ]
 }
