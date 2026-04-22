@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22T18:07:11.161102+00:00",
+  "generated_at": "2026-04-22T20:08:12.419671+00:00",
   "memes": [
     {
       "id": "bjj_inj_esc_1224",
@@ -78,11 +78,11 @@
       "stats": {
         "likes": 0,
         "comments": 0,
-        "reach": 0,
+        "reach": 1,
         "saved": 0,
-        "views": 0,
+        "views": 2,
         "impressions": null,
-        "fetched_at": "2026-04-22T17:08:04.471006+00:00",
+        "fetched_at": "2026-04-22T20:08:04.837704+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -137,7 +137,7 @@
         "saved": 1,
         "views": 2,
         "impressions": null,
-        "fetched_at": "2026-04-22T17:08:06.837104+00:00",
+        "fetched_at": "2026-04-22T20:08:07.096340+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -169,7 +169,7 @@
         "saved": 1,
         "views": 8,
         "impressions": null,
-        "fetched_at": "2026-04-22T18:07:11.161102+00:00",
+        "fetched_at": "2026-04-22T20:08:12.419671+00:00",
         "_refused_metrics": [
           "impressions"
         ]
