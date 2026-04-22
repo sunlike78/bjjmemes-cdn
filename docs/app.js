@@ -85,7 +85,8 @@ async function doSave() {
   for (const [id, r] of Object.entries(state.records)) {
     const hasDecision = r && (r.status === "approved" || r.status === "rejected");
     const hasComment = r && r.comment && r.comment.trim().length > 0;
-    if (hasDecision || hasComment) snapshot[id] = r;
+    const hasRating = r && typeof r.rating === "number" && r.rating > 0;
+    if (hasDecision || hasComment || hasRating) snapshot[id] = r;
   }
 
   try {
@@ -425,9 +426,12 @@ function renderRow(meme) {
   const actions = tpl.querySelector(".actions");
   const infoEl = tpl.querySelector(".readonly-info");
 
+  const ratingEl = tpl.querySelector(".rating");
+
   if (!eff.editable) {
     tpl.querySelector(".comment-label").hidden = true;
     actions.hidden = true;
+    if (ratingEl) ratingEl.hidden = true;
     infoEl.hidden = !renderReadonlyInfo(infoEl, eff.status, eff.bucketRecord);
   } else {
     const rec = eff.approvalRecord;
@@ -447,6 +451,17 @@ function renderRow(meme) {
     updateButtonStates(tpl, rec.status || "pending");
     approveBtn.addEventListener("click", () => toggleStatus(meme.id, "approved", tpl));
     rejectBtn.addEventListener("click",  () => toggleStatus(meme.id, "rejected", tpl));
+
+    // Rating stars (0 = no rating, 1-5 = stars). Click to set, click same
+    // value again to clear. Used later for self-learning on which memes
+    // the reviewer actually liked — independent of approve/reject.
+    updateRatingStars(ratingEl, rec.rating || 0);
+    ratingEl.querySelectorAll(".star").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const v = parseInt(btn.dataset.value, 10);
+        setRating(meme.id, v, tpl);
+      });
+    });
   }
 
   applyFilterToRow(tpl, eff.status);
@@ -454,8 +469,27 @@ function renderRow(meme) {
 }
 
 function ensureRecord(id) {
-  if (!state.records[id]) state.records[id] = { status: "pending", comment: "", reviewed_at: "" };
+  if (!state.records[id]) state.records[id] = { status: "pending", comment: "", reviewed_at: "", rating: 0 };
   return state.records[id];
+}
+
+function setRating(id, value, rowEl) {
+  const r = ensureRecord(id);
+  const next = (r.rating === value) ? 0 : value;  // click-again clears
+  if (r.rating === next) return;
+  r.rating = next;
+  r.reviewed_at = new Date().toISOString();
+  updateRatingStars(rowEl.querySelector(".rating"), next);
+  markDirty(id);
+}
+
+function updateRatingStars(ratingEl, value) {
+  if (!ratingEl) return;
+  ratingEl.dataset.value = String(value);
+  ratingEl.querySelectorAll(".star").forEach(btn => {
+    const v = parseInt(btn.dataset.value, 10);
+    btn.classList.toggle("is-filled", v <= value);
+  });
 }
 
 function toggleStatus(id, target, rowEl) {
