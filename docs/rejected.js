@@ -5,6 +5,27 @@ import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
 const REJECTED_PATH = "docs/rejected.json";
 const CAPTION_COLLAPSED_LINES = 2;
 
+// Категории в данных остаются на английском; в UI — таблица соответствия.
+const CATEGORY_LABELS_RU = {
+  relatable: "жиза",
+  shitpost: "шитпост",
+  observational: "наблюдение",
+  absurd: "абсурд",
+  meme: "мем",
+  hard_truth: "жёсткая правда",
+  factual_post: "факт",
+  quote_post: "цитата",
+  mindset_post: "мышление",
+  training_insight: "с тренировки",
+  carousel_micro_essay: "эссе-карусель",
+  legacy_import: "импорт IG",
+};
+function categoryLabel(cat) {
+  if (!cat) return "";
+  const key = String(cat).toLowerCase();
+  return CATEGORY_LABELS_RU[key] || String(cat);
+}
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -33,29 +54,29 @@ function wireCaptionToggle(preEl, toggleBtn, fullText) {
   }
   toggleBtn.hidden = false;
   preEl.dataset.collapsed = "true";
-  toggleBtn.textContent = "Expand caption";
+  toggleBtn.textContent = "Развернуть подпись";
   toggleBtn.addEventListener("click", () => {
     const collapsed = preEl.dataset.collapsed === "true";
     preEl.dataset.collapsed = collapsed ? "false" : "true";
-    toggleBtn.textContent = collapsed ? "Collapse caption" : "Expand caption";
+    toggleBtn.textContent = collapsed ? "Свернуть подпись" : "Развернуть подпись";
   });
   preEl.addEventListener("click", () => {
     if (preEl.dataset.collapsed === "true") {
       preEl.dataset.collapsed = "false";
-      toggleBtn.textContent = "Collapse caption";
+      toggleBtn.textContent = "Свернуть подпись";
     }
   });
 }
 
 function eventLabel(event) {
   switch (event) {
-    case "generated": return "Generated";
-    case "approved_by_user": return "Approved";
-    case "rejected_by_user": return "Rejected";
-    case "posted": return "Posted to Instagram";
-    case "queued": return "Queued";
-    case "failed": return "Failed";
-    default: return event || "event";
+    case "generated": return "Сгенерировано";
+    case "approved_by_user": return "Одобрено";
+    case "rejected_by_user": return "Отклонено";
+    case "posted": return "Опубликовано в Instagram";
+    case "queued": return "В очереди";
+    case "failed": return "Ошибка";
+    default: return event || "событие";
   }
 }
 
@@ -72,8 +93,8 @@ function renderTimeline(olEl, actionLog) {
     li.querySelector(".timeline-ts").textContent = formatTimestamp(entry.ts);
     const extra = li.querySelector(".timeline-extra");
     const bits = [];
-    if (entry.comment) bits.push(`comment: ${entry.comment}`);
-    if (entry.reason) bits.push(`reason: ${entry.reason}`);
+    if (entry.comment) bits.push(`комментарий: ${entry.comment}`);
+    if (entry.reason) bits.push(`причина: ${entry.reason}`);
     if (entry.media_id) bits.push(`media_id: ${entry.media_id}`);
     extra.textContent = bits.join(" \u00b7 ");
     if (!bits.length) extra.remove();
@@ -82,7 +103,7 @@ function renderTimeline(olEl, actionLog) {
   if (!items.length) {
     const li = document.createElement("li");
     li.className = "timeline-empty";
-    li.textContent = "No history entries.";
+    li.textContent = "История пуста.";
     olEl.appendChild(li);
   }
 }
@@ -125,16 +146,18 @@ function renderCard(meme) {
   }
 
   const catEl = tpl.querySelector(".category-badge");
-  if (meme.category) catEl.textContent = String(meme.category);
-  else catEl.remove();
+  if (meme.category) {
+    catEl.textContent = categoryLabel(meme.category);
+    catEl.title = String(meme.category);
+  } else catEl.remove();
 
   const rejectedAt = rejectedAtFor(meme);
   const rejAtEl = tpl.querySelector(".card-rejected-at");
   if (rejectedAt) {
-    rejAtEl.textContent = `Rejected ${relativeTime(rejectedAt)}`;
+    rejAtEl.textContent = `Отклонено ${relativeTime(rejectedAt)}`;
     rejAtEl.title = formatTimestamp(rejectedAt);
   } else {
-    rejAtEl.textContent = "rejected";
+    rejAtEl.textContent = "отклонено";
   }
 
   tpl.querySelector(".card-id").textContent = meme.id ? String(meme.id) : "";
@@ -173,11 +196,11 @@ async function load() {
   try {
     payload = await rawJsonFetch(REJECTED_PATH);
   } catch (e) {
-    renderEmpty(`Error loading rejected.json: ${e.message}`);
+    renderEmpty(`Ошибка загрузки rejected.json: ${e.message}`);
     return;
   }
   if (!payload || !Array.isArray(payload.memes) || payload.memes.length === 0) {
-    renderEmpty("No rejected memes yet.");
+    renderEmpty("Отклонённых мемов пока нет.");
     $("#count-total").textContent = "0";
     return;
   }
@@ -196,7 +219,7 @@ async function load() {
   $("#count-total").textContent = String(memes.length);
   const gen = $("#generated-at");
   if (payload.generated_at) {
-    gen.textContent = `Updated ${relativeTime(payload.generated_at)}`;
+    gen.textContent = `Обновлено ${relativeTime(payload.generated_at)}`;
     gen.title = formatTimestamp(payload.generated_at);
   } else {
     gen.textContent = "";

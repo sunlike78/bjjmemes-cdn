@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>BJJ Memes Analytics</title>
+<title>Аналитика BJJ-мемов</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <h1 class="title">BJJ Memes Analytics</h1>
+    <h1 class="title">Аналитика BJJ-мемов</h1>
     <div class="counters" aria-live="polite">
       <span class="counter" id="generated-at"></span>
     </div>
     <div class="topbar-right">
-      <a class="nav-link" href="index.html">&larr; Review</a>
-      <a class="nav-link" href="accepted.html">Accepted &rarr;</a>
-      <a class="nav-link" href="published.html">Published &rarr;</a>
-      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
-      <a class="nav-link nav-link-active" href="analytics.html" aria-current="page">Analytics</a>
-      <button id="refresh-btn" class="btn btn-ghost" type="button" title="Re-fetch JSON from GitHub">Refresh stats</button>
+      <a class="nav-link" href="index.html">&larr; Обзор</a>
+      <a class="nav-link" href="accepted.html">Одобренные &rarr;</a>
+      <a class="nav-link" href="published.html">Опубликованные &rarr;</a>
+      <a class="nav-link" href="rejected.html">Отклонённые &rarr;</a>
+      <a class="nav-link nav-link-active" href="analytics.html" aria-current="page">Аналитика</a>
+      <button id="refresh-btn" class="btn btn-ghost" type="button" title="Перечитать JSON с GitHub">Обновить статистику</button>
     </div>
   </div>
 </header>
 
 <main class="analytics-main" aria-live="polite">
   <div id="refresh-note" class="refresh-note" hidden>
-    Stats are refreshed every 3 hours by a Windows Task Scheduler job on Vladimir's machine (BJJMemes Stats Refresh). Click again to re-fetch the JSON from GitHub in case it was updated since this page loaded.
+    Статистика обновляется каждые 3 часа локальным планировщиком. Клик — перечитать JSON с GitHub.
   </div>
 
   <div id="load-error" class="empty-state" hidden></div>
@@ -39,18 +39,18 @@
 
   <!-- Summary cards -->
   <section class="section">
-    <h2 class="section-title">Overview</h2>
+    <h2 class="section-title">Сводка</h2>
     <div class="summary-grid" id="summary-grid"></div>
   </section>
 
   <!-- Content mix + timeline -->
   <section class="section analytics-two-col">
     <div class="panel">
-      <h2 class="section-title">Content mix</h2>
+      <h2 class="section-title">Соотношение контента</h2>
       <div id="content-mix"></div>
     </div>
     <div class="panel">
-      <h2 class="section-title">Posts per day (last 30)</h2>
+      <h2 class="section-title">Постов в день (последние 30)</h2>
       <div id="timeline"></div>
     </div>
   </section>
@@ -58,7 +58,7 @@
   <!-- Follower growth chart -->
   <section class="section">
     <div class="panel">
-      <h2 class="section-title">Follower growth (last 30 days)</h2>
+      <h2 class="section-title">Рост подписчиков (последние 30 дней)</h2>
       <div id="follower-growth"></div>
     </div>
   </section>
@@ -66,7 +66,7 @@
   <!-- Approval funnel -->
   <section class="section">
     <div class="panel">
-      <h2 class="section-title">Approval funnel</h2>
+      <h2 class="section-title">Воронка одобрения</h2>
       <div id="approval-funnel"></div>
     </div>
   </section>
@@ -74,7 +74,7 @@
   <!-- AI recommendations -->
   <section class="section">
     <div class="panel">
-      <h2 class="section-title">Insights &amp; recommendations</h2>
+      <h2 class="section-title">Инсайты и рекомендации</h2>
       <p class="recs-subline" id="recs-subline"></p>
       <div id="recommendations" class="recommendations"></div>
     </div>
@@ -82,38 +82,38 @@
 
   <!-- Top posts -->
   <section class="section">
-    <h2 class="section-title">Top 5 posts by likes</h2>
+    <h2 class="section-title">Топ-5 по лайкам</h2>
     <div id="top-posts" class="top-posts"></div>
   </section>
 
   <!-- Category engagement table -->
   <section class="section">
-    <h2 class="section-title">Category engagement</h2>
+    <h2 class="section-title">Вовлечённость по категориям</h2>
     <div class="table-scroll">
       <table class="analytics-table" id="category-table">
         <thead>
           <tr>
-            <th data-sort="category" class="sortable">Category</th>
-            <th data-sort="count" class="sortable">Posts</th>
-            <th data-sort="avg_likes" class="sortable">Avg likes</th>
-            <th data-sort="avg_comments" class="sortable">Avg comments</th>
-            <th data-sort="avg_reach" class="sortable">Avg reach</th>
+            <th data-sort="category" class="sortable">Категория</th>
+            <th data-sort="count" class="sortable">Постов</th>
+            <th data-sort="avg_likes" class="sortable">Средние лайки</th>
+            <th data-sort="avg_comments" class="sortable">Средние комментарии</th>
+            <th data-sort="avg_reach" class="sortable">Средний охват</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
-    <p class="table-hint">Click a column header to sort.</p>
+    <p class="table-hint">Кликните по заголовку столбца, чтобы отсортировать.</p>
   </section>
 
   <!-- Rejected reasons -->
   <section class="section analytics-two-col">
     <div class="panel">
-      <h2 class="section-title">Top rejection reasons</h2>
+      <h2 class="section-title">Причины отклонения</h2>
       <ol id="rejection-reasons" class="rejection-reasons"></ol>
     </div>
     <div class="panel">
-      <h2 class="section-title">Rating distribution</h2>
+      <h2 class="section-title">Распределение оценок</h2>
       <div id="rating-distribution"></div>
     </div>
   </section>

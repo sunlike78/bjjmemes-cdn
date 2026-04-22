@@ -22,6 +22,38 @@ const PUBLISHED_PATH = "docs/published.json";
 const PENDING_WRITES_KEY = "pending_writes";
 const BUCKETS_CACHE_KEY  = "mirror_buckets_cache_v1";
 
+// Категории в данных остаются на английском (идентификаторы), а в UI
+// рендерятся через эту таблицу соответствия.
+const CATEGORY_LABELS_RU = {
+  relatable: "жиза",
+  shitpost: "шитпост",
+  observational: "наблюдение",
+  absurd: "абсурд",
+  meme: "мем",
+  hard_truth: "жёсткая правда",
+  factual_post: "факт",
+  quote_post: "цитата",
+  mindset_post: "мышление",
+  training_insight: "с тренировки",
+  carousel_micro_essay: "эссе-карусель",
+  legacy_import: "импорт IG",
+};
+function categoryLabel(cat) {
+  if (!cat) return "";
+  const key = String(cat).toLowerCase();
+  return CATEGORY_LABELS_RU[key] || String(cat);
+}
+
+// Ярлыки статусов на русском (используются в pill-элементах).
+const STATUS_LABELS_RU = {
+  pending: "в ожидании",
+  approved: "одобрено",
+  accepted: "в очереди",
+  rejected: "отклонено",
+  published: "опубликовано",
+  broken: "повреждено",
+};
+
 const state = {
   memes: [],            // raw meme objects from data.json (+ bucket-only ids merged in)
   records: {},          // id -> approvals record {status, comment, reviewed_at}
@@ -45,8 +77,8 @@ function setSaveStatus(s, msg) {
   const el = $("#save-status");
   el.dataset.state = s;
   const labels = {
-    saved: "saved \u2713", saving: "saving\u2026", offline: "offline",
-    error: msg ? `error: ${msg}` : "error", idle: "idle", dirty: "unsaved",
+    saved: "сохранено \u2713", saving: "сохранение\u2026", offline: "офлайн",
+    error: msg ? `ошибка: ${msg}` : "ошибка", idle: "\u2014", dirty: "не сохранено",
   };
   el.textContent = labels[s] ?? s;
 }
@@ -54,9 +86,9 @@ function setSaveStatus(s, msg) {
 function updateSaveFab() {
   const fab = $("#save-fab"), label = $("#save-fab-label");
   const n = state.dirtyIds.size;
-  if (state.saving) { fab.disabled = true; fab.dataset.state = "saving"; label.textContent = "Saving\u2026"; return; }
-  if (n === 0) { fab.disabled = true; fab.dataset.state = "clean"; label.textContent = "No changes to save"; }
-  else { fab.disabled = false; fab.dataset.state = state.offline ? "offline" : "dirty"; label.textContent = `Save changes (${n})`; }
+  if (state.saving) { fab.disabled = true; fab.dataset.state = "saving"; label.textContent = "Сохранение\u2026"; return; }
+  if (n === 0) { fab.disabled = true; fab.dataset.state = "clean"; label.textContent = "Нет изменений"; }
+  else { fab.disabled = false; fab.dataset.state = state.offline ? "offline" : "dirty"; label.textContent = `Сохранить изменения (${n})`; }
 }
 
 function markDirty(id) {
@@ -73,11 +105,11 @@ function validateBeforeSave() {
     if (!r) continue;
     if (r.status === "approved") {
       const rating = typeof r.rating === "number" ? r.rating : 0;
-      if (rating < 1) errors.push({ id, reason: "approved — rating required (click a star)" });
+      if (rating < 1) errors.push({ id, reason: "одобрено — поставьте оценку (кликните по звезде)" });
     }
     if (r.status === "rejected") {
       const comment = (r.comment || "").trim();
-      if (comment.length === 0) errors.push({ id, reason: "rejected — comment required (explain why)" });
+      if (comment.length === 0) errors.push({ id, reason: "отклонено — нужен комментарий (почему)" });
     }
   }
   return errors;
@@ -116,7 +148,7 @@ async function doSave() {
   const errors = validateBeforeSave();
   highlightInvalidRows(errors);
   if (errors.length) {
-    setSaveStatus("error", `${errors.length} row(s) incomplete`);
+    setSaveStatus("error", `${errors.length} незавершённых карточек`);
     return;
   }
 
@@ -398,12 +430,12 @@ function renderReadonlyInfo(infoEl, status, bucketRec) {
       const a = document.createElement("a");
       a.className = "readonly-link";
       a.href = permalink; a.target = "_blank"; a.rel = "noopener";
-      a.textContent = "view on Instagram \u2192";
+      a.textContent = "посмотреть в Instagram \u2192";
       infoEl.appendChild(a);
     } else {
       const span = document.createElement("span");
       span.className = "readonly-muted";
-      span.textContent = "published (no permalink recorded)";
+      span.textContent = "опубликовано (permalink не сохранён)";
       infoEl.appendChild(span);
     }
     return true;
@@ -412,8 +444,8 @@ function renderReadonlyInfo(infoEl, status, bucketRec) {
     const ts = queuedAtFor(bucketRec);
     const span = document.createElement("span");
     span.className = "readonly-muted";
-    if (ts) { span.textContent = `queued ${relativeTime(ts)}`; span.title = formatTimestamp(ts); }
-    else span.textContent = "queued, awaiting publish";
+    if (ts) { span.textContent = `в очереди с ${relativeTime(ts)}`; span.title = formatTimestamp(ts); }
+    else span.textContent = "в очереди, ожидает публикации";
     infoEl.appendChild(span);
     return true;
   }
@@ -423,7 +455,7 @@ function renderReadonlyInfo(infoEl, status, bucketRec) {
     box.className = "readonly-reject-box";
     const label = document.createElement("div");
     label.className = "readonly-reject-label";
-    label.textContent = "Rejected";
+    label.textContent = "Отклонено";
     box.appendChild(label);
     if (comment) {
       const p = document.createElement("div");
@@ -457,7 +489,10 @@ function renderRow(meme) {
 
   const catEl = tpl.querySelector(".category-badge");
   const category = (eff.bucketRecord && eff.bucketRecord.category) || meme.category;
-  if (category) catEl.textContent = String(category);
+  if (category) {
+    catEl.textContent = categoryLabel(category);
+    catEl.title = String(category);
+  }
 
   tpl.querySelector(".row-id").textContent = String(meme.id);
   updatePill(tpl, eff.status);
@@ -558,7 +593,7 @@ function updatePill(rowEl, status) {
   if (!pill) return;
   pill.dataset.status = status;
   pill.querySelector(".status-glyph").textContent = statusGlyph(status);
-  pill.querySelector(".status-label").textContent = status;
+  pill.querySelector(".status-label").textContent = STATUS_LABELS_RU[status] || status;
 }
 
 function updateButtonStates(rowEl, status) {
@@ -594,7 +629,7 @@ function renderAll() {
     empty.hidden = false;
     empty.textContent = "";
     const p = document.createElement("p");
-    p.textContent = "No memes to review. Run ";
+    p.textContent = "Нет мемов на ревью. Запустите ";
     const code = document.createElement("code");
     code.textContent = "python -m src.review_sync";
     p.appendChild(code); p.appendChild(document.createTextNode("."));
@@ -620,7 +655,7 @@ function wireEvents() {
     });
   });
   $("#reset-pat").addEventListener("click", () => {
-    if (!confirm("Clear stored PAT from this browser?")) return;
+    if (!confirm("Удалить сохранённый PAT из этого браузера?")) return;
     clearPat(); showPatModal();
   });
   $("#pat-form").addEventListener("submit", async (e) => {
@@ -643,7 +678,7 @@ function wireEvents() {
       // bucket snapshot too, so terminal statuses render instantly.
       queuePendingWrite(); cacheBuckets();
       e.preventDefault();
-      e.returnValue = "You have unsaved changes. Leave anyway?";
+      e.returnValue = "Есть несохранённые изменения. Всё равно уйти?";
       return e.returnValue;
     }
     cacheBuckets();

@@ -5,6 +5,27 @@ import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
 const PUBLISHED_PATH = "docs/published.json";
 const CAPTION_COLLAPSED_LINES = 2;
 
+// Категории в данных остаются на английском; в UI — таблица соответствия.
+const CATEGORY_LABELS_RU = {
+  relatable: "жиза",
+  shitpost: "шитпост",
+  observational: "наблюдение",
+  absurd: "абсурд",
+  meme: "мем",
+  hard_truth: "жёсткая правда",
+  factual_post: "факт",
+  quote_post: "цитата",
+  mindset_post: "мышление",
+  training_insight: "с тренировки",
+  carousel_micro_essay: "эссе-карусель",
+  legacy_import: "импорт IG",
+};
+function categoryLabel(cat) {
+  if (!cat) return "";
+  const key = String(cat).toLowerCase();
+  return CATEGORY_LABELS_RU[key] || String(cat);
+}
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -34,16 +55,16 @@ function wireCaptionToggle(preEl, toggleBtn, fullText) {
   }
   toggleBtn.hidden = false;
   preEl.dataset.collapsed = "true";
-  toggleBtn.textContent = "Expand caption";
+  toggleBtn.textContent = "Развернуть подпись";
   toggleBtn.addEventListener("click", () => {
     const collapsed = preEl.dataset.collapsed === "true";
     preEl.dataset.collapsed = collapsed ? "false" : "true";
-    toggleBtn.textContent = collapsed ? "Collapse caption" : "Expand caption";
+    toggleBtn.textContent = collapsed ? "Свернуть подпись" : "Развернуть подпись";
   });
   preEl.addEventListener("click", () => {
     if (preEl.dataset.collapsed === "true") {
       preEl.dataset.collapsed = "false";
-      toggleBtn.textContent = "Collapse caption";
+      toggleBtn.textContent = "Свернуть подпись";
     }
   });
 }
@@ -66,7 +87,7 @@ function renderStats(containerEl, stats) {
     containerEl.hidden = false;
     const span = document.createElement("span");
     span.className = "stats-unavailable";
-    span.textContent = "(stats unavailable)";
+    span.textContent = "(статистика недоступна)";
     containerEl.appendChild(span);
     return;
   }
@@ -74,17 +95,17 @@ function renderStats(containerEl, stats) {
     containerEl.hidden = false;
     const span = document.createElement("span");
     span.className = "stats-unavailable";
-    span.textContent = "(stats unavailable)";
+    span.textContent = "(статистика недоступна)";
     containerEl.appendChild(span);
     return;
   }
   // Prefer `reach`; fall back to `views` or `impressions` if the API gave us one of those instead.
   const reachLike = stats.reach ?? stats.views ?? stats.impressions;
   const fields = [
-    ["likes", stats.likes, "likes"],
-    ["comments", stats.comments, "comments"],
-    ["saved", stats.saved, "saves"],
-    ["reach", reachLike, "reach"],
+    ["likes", stats.likes, "лайки"],
+    ["comments", stats.comments, "комментарии"],
+    ["saved", stats.saved, "сохранения"],
+    ["reach", reachLike, "охват"],
   ];
   let rendered = 0;
   for (const [iconKey, value, label] of fields) {
@@ -112,13 +133,13 @@ function renderStats(containerEl, stats) {
 
 function eventLabel(event) {
   switch (event) {
-    case "generated": return "Generated";
-    case "approved_by_user": return "Approved";
-    case "rejected_by_user": return "Rejected";
-    case "posted": return "Posted to Instagram";
-    case "queued": return "Queued";
-    case "failed": return "Failed";
-    default: return event || "event";
+    case "generated": return "Сгенерировано";
+    case "approved_by_user": return "Одобрено";
+    case "rejected_by_user": return "Отклонено";
+    case "posted": return "Опубликовано в Instagram";
+    case "queued": return "В очереди";
+    case "failed": return "Ошибка";
+    default: return event || "событие";
   }
 }
 
@@ -136,9 +157,9 @@ function renderTimeline(olEl, actionLog) {
     li.querySelector(".timeline-ts").textContent = formatTimestamp(entry.ts);
     const extra = li.querySelector(".timeline-extra");
     const bits = [];
-    if (entry.comment) bits.push(`comment: ${entry.comment}`);
+    if (entry.comment) bits.push(`комментарий: ${entry.comment}`);
     if (entry.media_id) bits.push(`media_id: ${entry.media_id}`);
-    if (entry.reason) bits.push(`reason: ${entry.reason}`);
+    if (entry.reason) bits.push(`причина: ${entry.reason}`);
     extra.textContent = bits.join(" \u00b7 ");
     if (!bits.length) extra.remove();
     olEl.appendChild(li);
@@ -146,7 +167,7 @@ function renderTimeline(olEl, actionLog) {
   if (!items.length) {
     const li = document.createElement("li");
     li.className = "timeline-empty";
-    li.textContent = "No history entries.";
+    li.textContent = "История пуста.";
     olEl.appendChild(li);
   }
 }
@@ -167,15 +188,17 @@ function renderCard(meme) {
   }
 
   const catEl = tpl.querySelector(".category-badge");
-  if (meme.category) catEl.textContent = String(meme.category);
-  else catEl.remove();
+  if (meme.category) {
+    catEl.textContent = categoryLabel(meme.category);
+    catEl.title = String(meme.category);
+  } else catEl.remove();
 
   const postedEl = tpl.querySelector(".card-posted");
   if (meme.posted_at) {
-    postedEl.textContent = `Posted ${relativeTime(meme.posted_at)}`;
+    postedEl.textContent = `Опубликовано ${relativeTime(meme.posted_at)}`;
     postedEl.title = formatTimestamp(meme.posted_at);
   } else {
-    postedEl.textContent = "posted";
+    postedEl.textContent = "опубликовано";
   }
 
   const permalink = tpl.querySelector(".permalink");
@@ -216,11 +239,11 @@ async function load() {
   try {
     payload = await rawJsonFetch(PUBLISHED_PATH);
   } catch (e) {
-    renderEmpty(`Error loading published.json: ${e.message}`);
+    renderEmpty(`Ошибка загрузки published.json: ${e.message}`);
     return;
   }
   if (!payload || !Array.isArray(payload.memes) || payload.memes.length === 0) {
-    renderEmpty("No published memes yet. They'll appear here once posted via `python -m src.cli post`.");
+    renderEmpty("Опубликованных мемов пока нет. Они появятся здесь после публикации через `python -m src.cli post`.");
     $("#count-total").textContent = "0";
     return;
   }
@@ -239,7 +262,7 @@ async function load() {
   $("#count-total").textContent = String(memes.length);
   const gen = $("#generated-at");
   if (payload.generated_at) {
-    gen.textContent = `Updated ${relativeTime(payload.generated_at)}`;
+    gen.textContent = `Обновлено ${relativeTime(payload.generated_at)}`;
     gen.title = formatTimestamp(payload.generated_at);
   } else {
     gen.textContent = "";

@@ -104,25 +104,37 @@ export function isNetworkError(e) {
   return e instanceof TypeError || /NetworkError|Failed to fetch/i.test(e.message || "");
 }
 
-// Human-friendly relative time: "3 hours ago", "2 days ago", "just now".
+// Human-friendly relative time in Russian: "3 часа назад", "2 дня назад",
+// "только что". Russian has a three-branch plural, so we select the right
+// word form for each unit.
+function pluralRu(n, forms) {
+  // forms: [one (1), few (2-4), many (0, 5-20)]
+  const abs = Math.abs(n) % 100;
+  const n1 = abs % 10;
+  if (abs > 10 && abs < 20) return forms[2];
+  if (n1 > 1 && n1 < 5) return forms[1];
+  if (n1 === 1) return forms[0];
+  return forms[2];
+}
+
 export function relativeTime(iso) {
   if (!iso) return "";
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "";
   const diffMs = Date.now() - then;
   const sec = Math.round(diffMs / 1000);
-  if (sec < 0) return "in the future";
-  if (sec < 45) return "just now";
+  if (sec < 0) return "в будущем";
+  if (sec < 45) return "только что";
   const min = Math.round(sec / 60);
-  if (min < 60) return `${min} minute${min === 1 ? "" : "s"} ago`;
+  if (min < 60) return `${min} ${pluralRu(min, ["минуту", "минуты", "минут"])} назад`;
   const hr = Math.round(min / 60);
-  if (hr < 24) return `${hr} hour${hr === 1 ? "" : "s"} ago`;
+  if (hr < 24) return `${hr} ${pluralRu(hr, ["час", "часа", "часов"])} назад`;
   const day = Math.round(hr / 24);
-  if (day < 30) return `${day} day${day === 1 ? "" : "s"} ago`;
+  if (day < 30) return `${day} ${pluralRu(day, ["день", "дня", "дней"])} назад`;
   const mo = Math.round(day / 30);
-  if (mo < 12) return `${mo} month${mo === 1 ? "" : "s"} ago`;
+  if (mo < 12) return `${mo} ${pluralRu(mo, ["месяц", "месяца", "месяцев"])} назад`;
   const yr = Math.round(mo / 12);
-  return `${yr} year${yr === 1 ? "" : "s"} ago`;
+  return `${yr} ${pluralRu(yr, ["год", "года", "лет"])} назад`;
 }
 
 export function formatTimestamp(iso) {

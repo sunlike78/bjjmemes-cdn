@@ -1,49 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>BJJ Memes Review</title>
+<title>Обзор BJJ-мемов</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <h1 class="title">BJJ Memes Review</h1>
+    <h1 class="title">Обзор BJJ-мемов</h1>
 
     <div class="counters" aria-live="polite">
-      <span class="counter" data-counter="pending">Pending: <b id="count-pending">0</b></span>
-      <span class="counter" data-counter="approved">Approved: <b id="count-approved">0</b></span>
-      <span class="counter" data-counter="accepted">Accepted: <b id="count-accepted">0</b></span>
-      <span class="counter" data-counter="rejected">Rejected: <b id="count-rejected">0</b></span>
-      <span class="counter" data-counter="published">Published: <b id="count-published">0</b></span>
-      <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
+      <span class="counter" data-counter="pending">В ожидании: <b id="count-pending">0</b></span>
+      <span class="counter" data-counter="approved">Одобрено: <b id="count-approved">0</b></span>
+      <span class="counter" data-counter="accepted">В очереди: <b id="count-accepted">0</b></span>
+      <span class="counter" data-counter="rejected">Отклонено: <b id="count-rejected">0</b></span>
+      <span class="counter" data-counter="published">Опубликовано: <b id="count-published">0</b></span>
+      <span class="counter" data-counter="total">Всего: <b id="count-total">0</b></span>
     </div>
 
-    <div class="filters" role="tablist" aria-label="Filter">
-      <button class="filter-btn is-active" data-filter="all" type="button">All</button>
-      <button class="filter-btn" data-filter="pending" type="button">Pending</button>
-      <button class="filter-btn" data-filter="approved" type="button">Approved</button>
-      <button class="filter-btn" data-filter="accepted" type="button">Accepted</button>
-      <button class="filter-btn" data-filter="rejected" type="button">Rejected</button>
-      <button class="filter-btn" data-filter="published" type="button" hidden>Published</button>
+    <div class="filters" role="tablist" aria-label="Фильтр">
+      <button class="filter-btn is-active" data-filter="all" type="button">Все</button>
+      <button class="filter-btn" data-filter="pending" type="button">В ожидании</button>
+      <button class="filter-btn" data-filter="approved" type="button">Одобрено</button>
+      <button class="filter-btn" data-filter="accepted" type="button">В очереди</button>
+      <button class="filter-btn" data-filter="rejected" type="button">Отклонено</button>
+      <button class="filter-btn" data-filter="published" type="button" hidden>Опубликовано</button>
     </div>
 
     <div class="topbar-right">
-      <span id="save-status" class="save-status" aria-live="polite">idle</span>
-      <button id="reset-pat" class="btn btn-ghost" type="button">Reset PAT</button>
-      <a class="nav-link" href="accepted.html">Accepted &rarr;</a>
-      <a class="nav-link" href="published.html">Published &rarr;</a>
-      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
-      <a class="nav-link" href="analytics.html">Analytics &rarr;</a>
+      <span id="save-status" class="save-status" aria-live="polite">—</span>
+      <button id="reset-pat" class="btn btn-ghost" type="button">Сбросить PAT</button>
+      <a class="nav-link" href="accepted.html">Одобренные &rarr;</a>
+      <a class="nav-link" href="published.html">Опубликованные &rarr;</a>
+      <a class="nav-link" href="rejected.html">Отклонённые &rarr;</a>
+      <a class="nav-link" href="analytics.html">Аналитика &rarr;</a>
     </div>
   </div>
 </header>
 
 <main id="gallery" class="gallery" aria-live="polite">
   <div class="empty-state" id="empty-state" hidden>
-    <p>Loading...</p>
+    <p>Загрузка…</p>
   </div>
 </main>
 
@@ -56,7 +56,7 @@
       <path d="M8 3v6h8V3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
       <rect x="7" y="13" width="10" height="8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
     </svg>
-    <span id="save-fab-label">No changes to save</span>
+    <span id="save-fab-label">Нет изменений</span>
   </button>
 </section>
 
@@ -66,13 +66,13 @@
   <div class="modal-card">
     <h2 id="pat-modal-title">GitHub Personal Access Token</h2>
     <p class="modal-body">
-      Enter a fine-grained GitHub PAT with <b>Contents: read/write</b>
-      on <code>sunlike78/bjjmemes-cdn</code>. Stored only in this browser's localStorage.
+      Введите fine-grained GitHub PAT с правами <b>Contents: read/write</b>
+      на <code>sunlike78/bjjmemes-cdn</code>. Хранится только в localStorage этого браузера.
     </p>
     <form id="pat-form" autocomplete="off">
       <input type="password" id="pat-input" name="pat" placeholder="github_pat_..." required autocomplete="new-password" spellcheck="false" />
       <div class="modal-actions">
-        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-primary" type="submit">Сохранить</button>
       </div>
     </form>
   </div>
@@ -97,29 +97,29 @@
       </div>
       <pre class="caption"></pre>
       <details class="explanation">
-        <summary>Explanation</summary>
+        <summary>Пояснение</summary>
         <div class="explanation-body"></div>
       </details>
       <label class="comment-label">
-        <span class="sr-only">Comment</span>
-        <textarea class="comment" rows="1" placeholder="Comment (optional)"></textarea>
+        <span class="sr-only">Комментарий</span>
+        <textarea class="comment" rows="1" placeholder="Комментарий (необязательно)"></textarea>
       </label>
-      <div class="rating" role="radiogroup" aria-label="Quality rating (used for self-learning)">
-        <button type="button" class="star" data-value="1" aria-label="1 star">★</button>
-        <button type="button" class="star" data-value="2" aria-label="2 stars">★</button>
-        <button type="button" class="star" data-value="3" aria-label="3 stars">★</button>
-        <button type="button" class="star" data-value="4" aria-label="4 stars">★</button>
-        <button type="button" class="star" data-value="5" aria-label="5 stars">★</button>
-        <span class="rating-hint" aria-hidden="true">quality</span>
+      <div class="rating" role="radiogroup" aria-label="Оценка качества (для самообучения)">
+        <button type="button" class="star" data-value="1" aria-label="1 звезда">★</button>
+        <button type="button" class="star" data-value="2" aria-label="2 звезды">★</button>
+        <button type="button" class="star" data-value="3" aria-label="3 звезды">★</button>
+        <button type="button" class="star" data-value="4" aria-label="4 звезды">★</button>
+        <button type="button" class="star" data-value="5" aria-label="5 звёзд">★</button>
+        <span class="rating-hint" aria-hidden="true">качество</span>
       </div>
       <div class="actions">
         <button class="btn btn-approve" type="button">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Approve
+          Одобрить
         </button>
         <button class="btn btn-reject" type="button">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Reject
+          Отклонить
         </button>
       </div>
       <div class="readonly-info" hidden></div>
@@ -131,10 +131,10 @@
   <article class="row row-broken">
     <div class="row-body">
       <div class="row-meta">
-        <span class="status-pill" data-status="broken"><span class="status-glyph">!</span><span class="status-label">broken</span></span>
+        <span class="status-pill" data-status="broken"><span class="status-glyph">!</span><span class="status-label">повреждено</span></span>
         <span class="row-id"></span>
       </div>
-      <p class="broken-msg">This meme record is malformed and cannot be reviewed.</p>
+      <p class="broken-msg">Запись мема повреждена — ревью невозможно.</p>
     </div>
   </article>
 </template>

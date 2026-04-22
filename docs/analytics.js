@@ -16,6 +16,28 @@ const SERIOUS_CATEGORIES = new Set([
   "carousel_micro_essay", "mindset_post", "training_insight",
 ]);
 
+// Категории в данных остаются на английском; в UI — таблица соответствия.
+const CATEGORY_LABELS_RU = {
+  relatable: "жиза",
+  shitpost: "шитпост",
+  observational: "наблюдение",
+  absurd: "абсурд",
+  meme: "мем",
+  hard_truth: "жёсткая правда",
+  factual_post: "факт",
+  quote_post: "цитата",
+  mindset_post: "мышление",
+  training_insight: "с тренировки",
+  carousel_micro_essay: "эссе-карусель",
+  legacy_import: "импорт IG",
+  uncategorized: "без категории",
+};
+function categoryLabel(cat) {
+  if (!cat) return "";
+  const key = String(cat).toLowerCase();
+  return CATEGORY_LABELS_RU[key] || String(cat);
+}
+
 // Muted single-accent palette.
 const COLORS = {
   memes: "#0f766e", serious: "#b45309", bar: "#1e3a8a",
@@ -39,6 +61,16 @@ function el(tag, opts = {}) {
   return n;
 }
 function noteP(msg) { return el("p", { cls: "note-muted", text: msg }); }
+
+// Русское множественное число: forms = [one, few, many].
+function pluralRuSimple(n, forms) {
+  const abs = Math.abs(n) % 100;
+  const n1 = abs % 10;
+  if (abs > 10 && abs < 20) return forms[2];
+  if (n1 > 1 && n1 < 5) return forms[1];
+  if (n1 === 1) return forms[0];
+  return forms[2];
+}
 
 async function fetchAll() {
   const entries = await Promise.all(Object.entries(SOURCES).map(async ([key, path]) => {
@@ -95,12 +127,12 @@ function renderSummary(data) {
   const approvalBase = totalPosts + rejected.length;
   const approvalRate = approvalBase > 0 ? Math.round((totalPosts / approvalBase) * 100) : null;
   const cards = [
-    { label: "Published", value: totalPosts, hint: "total posts" },
-    { label: "Total likes", value: sumStat(published, "likes"), hint: "across published" },
-    { label: "Total comments", value: sumStat(published, "comments"), hint: "across published" },
-    { label: "Total reach", value: sumStat(published, "reach"), hint: "sum of reach" },
-    { label: "Approval rate", value: approvalRate === null ? null : `${approvalRate}%`, hint: "pub / (pub + rej)" },
-    { label: "In queue", value: accepted.length, hint: "accepted.json" },
+    { label: "Опубликовано", value: totalPosts, hint: "всего постов" },
+    { label: "Всего лайков", value: sumStat(published, "likes"), hint: "по опубликованным" },
+    { label: "Всего комментариев", value: sumStat(published, "comments"), hint: "по опубликованным" },
+    { label: "Охват", value: sumStat(published, "reach"), hint: "сумма охвата" },
+    { label: "Процент одобрения", value: approvalRate === null ? null : `${approvalRate}%`, hint: "опубл. / (опубл. + откл.)" },
+    { label: "В очереди", value: accepted.length, hint: "accepted.json" },
   ];
   for (const c of cards) {
     const value = el("div", { cls: "stat-card-value" });
@@ -121,9 +153,9 @@ function renderSummary(data) {
 function renderContentMix(data) {
   const c = $("#content-mix");
   c.textContent = "";
-  if (data.errors.published) { c.appendChild(noteP("(published data unavailable)")); return; }
+  if (data.errors.published) { c.appendChild(noteP("(данные published недоступны)")); return; }
   const published = asList(data.published);
-  if (!published.length) { c.appendChild(noteP("No published posts yet.")); return; }
+  if (!published.length) { c.appendChild(noteP("Пока нет опубликованных постов.")); return; }
 
   let memes = 0, serious = 0;
   for (const m of published) (classifyMix(m.category) === "serious") ? serious++ : memes++;
@@ -135,7 +167,7 @@ function renderContentMix(data) {
   const fracS = total ? serious / total : 0;
 
   const svg = svgEl("svg", { viewBox: `0 0 ${size} ${size}`, width: size, height: size,
-    class: "donut-svg", role: "img", "aria-label": `${memes} memes, ${serious} serious` });
+    class: "donut-svg", role: "img", "aria-label": `${memes} мемов, ${serious} серьёзных` });
   svg.appendChild(svgEl("circle", { cx, cy, r, fill: "none", stroke: "var(--border)", "stroke-width": stroke }));
   if (fracM > 0) svg.appendChild(svgEl("circle", { cx, cy, r, fill: "none",
     stroke: COLORS.memes, "stroke-width": stroke,
@@ -148,12 +180,12 @@ function renderContentMix(data) {
   const top = svgEl("text", { x: cx, y: cy - 2, "text-anchor": "middle", class: "donut-center-top" });
   top.textContent = String(total);
   const bot = svgEl("text", { x: cx, y: cy + 16, "text-anchor": "middle", class: "donut-center-bot" });
-  bot.textContent = "posts";
+  bot.textContent = "постов";
   svg.appendChild(top); svg.appendChild(bot);
 
   const legend = el("ul", { cls: "chart-legend", children: [
-    legendRow(COLORS.memes, "Memes", memes, total),
-    legendRow(COLORS.serious, "Serious", serious, total),
+    legendRow(COLORS.memes, "Мемы", memes, total),
+    legendRow(COLORS.serious, "Серьёзные", serious, total),
   ] });
   c.appendChild(el("div", { cls: "donut-wrap", children: [svg, legend] }));
 }
@@ -172,9 +204,9 @@ function legendRow(color, label, value, total) {
 function renderTimeline(data) {
   const c = $("#timeline");
   c.textContent = "";
-  if (data.errors.published) { c.appendChild(noteP("(published data unavailable)")); return; }
+  if (data.errors.published) { c.appendChild(noteP("(данные published недоступны)")); return; }
   const published = asList(data.published);
-  if (!published.length) { c.appendChild(noteP("No published posts yet.")); return; }
+  if (!published.length) { c.appendChild(noteP("Пока нет опубликованных постов.")); return; }
 
   const days = [];
   const today = new Date(); today.setUTCHours(0, 0, 0, 0);
@@ -196,7 +228,7 @@ function renderTimeline(data) {
 
   const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, class: "timeline-svg",
     preserveAspectRatio: "xMinYMid meet", role: "img",
-    "aria-label": "Posts per day over last 30 days" });
+    "aria-label": "Постов в день за последние 30 дней" });
 
   for (const gv of [Math.ceil(maxCount / 2), maxCount]) {
     const y = padT + plotH - (gv / maxCount) * plotH;
@@ -213,7 +245,7 @@ function renderTimeline(data) {
       width: Math.max(1, barW - 2), height: Math.max(0, h),
       fill: d.count > 0 ? COLORS.bar : "var(--surface-2)", rx: 2 });
     const title = svgEl("title", {});
-    title.textContent = `${d.key}: ${d.count} post${d.count === 1 ? "" : "s"}`;
+    title.textContent = `${d.key}: ${d.count} ${pluralRuSimple(d.count, ["пост", "поста", "постов"])}`;
     rect.appendChild(title);
     svg.appendChild(rect);
   }
@@ -226,7 +258,7 @@ function renderTimeline(data) {
   c.appendChild(svg);
   if (compact) {
     c.appendChild(el("p", { cls: "chart-note",
-      text: `Only ${distinctDays} day${distinctDays === 1 ? "" : "s"} with posts so far. Timeline will fill in as more posts go out.` }));
+      text: `Пока только ${distinctDays} ${pluralRuSimple(distinctDays, ["день", "дня", "дней"])} с постами. График заполнится по мере публикаций.` }));
   }
 }
 
@@ -234,9 +266,9 @@ function renderTimeline(data) {
 function renderTopPosts(data) {
   const c = $("#top-posts");
   c.textContent = "";
-  if (data.errors.published) { c.appendChild(noteP("(published data unavailable)")); return; }
+  if (data.errors.published) { c.appendChild(noteP("(данные published недоступны)")); return; }
   const published = asList(data.published);
-  if (!published.length) { c.appendChild(noteP("No published posts yet.")); return; }
+  if (!published.length) { c.appendChild(noteP("Пока нет опубликованных постов.")); return; }
 
   const scored = published.map(m => {
     const s = (m && m.stats && !m.stats.error) ? m.stats : null;
@@ -251,22 +283,24 @@ function renderTopPosts(data) {
     if (m.image_url) thumb.href = String(m.image_url);
 
     const capText = String(m.caption || "").split(/\n/)[0].slice(0, 120);
-    const caption = el("div", { cls: "top-post-caption", text: capText || "(no caption)" });
+    const caption = el("div", { cls: "top-post-caption", text: capText || "(без подписи)" });
 
     let metaNode;
     if (hasStats) {
-      const parts = [`${(s.likes || 0).toLocaleString()} likes`,
-        `${(s.comments || 0).toLocaleString()} comments`];
+      const likes = s.likes || 0;
+      const comments = s.comments || 0;
+      const parts = [`${likes.toLocaleString()} ${pluralRuSimple(likes, ["лайк", "лайка", "лайков"])}`,
+        `${comments.toLocaleString()} ${pluralRuSimple(comments, ["комментарий", "комментария", "комментариев"])}`];
       const reach = getReachLike(s);
-      if (reach !== null) parts.push(`${reach.toLocaleString()} reach`);
+      if (reach !== null) parts.push(`охват ${reach.toLocaleString()}`);
       metaNode = el("div", { cls: "top-post-meta", text: parts.join(" \u00b7 ") });
     } else {
-      metaNode = el("div", { cls: "top-post-meta note-muted", text: "(stats unavailable)" });
+      metaNode = el("div", { cls: "top-post-meta note-muted", text: "(статистика недоступна)" });
     }
 
     const bodyChildren = [caption, metaNode];
     if (m.permalink) {
-      const link = el("a", { cls: "top-post-permalink", text: "Open on Instagram \u2192" });
+      const link = el("a", { cls: "top-post-permalink", text: "Открыть в Instagram \u2192" });
       link.href = String(m.permalink); link.target = "_blank"; link.rel = "noopener";
       bodyChildren.push(link);
     }
@@ -283,7 +317,7 @@ function renderCategoryTable(data) {
   const tbody = $("#category-table tbody");
   tbody.textContent = "";
   if (data.errors.published) {
-    const td = el("td", { cls: "note-muted", text: "(published data unavailable)" });
+    const td = el("td", { cls: "note-muted", text: "(данные published недоступны)" });
     td.colSpan = 5;
     tbody.appendChild(el("tr", { children: [td] }));
     return;
@@ -319,7 +353,7 @@ function drawCategoryRows() {
   tbody.textContent = "";
   const { rows, sortKey, sortDir } = categoryState;
   if (!rows.length) {
-    const td = el("td", { cls: "note-muted", text: "No published categories yet." });
+    const td = el("td", { cls: "note-muted", text: "Пока нет опубликованных категорий." });
     td.colSpan = 5;
     tbody.appendChild(el("tr", { children: [td] }));
     return;
@@ -335,8 +369,10 @@ function drawCategoryRows() {
   const fmt = v => (v === null || v === undefined) ? "\u2014"
     : Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 });
   for (const r of sorted) {
+    const catCell = el("td", { text: categoryLabel(r.category) });
+    catCell.title = String(r.category);
     tbody.appendChild(el("tr", { children: [
-      el("td", { text: r.category }),
+      catCell,
       el("td", { text: r.count.toLocaleString() }),
       el("td", { text: fmt(r.avg_likes) }),
       el("td", { text: fmt(r.avg_comments) }),
@@ -377,7 +413,7 @@ function renderRejectionReasons(data) {
   const c = $("#rejection-reasons");
   c.textContent = "";
   if (data.errors.rejected) {
-    const li = el("li", { cls: "note-muted", text: "(rejected data unavailable)" });
+    const li = el("li", { cls: "note-muted", text: "(данные rejected недоступны)" });
     li.style.listStyle = "none";
     c.appendChild(li);
     return;
@@ -387,13 +423,13 @@ function renderRejectionReasons(data) {
   for (const m of asList(data.rejected)) {
     const evts = (Array.isArray(m.action_log) ? m.action_log : [])
       .filter(e => e && e.event === "rejected_by_user");
-    if (!evts.length) { bump("(no reason)"); continue; }
+    if (!evts.length) { bump("(без причины)"); continue; }
     for (const e of evts) {
       const c2 = (e.comment || "").trim();
-      if (!c2) { bump("(no reason)"); continue; }
+      if (!c2) { bump("(без причины)"); continue; }
       const toks = tokenizeComment(c2);
       const first = toks[0];
-      if (!first) { bump("(no reason)"); continue; }
+      if (!first) { bump("(без причины)"); continue; }
       if (STOPWORDS.has(first)) {
         const alt = toks.find(t => !STOPWORDS.has(t));
         bump(alt || first);
@@ -402,7 +438,7 @@ function renderRejectionReasons(data) {
   }
   const entries = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10);
   if (!entries.length) {
-    const li = el("li", { cls: "note-muted", text: "No rejections yet." });
+    const li = el("li", { cls: "note-muted", text: "Отклонений пока нет." });
     li.style.listStyle = "none";
     c.appendChild(li);
     return;
@@ -427,14 +463,14 @@ function renderRatingDistribution(data) {
     if (typeof r === "number" && r >= 1 && r <= 5) { buckets[Math.floor(r) - 1]++; seen++; }
   }
   if (seen === 0) {
-    c.appendChild(noteP("Ratings will appear here as you rate memes on the Review page."));
+    c.appendChild(noteP("Оценки появятся здесь по мере проставления звёзд на странице Обзор."));
     return;
   }
   const max = Math.max(1, ...buckets);
   const W = 320, H = 140, padL = 24, padR = 8, padT = 8, padB = 24;
   const plotW = W - padL - padR, plotH = H - padT - padB, slot = plotW / 5;
   const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, class: "rating-svg",
-    role: "img", "aria-label": "Rating distribution" });
+    role: "img", "aria-label": "Распределение оценок" });
   for (let i = 0; i < 5; i++) {
     const h = (buckets[i] / max) * plotH;
     const x = padL + i * slot + 6, y = padT + plotH - h;
@@ -460,7 +496,7 @@ function renderProfileHeader(data) {
   host.textContent = "";
   const payload = data.profile;
   if (data.errors.profile || !payload || payload.error || !payload.profile) {
-    host.appendChild(el("div", { cls: "warn-pill", text: "Profile unavailable" }));
+    host.appendChild(el("div", { cls: "warn-pill", text: "Профиль недоступен" }));
     return;
   }
   const p = payload.profile;
@@ -476,7 +512,7 @@ function renderProfileHeader(data) {
   avatarWrap.appendChild(placeholder);
   if (p.profile_picture_url) {
     const img = el("img", { cls: "profile-avatar",
-      attrs: { alt: name || username || "profile picture", loading: "lazy" } });
+      attrs: { alt: name || username || "аватар профиля", loading: "lazy" } });
     img.addEventListener("load", () => { placeholder.style.display = "none"; });
     img.addEventListener("error", () => img.remove());
     img.src = String(p.profile_picture_url);
@@ -492,15 +528,15 @@ function renderProfileHeader(data) {
     el("div", { cls: "profile-stat-label", text: label }),
   ] });
   const stats = el("div", { cls: "profile-stats", children: [
-    stat(nn(p.followers_count), "followers"),
-    stat(nn(p.follows_count), "following"),
-    stat(nn(p.media_count), "posts"),
+    stat(nn(p.followers_count), "подписчики"),
+    stat(nn(p.follows_count), "подписок"),
+    stat(nn(p.media_count), "постов"),
   ] });
 
   const extras = el("div", { cls: "profile-extras" });
   if (bio) extras.appendChild(el("p", { cls: "profile-bio", text: bio }));
   if (username) {
-    const link = el("a", { cls: "profile-link", text: "Instagram profile \u2192" });
+    const link = el("a", { cls: "profile-link", text: "Профиль в Instagram \u2192" });
     link.href = `https://www.instagram.com/${username}/`;
     link.target = "_blank"; link.rel = "noopener";
     extras.appendChild(link);
@@ -525,7 +561,7 @@ function renderFollowerGrowth(data) {
   host.textContent = "";
   const payload = data.profile;
   if (data.errors.profile || !payload || payload.error) {
-    host.appendChild(noteP("(profile data unavailable)")); return;
+    host.appendChild(noteP("(данные профиля недоступны)")); return;
   }
   const { series, proxy } = pickTrendSeries(payload.trend);
   const points = series
@@ -533,10 +569,15 @@ function renderFollowerGrowth(data) {
     .filter(e => e.date && Number.isFinite(e.value))
     .slice(-30);
 
+  // Локализация прокси-метрики: в API приходят ключи accounts_engaged / reach.
+  const PROXY_LABELS_RU = {
+    "accounts engaged": "вовлечённые аккаунты",
+    "reach": "охват",
+  };
   if (proxy) host.appendChild(el("p", { cls: "chart-subtitle",
-    text: `Showing ${proxy} (proxy metric)` }));
+    text: `Показана метрика ${PROXY_LABELS_RU[proxy] || proxy} (прокси)` }));
   if (points.length < 3) {
-    host.appendChild(noteP("Collecting data \u2014 chart will fill in over the next 30 days."));
+    host.appendChild(noteP("Сбор данных \u2014 график заполнится в течение 30 дней."));
     return;
   }
 
@@ -549,7 +590,7 @@ function renderFollowerGrowth(data) {
 
   const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, class: "growth-svg",
     preserveAspectRatio: "xMinYMid meet", role: "img",
-    "aria-label": "Follower growth over last 30 days" });
+    "aria-label": "Рост подписчиков за последние 30 дней" });
 
   for (const gv of [Math.ceil(maxV / 2), maxV]) {
     const y = yScale(gv);
@@ -595,11 +636,11 @@ function renderApprovalFunnel(data) {
   }
   const approved = approvedFromDecisions + nA + nP;
   const steps = [
-    { label: "Drafted", value: drafted },
-    { label: "Approved", value: approved },
-    { label: "Queued", value: nA },
-    { label: "Published", value: nP },
-    { label: "Rejected", value: nR, reject: true },
+    { label: "Сгенерировано", value: drafted },
+    { label: "Одобрено", value: approved },
+    { label: "В очереди", value: nA },
+    { label: "Опубликовано", value: nP },
+    { label: "Отклонено", value: nR, reject: true },
   ];
   const maxV = Math.max(1, ...steps.map(s => s.value));
   const wrap = el("div", { cls: "funnel-wrap" });
@@ -660,10 +701,10 @@ function evaluateRecommendations(data) {
     return Number.isFinite(t) && t >= weekAgo;
   }).length;
 
-  if (pubLast7 < 3) recs.push({ rule: "Rule 1",
-    text: "\ud83d\udcc8 Increase output: publish 3\u20135 more posts this week." });
-  if (accepted.length > 5 && pubLast7 < 3) recs.push({ rule: "Rule 2",
-    text: "\u23f3 Review bottleneck: queue is piling up." });
+  if (pubLast7 < 3) recs.push({ rule: "Правило 1",
+    text: "\ud83d\udcc8 Увеличьте выпуск: опубликуйте 3\u20135 постов на этой неделе." });
+  if (accepted.length > 5 && pubLast7 < 3) recs.push({ rule: "Правило 2",
+    text: "\u23f3 Затор на ревью: очередь разрастается." });
 
   const memePosts = [], seriousPosts = [];
   for (const m of published) (classifyMix(m.category) === "serious" ? seriousPosts : memePosts).push(m);
@@ -671,7 +712,7 @@ function evaluateRecommendations(data) {
     const mm = medianOf(likesReachArr(memePosts)), sm = medianOf(likesReachArr(seriousPosts));
     if (mm !== null && sm !== null && sm > 0 && mm > sm
         && ((mm - sm) / sm) * 100 >= 20) {
-      recs.push({ rule: "Rule 3", text: "\ud83c\udfaf Bias schedule toward memes next week." });
+      recs.push({ rule: "Правило 3", text: "\ud83c\udfaf Сместите расписание в сторону мемов на неделю." });
     }
   }
 
@@ -691,8 +732,8 @@ function evaluateRecommendations(data) {
     }
     let topW = null, topN = 0;
     for (const [w, n] of words) if (n > topN) { topW = w; topN = n; }
-    if (topW && topN / recent.length >= 0.30) recs.push({ rule: "Rule 4",
-      text: `\ud83d\udeab Common rejection reason: '${topW}' \u2014 add pre-check.` });
+    if (topW && topN / recent.length >= 0.30) recs.push({ rule: "Правило 4",
+      text: `\ud83d\udeab Частая причина отклонения: «${topW}» \u2014 добавьте предпроверку.` });
   }
 
   const slots = new Map();
@@ -714,8 +755,8 @@ function evaluateRecommendations(data) {
         if (med !== null && med > bestMed) { bestMed = med; bestSlot = slot; }
       }
       if (bestSlot && bestMed > overall && ((bestMed - overall) / overall) * 100 >= 20) {
-        recs.push({ rule: "Rule 5",
-          text: `\ud83d\udd53 Window ${bestSlot} outperforms \u2014 test as default.` });
+        recs.push({ rule: "Правило 5",
+          text: `\ud83d\udd53 Слот ${bestSlot} выстреливает \u2014 сделайте основным.` });
       }
     }
   }
@@ -725,10 +766,10 @@ function evaluateRecommendations(data) {
 function renderRecommendations(data) {
   const host = $("#recommendations");
   host.textContent = "";
-  $("#recs-subline").textContent = "(rule-based, refreshed on each page load)";
+  $("#recs-subline").textContent = "(правила, обновляются при загрузке страницы)";
   const recs = evaluateRecommendations(data);
   if (!recs.length) {
-    host.appendChild(noteP("Keep publishing \u2014 not enough data yet for meaningful recommendations."));
+    host.appendChild(noteP("Публикуйте больше \u2014 данных пока мало для осмысленных рекомендаций."));
     return;
   }
   for (const r of recs) host.appendChild(el("div", { cls: "rec-row", children: [
@@ -744,14 +785,14 @@ function wireRefresh(reload) {
   btn.addEventListener("click", () => {
     note.hidden = false;
     btn.disabled = true;
-    btn.textContent = "Refreshing\u2026";
-    reload().finally(() => { btn.disabled = false; btn.textContent = "Refresh stats"; });
+    btn.textContent = "Обновление\u2026";
+    reload().finally(() => { btn.disabled = false; btn.textContent = "Обновить статистику"; });
   });
 }
 function renderGeneratedAt(data) {
   const el2 = $("#generated-at");
   const ts = data.published && data.published.generated_at;
-  if (ts) { el2.textContent = `Mirror updated ${relativeTime(ts)}`; el2.title = formatTimestamp(ts); }
+  if (ts) { el2.textContent = `Зеркало обновлено ${relativeTime(ts)}`; el2.title = formatTimestamp(ts); }
   else el2.textContent = "";
 }
 function renderLoadErrors(data) {
@@ -762,7 +803,7 @@ function renderLoadErrors(data) {
   box.hidden = false;
   box.textContent = "";
   box.appendChild(el("p", {
-    text: "Some mirrors failed to load; charts will show \"(data unavailable)\" where relevant.",
+    text: "Не удалось загрузить некоторые зеркала; в соответствующих графиках будет «(данные недоступны)».",
   }));
   const ul = el("ul");
   for (const [k, v] of errs) ul.appendChild(el("li", { text: `${k}: ${v}` }));

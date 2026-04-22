@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>Accepted memes (queue)</title>
+<title>Одобренные мемы (очередь)</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <h1 class="title">Accepted memes (queue)</h1>
+    <h1 class="title">Одобренные мемы (очередь)</h1>
     <div class="counters" aria-live="polite">
-      <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
+      <span class="counter" data-counter="total">Всего: <b id="count-total">0</b></span>
       <span class="counter" id="generated-at"></span>
-      <span class="post-window-hint" title="All times Europe/Berlin">
-        Next post window: 13:00 serious / 19:00 meme
+      <span class="post-window-hint" title="Все времена в Europe/Berlin">
+        Следующий слот публикации: 13:00 серьёзное / 19:00 мем
       </span>
     </div>
     <div class="topbar-right">
-      <a class="nav-link" href="index.html">&larr; Review</a>
-      <a class="nav-link" href="published.html">Published &rarr;</a>
-      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
-      <a class="nav-link" href="analytics.html">Analytics &rarr;</a>
+      <a class="nav-link" href="index.html">&larr; Обзор</a>
+      <a class="nav-link" href="published.html">Опубликованные &rarr;</a>
+      <a class="nav-link" href="rejected.html">Отклонённые &rarr;</a>
+      <a class="nav-link" href="analytics.html">Аналитика &rarr;</a>
     </div>
   </div>
 </header>
 
 <main id="gallery" class="gallery gallery-grid" aria-live="polite">
   <div class="empty-state" id="empty-state" hidden>
-    <p>Loading&hellip;</p>
+    <p>Загрузка&hellip;</p>
   </div>
 </main>
 
@@ -47,9 +47,9 @@
         <span class="card-id"></span>
       </div>
       <pre class="caption caption-collapsible" data-collapsed="true"></pre>
-      <button class="caption-toggle btn btn-ghost" type="button" hidden>Expand caption</button>
+      <button class="caption-toggle btn btn-ghost" type="button" hidden>Развернуть подпись</button>
       <details class="history">
-        <summary>History</summary>
+        <summary>История действий</summary>
         <ol class="timeline"></ol>
       </details>
     </div>
