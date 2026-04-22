@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22T11:00:13.553244+00:00",
+  "generated_at": "2026-04-22T11:06:47.647448+00:00",
   "memes": [
     {
       "id": "hard_truth_teach_down_1224",
@@ -39,7 +39,19 @@
         "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
         "posted_at": "2026-04-22T11:00:13.533460+00:00"
       },
-      "rejected_by_user": null
+      "rejected_by_user": null,
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reach": 0,
+        "saved": 0,
+        "views": 0,
+        "impressions": null,
+        "fetched_at": "2026-04-22T11:06:47.646449+00:00",
+        "_refused_metrics": [
+          "impressions"
+        ]
+      }
     }
   ]
 }
