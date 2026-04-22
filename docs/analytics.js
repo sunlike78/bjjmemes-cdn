@@ -131,6 +131,8 @@ function renderSummary(data) {
     { label: "Всего лайков", value: sumStat(published, "likes"), hint: "по опубликованным" },
     { label: "Всего комментариев", value: sumStat(published, "comments"), hint: "по опубликованным" },
     { label: "Охват", value: sumStat(published, "reach"), hint: "сумма охвата" },
+    { label: "Просмотры", value: sumStat(published, "views"), hint: "сумма просмотров" },
+    { label: "Сохранения", value: sumStat(published, "saved"), hint: "сумма сохранений" },
     { label: "Процент одобрения", value: approvalRate === null ? null : `${approvalRate}%`, hint: "опубл. / (опубл. + откл.)" },
     { label: "В очереди", value: accepted.length, hint: "accepted.json" },
   ];
