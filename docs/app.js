@@ -14,6 +14,7 @@ import {
   rawJsonFetch, isNetworkError,
   relativeTime, formatTimestamp,
 } from "./auth.js";
+import { createClaudeScoreBadges, computeScoreAverages, renderScoreAveragesInto } from "./claude_score.js";
 
 const APPROVALS_PATH = "docs/approvals.json";
 const ACCEPTED_PATH  = "docs/accepted.json";
@@ -367,6 +368,17 @@ function renderCounters() {
   $("#count-rejected").textContent  = rejected;
   $("#count-published").textContent = published;
   $("#count-total").textContent     = total;
+
+  // Average Claude scores across every visible source that carries them.
+  // Bucket records from published/accepted/rejected are the primary source;
+  // data.json entries can also expose claude_score once the pipeline writes it.
+  const pool = [
+    ...Object.values(state.published || {}),
+    ...Object.values(state.accepted  || {}),
+    ...Object.values(state.rejected  || {}),
+    ...state.memes.filter(m => m && m.claude_score),
+  ];
+  renderScoreAveragesInto($("#avg-score-line"), computeScoreAverages(pool));
 }
 
 function renderCaption(preEl, text) {
@@ -486,6 +498,12 @@ function renderRow(meme) {
   const img = tpl.querySelector(".thumb"), link = tpl.querySelector(".thumb-link");
   if (imgUrl) { img.src = String(imgUrl); img.alt = String(meme.id); link.href = String(imgUrl); }
   else { img.alt = "no image"; link.removeAttribute("href"); }
+
+  // Claude-score badges: prefer the bucket record (mirrored from server-side),
+  // fall back to any score on the local data.json entry.
+  const scoreSrc = (eff.bucketRecord && eff.bucketRecord.claude_score) || meme.claude_score || null;
+  const imgCol = tpl.querySelector(".row-image");
+  if (imgCol) imgCol.appendChild(createClaudeScoreBadges(scoreSrc));
 
   const catEl = tpl.querySelector(".category-badge");
   const category = (eff.bucketRecord && eff.bucketRecord.category) || meme.category;

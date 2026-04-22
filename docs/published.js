@@ -1,6 +1,7 @@
 // Read-only view of memes actually shipped to Instagram.
 // Data source: docs/published.json, fetched unauthenticated via raw.githubusercontent.com.
 import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
+import { createClaudeScoreBadges, computeScoreAverages, renderScoreAveragesInto } from "./claude_score.js";
 
 const PUBLISHED_PATH = "docs/published.json";
 const CAPTION_COLLAPSED_LINES = 2;
@@ -187,6 +188,8 @@ function renderCard(meme) {
     thumbLink.removeAttribute("href");
   }
 
+  thumbLink.insertAdjacentElement("afterend", createClaudeScoreBadges(meme.claude_score));
+
   const catEl = tpl.querySelector(".category-badge");
   if (meme.category) {
     catEl.textContent = categoryLabel(meme.category);
@@ -260,6 +263,7 @@ async function load() {
   }
 
   $("#count-total").textContent = String(memes.length);
+  renderScoreAveragesInto($("#avg-score-line"), computeScoreAverages(memes));
   const gen = $("#generated-at");
   if (payload.generated_at) {
     gen.textContent = `Обновлено ${relativeTime(payload.generated_at)}`;

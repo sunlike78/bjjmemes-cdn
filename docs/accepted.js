@@ -1,6 +1,7 @@
 // Read-only view of memes currently in the posting queue (output/queue/).
 // Data source: docs/accepted.json, fetched unauthenticated via raw.githubusercontent.com.
 import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
+import { createClaudeScoreBadges, computeScoreAverages, renderScoreAveragesInto } from "./claude_score.js";
 
 const ACCEPTED_PATH = "docs/accepted.json";
 const CAPTION_COLLAPSED_LINES = 2;
@@ -138,6 +139,10 @@ function renderCard(meme) {
     thumbLink.removeAttribute("href");
   }
 
+  // Claude-score badges right under the thumbnail.
+  const scoreWrap = createClaudeScoreBadges(meme.claude_score);
+  thumbLink.insertAdjacentElement("afterend", scoreWrap);
+
   const catEl = tpl.querySelector(".category-badge");
   if (meme.category) {
     catEl.textContent = categoryLabel(meme.category);
@@ -202,6 +207,7 @@ async function load() {
   for (const m of memes) gallery.appendChild(renderCard(m));
 
   $("#count-total").textContent = String(memes.length);
+  renderScoreAveragesInto($("#avg-score-line"), computeScoreAverages(memes));
   const gen = $("#generated-at");
   if (payload.generated_at) {
     gen.textContent = `Обновлено ${relativeTime(payload.generated_at)}`;

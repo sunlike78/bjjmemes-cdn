@@ -819,6 +819,16 @@ async function renderAll() {
   renderGeneratedAt(data);
   renderProfileHeader(data);
   renderSummary(data);
+  // Growth-focused sections (below the summary cards, in the requested order).
+  renderDailyFollowerGrowth(data);
+  renderEngagementRate(data);
+  renderSaveRate(data);
+  renderVisitFunnel(data);
+  renderAnomalies(data);
+  renderSlotHeatmap(data);
+  renderTopHashtags(data);
+  renderMerchReadiness(data);
+  // Existing sections further down.
   renderContentMix(data);
   renderTimeline(data);
   renderFollowerGrowth(data);
@@ -828,6 +838,415 @@ async function renderAll() {
   renderRejectionReasons(data);
   renderRatingDistribution(data);
   renderRecommendations(data);
+}
+
+// =====================================================================
+// GROWTH ANALYTICS
+// Shared helpers — engagement rate, reach extraction, thumbnail factory.
+// =====================================================================
+
+function engagementRate(m) {
+  const s = m && m.stats;
+  if (!s || s.error) return null;
+  const reach = getReachLike(s);
+  if (!reach || reach <= 0) return null;
+  const likes = typeof s.likes === "number" ? s.likes : 0;
+  const comments = typeof s.comments === "number" ? s.comments : 0;
+  const saved = typeof s.saved === "number" ? s.saved : 0;
+  return ((likes + comments + saved) / reach) * 100;
+}
+function saveRate(m) {
+  const s = m && m.stats;
+  if (!s || s.error) return null;
+  const reach = getReachLike(s);
+  if (!reach || reach <= 0) return null;
+  const saved = typeof s.saved === "number" ? s.saved : 0;
+  return (saved / reach) * 100;
+}
+function thumbLink(m, cls) {
+  const img = el("img", { attrs: { loading: "lazy", alt: String(m.id || "meme") } });
+  if (m.image_url) img.src = String(m.image_url);
+  const a = el("a", { cls: cls || "", attrs: { target: "_blank", rel: "noopener" }, children: [img] });
+  if (m.permalink) a.href = String(m.permalink);
+  else if (m.image_url) a.href = String(m.image_url);
+  return a;
+}
+function firstLineOfCaption(m) {
+  return String((m && m.caption) || "").split(/\n/)[0].slice(0, 120);
+}
+function pct(v, digits) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "\u2014";
+  return `${Number(v).toFixed(digits === undefined ? 2 : digits)}%`;
+}
+
+// --- 2.1 Daily follower growth ---
+function renderDailyFollowerGrowth(data) {
+  const host = $("#daily-follower-growth");
+  host.textContent = "";
+  const payload = data.profile;
+  const series = payload && payload.trend && Array.isArray(payload.trend.follower_count)
+    ? payload.trend.follower_count : [];
+  const points = series
+    .map(e => ({ date: e && e.date, value: Number(e && e.value) }))
+    .filter(e => e.date && Number.isFinite(e.value))
+    .slice(-30);
+
+  const current = (payload && payload.profile && typeof payload.profile.followers_count === "number")
+    ? payload.profile.followers_count : null;
+
+  const head = el("div", { cls: "growth-head" });
+  head.appendChild(el("div", { cls: "growth-num", text: current === null ? "\u2014" : current.toLocaleString() }));
+  const deltas = el("div", { cls: "growth-deltas" });
+
+  function deltaCard(label, delta) {
+    const sign = delta === null ? "is-zero" : delta > 0 ? "is-pos" : delta < 0 ? "is-neg" : "is-zero";
+    const val = delta === null ? "\u2014" : (delta >= 0 ? "+" : "") + delta.toLocaleString();
+    return el("div", { cls: `growth-delta ${sign}`, children: [
+      el("span", { cls: "growth-delta-label", text: label }),
+      el("span", { cls: "growth-delta-val", text: val }),
+    ] });
+  }
+
+  if (points.length >= 2) {
+    const last = points[points.length - 1].value;
+    const prev = points[points.length - 2].value;
+    const weekAgo = points.length >= 8 ? points[points.length - 8].value : points[0].value;
+    const monthAgo = points[0].value;
+    deltas.appendChild(deltaCard("сутки", last - prev));
+    deltas.appendChild(deltaCard("неделя", last - weekAgo));
+    deltas.appendChild(deltaCard("месяц", last - monthAgo));
+  } else {
+    deltas.appendChild(deltaCard("сутки", null));
+    deltas.appendChild(deltaCard("неделя", null));
+    deltas.appendChild(deltaCard("месяц", null));
+  }
+  head.appendChild(deltas);
+  host.appendChild(head);
+
+  if (points.length < 3) {
+    host.appendChild(noteP("Данные Instagram не заполнены за этот период (метрика follower_count даёт пустой ряд для маленьких аккаунтов)."));
+    return;
+  }
+
+  // Compact inline-SVG line chart (reuse the style of renderFollowerGrowth).
+  const W = 600, H = 140, padL = 30, padR = 10, padT = 10, padB = 22;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const values = points.map(p => p.value);
+  const maxV = Math.max(1, ...values), minV = Math.min(0, ...values);
+  const yScale = v => padT + plotH - ((v - minV) / (maxV - minV || 1)) * plotH;
+  const xScale = i => padL + (i / (points.length - 1)) * plotW;
+  const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, class: "growth-svg",
+    preserveAspectRatio: "xMinYMid meet", role: "img",
+    "aria-label": "Ежедневный прирост подписчиков" });
+  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"}${xScale(i).toFixed(2)},${yScale(p.value).toFixed(2)}`).join(" ");
+  const baseY = (padT + plotH).toFixed(2);
+  const areaPath = `${linePath} L${xScale(points.length - 1).toFixed(2)},${baseY} L${xScale(0).toFixed(2)},${baseY} Z`;
+  svg.appendChild(svgEl("path", { d: areaPath, fill: COLORS.teal, "fill-opacity": "0.14", stroke: "none" }));
+  svg.appendChild(svgEl("path", { d: linePath, fill: "none", stroke: COLORS.teal,
+    "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+  for (const i of [0, Math.floor(points.length / 2), points.length - 1]) {
+    const txt = svgEl("text", { x: xScale(i), y: H - 6, "text-anchor": "middle", class: "axis-label" });
+    txt.textContent = String(points[i].date).slice(5);
+    svg.appendChild(txt);
+  }
+  host.appendChild(svg);
+}
+
+// --- 2.2 Engagement rate ---
+function renderEngagementRate(data) {
+  const host = $("#engagement-rate");
+  host.textContent = "";
+  const published = asList(data.published);
+  const withRate = published
+    .map(m => ({ m, rate: engagementRate(m) }))
+    .filter(x => x.rate !== null);
+  if (!withRate.length) {
+    host.appendChild(noteP("Нет опубликованных постов со статистикой охвата."));
+    return;
+  }
+  const avg = withRate.reduce((s, x) => s + x.rate, 0) / withRate.length;
+  host.appendChild(el("div", { cls: "engagement-headline", text: pct(avg) }));
+  host.appendChild(el("p", { cls: "bench-note",
+    text: "Бенчмарк: средняя вовлечённость в BJJ-нише 1\u20133%." }));
+
+  const sorted = withRate.slice().sort((a, b) => b.rate - a.rate);
+  const best = sorted[0], worst = sorted[sorted.length - 1];
+
+  function bwCard(label, x, cls) {
+    return el("div", { cls: `bw-card ${cls}`, children: [
+      thumbLink(x.m),
+      el("div", { children: [
+        el("div", { cls: "bw-card-label", text: label }),
+        el("div", { cls: "bw-card-rate", text: pct(x.rate) }),
+        el("div", { cls: "bw-card-cap", text: firstLineOfCaption(x.m) || "(без подписи)" }),
+      ] }),
+    ] });
+  }
+  const pair = el("div", { cls: "best-worst-pair" });
+  pair.appendChild(bwCard("Лучший пост", best, "is-best"));
+  if (worst && worst !== best) pair.appendChild(bwCard("Худший (проверить)", worst, "is-worst"));
+  host.appendChild(pair);
+}
+
+// --- 2.3 Save rate ---
+function renderSaveRate(data) {
+  const host = $("#save-rate");
+  host.textContent = "";
+  const published = asList(data.published);
+  const withRate = published
+    .map(m => ({ m, rate: saveRate(m) }))
+    .filter(x => x.rate !== null)
+    .sort((a, b) => b.rate - a.rate)
+    .slice(0, 5);
+  if (!withRate.length) {
+    host.appendChild(noteP("Нет данных о сохранениях. Появятся после первых опубликованных постов с охватом."));
+    return;
+  }
+  host.appendChild(el("p", { cls: "chart-subtitle",
+    text: "Высокий показатель сохранений = контент, который хочется вернуться пересмотреть." }));
+  const ul = el("ul", { cls: "save-top-list" });
+  for (const { m, rate } of withRate) {
+    const thumb = thumbLink(m);
+    const cap = el("div", { cls: "save-top-cap", text: firstLineOfCaption(m) || "(без подписи)" });
+    const r = el("span", { cls: "save-top-rate", text: pct(rate) });
+    ul.appendChild(el("li", { children: [thumb, cap, r] }));
+  }
+  host.appendChild(ul);
+}
+
+// --- 2.4 Profile visits vs follower adds ---
+function renderVisitFunnel(data) {
+  const host = $("#visit-funnel");
+  host.textContent = "";
+  const p = data.profile;
+  const rollup = p && p.rollups || {};
+  const visits = rollup.profile_views && typeof rollup.profile_views.days_28 === "number"
+    ? rollup.profile_views.days_28 : null;
+  // Followers delta over ~28 days, if the trend has it.
+  const series = p && p.trend && Array.isArray(p.trend.follower_count) ? p.trend.follower_count : [];
+  let newFollowers = null;
+  if (series.length >= 2) {
+    const last = Number(series[series.length - 1].value);
+    const first = Number(series[Math.max(0, series.length - 28)].value);
+    if (Number.isFinite(last) && Number.isFinite(first)) newFollowers = last - first;
+  }
+  const retention = p && p.profile && typeof p.profile.followers_count === "number"
+    ? p.profile.followers_count : null;
+  const conv = (visits && visits > 0 && typeof newFollowers === "number")
+    ? (newFollowers / visits) * 100 : null;
+
+  const row = el("div", { cls: "funnel-mini" });
+  function step(label, value, extra) {
+    const children = [
+      el("div", { cls: "funnel-mini-label", text: label }),
+      el("div", { cls: "funnel-mini-val",
+        text: value === null || value === undefined ? "\u2014" : Number(value).toLocaleString() }),
+    ];
+    if (extra) children.push(el("div", { cls: "funnel-mini-conv", text: extra }));
+    return el("div", { cls: "funnel-mini-step", children });
+  }
+  row.appendChild(step("Посещения профиля (28 дн.)", visits));
+  row.appendChild(step("Новые подписчики", newFollowers,
+    conv === null ? "конверсия: нет данных" : `конверсия: ${pct(conv, 1)}`));
+  row.appendChild(step("Всего подписчиков", retention));
+  host.appendChild(row);
+
+  if (visits === null && newFollowers === null) {
+    host.appendChild(noteP("Instagram не отдаёт эти метрики для аккаунтов <100 подписчиков. Секция заполнится на росте."));
+  }
+}
+
+// --- 2.5 Anomaly detection ---
+function renderAnomalies(data) {
+  const host = $("#anomaly-flags");
+  host.textContent = "";
+  const published = asList(data.published);
+  if (!published.length) {
+    host.appendChild(noteP("Нет опубликованных постов — нечего проверять."));
+    return;
+  }
+  // Likes median across posts that have likes data.
+  const likeArr = published.map(m => {
+    const s = m && m.stats; return s && !s.error && typeof s.likes === "number" ? s.likes : null;
+  }).filter(v => v !== null);
+  const likeMed = medianOf(likeArr);
+
+  // Reach-spike detection: sort by posted_at to walk chronologically.
+  const chrono = published.slice().sort((a, b) =>
+    String(a.posted_at || "").localeCompare(String(b.posted_at || "")));
+
+  const flags = [];
+  for (let idx = 0; idx < chrono.length; idx++) {
+    const m = chrono[idx];
+    const s = m && m.stats;
+    if (!s || s.error) continue;
+    const likes = typeof s.likes === "number" ? s.likes : 0;
+    const comments = typeof s.comments === "number" ? s.comments : 0;
+    const saved = typeof s.saved === "number" ? s.saved : 0;
+    const reach = getReachLike(s) || 0;
+
+    if (likeMed !== null && likeMed > 0 && likes > likeMed * 10) {
+      flags.push({ m, trigger: `лайки ${likes} > медианы \u00d710 (медиана ${likeMed})` });
+    }
+    if (likes > 0 && comments === 0 && saved === 0) {
+      flags.push({ m, trigger: "лайки есть, но 0 комментариев и 0 сохранений — возможен паттерн бот-активности" });
+    }
+    // Reach-spike vs previous 10 posts: 10x reach without saved-rate gain.
+    const prev = chrono.slice(Math.max(0, idx - 10), idx)
+      .map(p => getReachLike(p && p.stats)).filter(v => v && v > 0);
+    if (prev.length >= 3 && reach > 0) {
+      const prevMax = Math.max(...prev);
+      if (reach > prevMax * 10) {
+        const currSave = saveRate(m) || 0;
+        const prevSaveArr = chrono.slice(Math.max(0, idx - 10), idx).map(saveRate).filter(v => v !== null);
+        const prevSaveMed = medianOf(prevSaveArr);
+        if (prevSaveMed === null || currSave <= prevSaveMed * 1.5) {
+          flags.push({ m, trigger: `охват ${reach} > ×10 предыдущих постов, но сохранения не выросли` });
+        }
+      }
+    }
+  }
+  // Deduplicate by id (one flag per post even if multiple triggers matched).
+  const seen = new Set(), uniq = [];
+  for (const f of flags) {
+    const id = (f.m && f.m.id) || "";
+    if (seen.has(id)) continue; seen.add(id); uniq.push(f);
+  }
+  if (!uniq.length) {
+    host.appendChild(noteP("Аномалий не найдено."));
+    return;
+  }
+  const ul = el("ul", { cls: "anomaly-list" });
+  for (const f of uniq) {
+    const cap = firstLineOfCaption(f.m) || (f.m && f.m.id) || "(пост)";
+    ul.appendChild(el("li", { children: [
+      el("div", { children: [
+        el("div", { text: cap }),
+        el("div", { cls: "anomaly-trigger", text: f.trigger }),
+      ] }),
+      el("span", { cls: "anomaly-tag", text: "проверить" }),
+    ] }));
+  }
+  host.appendChild(ul);
+}
+
+// --- 2.6 Best-hour/day heatmap ---
+function renderSlotHeatmap(data) {
+  const host = $("#slot-heatmap");
+  host.textContent = "";
+  const published = asList(data.published);
+  if (published.length < 8) {
+    host.appendChild(noteP("Недостаточно данных \u2014 нужен минимум 8 постов."));
+    return;
+  }
+  const DAYS_RU = ["пн", "вт", "ср", "чт", "пт", "сб", "вс"];
+  // Monday-first: JS getDay() returns Sun=0..Sat=6, so remap.
+  function dayIdx(d) { const j = d.getDay(); return j === 0 ? 6 : j - 1; }
+  // 7 days × 2 slots: morning (5:00-13:59), evening (14:00-4:59).
+  const grid = Array.from({ length: 7 }, () => [[], []]);
+  for (const m of published) {
+    const t = m && m.posted_at ? new Date(m.posted_at) : null;
+    if (!t || Number.isNaN(t.getTime())) continue;
+    const rate = engagementRate(m);
+    if (rate === null) continue;
+    const h = t.getHours();
+    const slot = (h >= 5 && h < 14) ? 0 : 1;
+    grid[dayIdx(t)][slot].push(rate);
+  }
+  const avg = grid.map(row => row.map(a => a.length ? a.reduce((s, v) => s + v, 0) / a.length : null));
+  const vals = avg.flat().filter(v => v !== null);
+  if (!vals.length) {
+    host.appendChild(noteP("Нет постов с корректным охватом для оценки слотов."));
+    return;
+  }
+  const minV = Math.min(...vals), maxV = Math.max(...vals);
+  function bg(v) {
+    if (v === null) return "transparent";
+    const t = maxV === minV ? 0.5 : (v - minV) / (maxV - minV);
+    const a = 0.1 + t * 0.6;
+    return `color-mix(in srgb, #2d8a7f ${Math.round(a * 100)}%, var(--surface))`;
+  }
+  const table = el("table", { cls: "heatmap-table" });
+  const thead = el("thead");
+  const hr = el("tr", { children: [el("th", { text: "" })] });
+  for (let d = 0; d < 7; d++) hr.appendChild(el("th", { text: DAYS_RU[d] }));
+  thead.appendChild(hr);
+  table.appendChild(thead);
+  const tbody = el("tbody");
+  const slotLabels = ["Утро", "Вечер"];
+  for (let s = 0; s < 2; s++) {
+    const tr = el("tr", { children: [el("th", { text: slotLabels[s] })] });
+    for (let d = 0; d < 7; d++) {
+      const v = avg[d][s];
+      const td = el("td", { cls: "heatmap-cell", text: v === null ? "\u2014" : pct(v, 1) });
+      td.style.background = bg(v);
+      td.title = `${DAYS_RU[d]} ${slotLabels[s].toLowerCase()}: ${v === null ? "нет данных" : pct(v)}`;
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  host.appendChild(table);
+}
+
+// --- 2.7 Top 3 hashtags by engagement ---
+function renderTopHashtags(data) {
+  const host = $("#top-hashtags");
+  host.textContent = "";
+  const published = asList(data.published);
+  const perTag = new Map();
+  for (const m of published) {
+    const rate = engagementRate(m);
+    if (rate === null) continue;
+    const caption = String((m && m.caption) || "");
+    const tags = new Set((caption.match(/#[\w\u0400-\u04ff]+/g) || []).map(t => t.toLowerCase()));
+    for (const tag of tags) {
+      if (!perTag.has(tag)) perTag.set(tag, []);
+      perTag.get(tag).push(rate);
+    }
+  }
+  const rows = [];
+  for (const [tag, arr] of perTag.entries()) {
+    if (arr.length < 2) continue;
+    rows.push({ tag, n: arr.length, avg: arr.reduce((s, v) => s + v, 0) / arr.length });
+  }
+  if (!rows.length) {
+    host.appendChild(noteP("Недостаточно публикаций с повторяющимися хэштегами (нужно \u22652 постов на тег)."));
+    return;
+  }
+  rows.sort((a, b) => b.avg - a.avg);
+  const container = el("div", { cls: "hashtag-top" });
+  for (const r of rows.slice(0, 3)) {
+    container.appendChild(el("div", { cls: "hashtag-top-row", children: [
+      el("span", { cls: "hashtag-top-tag", text: r.tag }),
+      el("span", { cls: "hashtag-top-n", text: `${r.n} ${pluralRuSimple(r.n, ["пост", "поста", "постов"])}` }),
+      el("span", { cls: "hashtag-top-rate", text: pct(r.avg) }),
+    ] }));
+  }
+  host.appendChild(container);
+}
+
+// --- 2.8 Merch readiness signal ---
+function renderMerchReadiness(data) {
+  const host = $("#merch-readiness");
+  host.textContent = "";
+  const published = asList(data.published);
+  const followers = data.profile && data.profile.profile && typeof data.profile.profile.followers_count === "number"
+    ? data.profile.profile.followers_count : 0;
+  const saveArr = published.map(saveRate).filter(v => v !== null);
+  const engArr = published.map(engagementRate).filter(v => v !== null);
+  const avgSave = saveArr.length ? saveArr.reduce((s, v) => s + v, 0) / saveArr.length : 0;
+  const avgEng = engArr.length ? engArr.reduce((s, v) => s + v, 0) / engArr.length : 0;
+
+  let label = "Мерч: рано", cls = "is-early";
+  if (followers > 2000 && avgSave > 3 && avgEng > 4) { label = "Мерч: можно тестировать"; cls = "is-ready"; }
+  else if (followers >= 500 && followers <= 2000 && avgSave >= 1 && avgSave <= 3) { label = "Мерч: наблюдайте"; cls = "is-watch"; }
+  else if (followers < 500 || avgSave < 1) { label = "Мерч: рано"; cls = "is-early"; }
+  else { label = "Мерч: наблюдайте"; cls = "is-watch"; }
+
+  host.appendChild(el("div", { cls: `merch-signal ${cls}`, text: label }));
+  host.appendChild(el("div", { cls: "merch-breakdown",
+    text: `подписчики: ${followers.toLocaleString()} \u00b7 ср. сохранения: ${pct(avgSave, 2)} \u00b7 ср. вовлечённость: ${pct(avgEng, 2)}` }));
 }
 
 wireCategorySort();
