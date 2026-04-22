@@ -15,7 +15,9 @@
     <div class="counters" aria-live="polite">
       <span class="counter" data-counter="pending">Pending: <b id="count-pending">0</b></span>
       <span class="counter" data-counter="approved">Approved: <b id="count-approved">0</b></span>
+      <span class="counter" data-counter="accepted">Accepted: <b id="count-accepted">0</b></span>
       <span class="counter" data-counter="rejected">Rejected: <b id="count-rejected">0</b></span>
+      <span class="counter" data-counter="published">Published: <b id="count-published">0</b></span>
       <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
     </div>
 
@@ -23,12 +25,15 @@
       <button class="filter-btn is-active" data-filter="all" type="button">All</button>
       <button class="filter-btn" data-filter="pending" type="button">Pending</button>
       <button class="filter-btn" data-filter="approved" type="button">Approved</button>
+      <button class="filter-btn" data-filter="accepted" type="button">Accepted</button>
       <button class="filter-btn" data-filter="rejected" type="button">Rejected</button>
+      <button class="filter-btn" data-filter="published" type="button" hidden>Published</button>
     </div>
 
     <div class="topbar-right">
       <span id="save-status" class="save-status" aria-live="polite">idle</span>
       <button id="reset-pat" class="btn btn-ghost" type="button">Reset PAT</button>
+      <a class="nav-link" href="accepted.html">Accepted &rarr;</a>
       <a class="nav-link" href="published.html">Published &rarr;</a>
       <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
     </div>
@@ -108,6 +113,7 @@
           Reject
         </button>
       </div>
+      <div class="readonly-info" hidden></div>
     </div>
   </article>
 </template>

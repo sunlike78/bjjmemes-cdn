@@ -4,21 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>Rejected memes</title>
+<title>Accepted memes (queue)</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <h1 class="title">Rejected memes</h1>
+    <h1 class="title">Accepted memes (queue)</h1>
     <div class="counters" aria-live="polite">
       <span class="counter" data-counter="total">Total: <b id="count-total">0</b></span>
       <span class="counter" id="generated-at"></span>
+      <span class="post-window-hint" title="All times Europe/Berlin">
+        Next post window: 13:00 serious / 19:00 meme
+      </span>
     </div>
     <div class="topbar-right">
       <a class="nav-link" href="index.html">&larr; Review</a>
-      <a class="nav-link" href="accepted.html">Accepted &rarr;</a>
       <a class="nav-link" href="published.html">Published &rarr;</a>
+      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
     </div>
   </div>
 </header>
@@ -30,21 +33,17 @@
 </main>
 
 <template id="card-template">
-  <article class="card card-rejected" data-id="">
+  <article class="card card-accepted" data-id="">
     <a class="card-thumb-link" target="_blank" rel="noopener">
       <img class="card-thumb" loading="lazy" alt="" />
     </a>
     <div class="card-body">
       <div class="card-meta">
         <span class="category-badge"></span>
-        <span class="card-rejected-at"></span>
+        <span class="card-queued-at"></span>
       </div>
       <div class="card-links">
         <span class="card-id"></span>
-      </div>
-      <div class="rejection-box">
-        <div class="rejection-label">Rejection comment</div>
-        <div class="rejection-text"></div>
       </div>
       <pre class="caption caption-collapsible" data-collapsed="true"></pre>
       <button class="caption-toggle btn btn-ghost" type="button" hidden>Expand caption</button>
@@ -70,6 +69,6 @@
   </li>
 </template>
 
-<script type="module" src="rejected.js"></script>
+<script type="module" src="accepted.js"></script>
 </body>
 </html>

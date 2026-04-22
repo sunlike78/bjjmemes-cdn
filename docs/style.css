@@ -11,6 +11,10 @@
   --approve-bg: #dcfce7;
   --reject: #dc2626;
   --reject-bg: #fee2e2;
+  --accepted: #b45309;
+  --accepted-bg: #fef3c7;
+  --published: #15803d;
+  --published-bg: #dcfce7;
   --pending: #71717a;
   --pending-bg: #e4e4e7;
   --danger: #dc2626;
@@ -33,6 +37,10 @@
     --approve-bg: #14351f;
     --reject: #f87171;
     --reject-bg: #3a1414;
+    --accepted: #fbbf24;
+    --accepted-bg: #3b2d0b;
+    --published: #4ade80;
+    --published-bg: #14351f;
     --pending: #9a9aa3;
     --pending-bg: #2a2a32;
     --shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -88,7 +96,9 @@ body {
 }
 .counter b { color: var(--text); font-weight: 600; }
 .counter[data-counter="approved"] b { color: var(--approve); }
+.counter[data-counter="accepted"] b { color: var(--accepted); }
 .counter[data-counter="rejected"] b { color: var(--reject); }
+.counter[data-counter="published"] b { color: var(--published); }
 
 .filters { display: flex; gap: 4px; }
 .filter-btn {
@@ -202,8 +212,11 @@ body {
   padding: 18px;
   box-shadow: var(--shadow);
 }
-.row[data-status="approved"] { border-left: 3px solid var(--approve); }
-.row[data-status="rejected"] { border-left: 3px solid var(--reject); }
+.row[data-status="approved"]  { border-left: 3px solid var(--approve); }
+.row[data-status="accepted"]  { border-left: 3px solid var(--accepted); }
+.row[data-status="rejected"]  { border-left: 3px solid var(--reject); }
+.row[data-status="published"] { border-left: 3px solid var(--published); }
+.row[data-editable="false"]   { opacity: 0.92; }
 .row[data-hidden="true"] { display: none; }
 
 .row-image {
@@ -267,9 +280,11 @@ body {
   color: var(--pending);
   text-transform: lowercase;
 }
-.status-pill[data-status="approved"] { background: var(--approve-bg); color: var(--approve); }
-.status-pill[data-status="rejected"] { background: var(--reject-bg); color: var(--reject); }
-.status-pill[data-status="broken"] { background: var(--reject-bg); color: var(--reject); }
+.status-pill[data-status="approved"]  { background: var(--approve-bg);   color: var(--approve); }
+.status-pill[data-status="accepted"]  { background: var(--accepted-bg);  color: var(--accepted); }
+.status-pill[data-status="rejected"]  { background: var(--reject-bg);    color: var(--reject); }
+.status-pill[data-status="published"] { background: var(--published-bg); color: var(--published); }
+.status-pill[data-status="broken"]    { background: var(--reject-bg);    color: var(--reject); }
 .status-glyph { font-weight: 700; line-height: 1; }
 
 .caption {
@@ -724,4 +739,67 @@ body {
   padding: 6px 0 6px 28px;
   color: var(--text-faint);
   font-size: 12px;
+}
+
+/* ------ Readonly info block for terminal rows on Page 1 ------ */
+.readonly-info[hidden] { display: none; }
+.readonly-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+.readonly-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.readonly-link:hover { text-decoration: underline; }
+.readonly-muted {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.readonly-info[data-status="accepted"] .readonly-muted { color: var(--accepted); }
+.readonly-reject-box {
+  background: var(--reject-bg);
+  border: 1px solid color-mix(in srgb, var(--reject) 30%, var(--border));
+  border-left: 3px solid var(--reject);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--reject);
+}
+.readonly-reject-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--reject);
+  opacity: 0.85;
+  margin-bottom: 2px;
+}
+.readonly-reject-text {
+  font-size: 13px;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Terminal row: visually greyed comment/actions aren't visible, but keep
+   hover cursor neutral. The left border color carries the semantic state. */
+.row[data-editable="false"] .comment-label,
+.row[data-editable="false"] .actions { display: none; }
+
+/* ------ Accepted-page specific accents ------ */
+.card.card-accepted { border-left: 3px solid var(--accepted); }
+.card-queued-at { font-size: 12px; color: var(--accepted); font-weight: 500; }
+.post-window-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  background: var(--accepted-bg);
+  color: var(--accepted);
+  border-radius: 999px;
 }
