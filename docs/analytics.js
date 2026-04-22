@@ -1,6 +1,7 @@
 // Analytics dashboard. Pulls the four mirror JSONs in parallel and renders
 // inline-SVG charts client-side. Vanilla JS, no external libraries.
 import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
+import { overallScore } from "./claude_score.js";
 
 const SOURCES = {
   data: "docs/data.json",
@@ -10,6 +11,17 @@ const SOURCES = {
   profile: "docs/profile.json",
   approvals: "docs/approvals.json",
 };
+
+// Sample-size thresholds. Below these, benchmarks / best-worst comparisons
+// and per-post anomaly rules would produce noise — we gate them out instead.
+const SAMPLE_GATE_POSTS = 10;        // published.length minimum for engagement extremes + anomalies
+const SAMPLE_GATE_REACH_28 = 500;    // rollups.reach.days_28 minimum to trust the niche benchmark
+
+// Intent-score thresholds (prototype, pre-calibration).
+// TODO: recalibrate once we have real data from: DM volume, poll votes,
+// tagged-friend comments. Current values are placeholders and WILL move.
+const INTENT_THRESHOLD_EARLY = 5;    // <5 — "рано"
+const INTENT_THRESHOLD_WATCH = 15;   // 5-15 — "наблюдайте"; 15+ — "можно тестировать"
 
 const SERIOUS_CATEGORIES = new Set([
   "hard_truth", "factual_post", "quote_post",
@@ -126,6 +138,13 @@ function renderSummary(data) {
   const totalPosts = published.length;
   const approvalBase = totalPosts + rejected.length;
   const approvalRate = approvalBase > 0 ? Math.round((totalPosts / approvalBase) * 100) : null;
+
+  // Shareability: saves/reach averaged across published. Same math as save-rate
+  // for now (we can't measure shares or profile_visits-per-post directly) —
+  // framed as "shareability" so we can swap in richer inputs later.
+  const shareArr = published.map(saveRate).filter(v => v !== null);
+  const avgShare = shareArr.length ? shareArr.reduce((s, v) => s + v, 0) / shareArr.length : null;
+
   const cards = [
     { label: "Опубликовано", value: totalPosts, hint: "всего постов" },
     { label: "Всего лайков", value: sumStat(published, "likes"), hint: "по опубликованным" },
@@ -134,6 +153,10 @@ function renderSummary(data) {
     { label: "Охват (7 дней)",  value: ((data.profile && data.profile.rollups && data.profile.rollups.reach && data.profile.rollups.reach.week) || null), hint: "данные IG за 7 дней" },
     { label: "Просмотры (по постам)", value: sumStat(published, "views"), hint: "сумма просмотров по постам API" },
     { label: "Сохранения", value: sumStat(published, "saved"), hint: "сумма сохранений" },
+    { label: "Shareability",
+      value: avgShare === null ? null : `${avgShare.toFixed(2)}%`,
+      hint: "сохранения / охват · чем выше — тем охотнее делятся",
+      tooltip: "Пока замеряем только сохранения относительно охвата. Позже сюда добавим shares и переходы в профиль, когда Instagram откроет эти метрики." },
     { label: "Процент одобрения", value: approvalRate === null ? null : `${approvalRate}%`, hint: "опубл. / (опубл. + откл.)" },
     { label: "В очереди", value: accepted.length, hint: "accepted.json" },
   ];
@@ -144,8 +167,14 @@ function renderSummary(data) {
     } else if (typeof c.value === "number") {
       value.textContent = c.value.toLocaleString();
     } else { value.textContent = String(c.value); }
+    const labelNode = el("div", { cls: "stat-card-label", text: c.label });
+    if (c.tooltip) {
+      const tip = el("span", { cls: "stat-card-tooltip", text: "?" });
+      tip.title = c.tooltip;
+      labelNode.appendChild(tip);
+    }
     grid.appendChild(el("div", { cls: "stat-card", children: [
-      el("div", { cls: "stat-card-label", text: c.label }),
+      labelNode,
       value,
       el("div", { cls: "stat-card-hint", text: c.hint }),
     ] }));
@@ -828,6 +857,8 @@ async function renderAll() {
   renderSlotHeatmap(data);
   renderTopHashtags(data);
   renderMerchReadiness(data);
+  renderBucketPerformance(data);
+  renderComingSoon();
   // Existing sections further down.
   renderContentMix(data);
   renderTimeline(data);
@@ -965,7 +996,29 @@ function renderEngagementRate(data) {
     return;
   }
   const avg = withRate.reduce((s, x) => s + x.rate, 0) / withRate.length;
-  host.appendChild(el("div", { cls: "engagement-headline", text: pct(avg) }));
+
+  // Sample-size guard: at tiny N or tiny reach, the benchmark line + best/worst
+  // extremes are misleading. Keep the avg number but caveat it; hide extremes
+  // and replace the benchmark line with a "not enough data" note.
+  const reach28 = (data.profile && data.profile.rollups && data.profile.rollups.reach
+    && typeof data.profile.rollups.reach.days_28 === "number")
+    ? data.profile.rollups.reach.days_28 : 0;
+  const belowThreshold = reach28 < SAMPLE_GATE_REACH_28 || published.length < SAMPLE_GATE_POSTS;
+
+  const headline = el("div", { cls: "engagement-headline", text: pct(avg) });
+  if (belowThreshold) {
+    const caveat = el("span", { cls: "sample-caveat",
+      text: `sample: ${reach28.toLocaleString()} охват · ${published.length} ${pluralRuSimple(published.length, ["пост", "поста", "постов"])}` });
+    headline.appendChild(caveat);
+  }
+  host.appendChild(headline);
+
+  if (belowThreshold) {
+    host.appendChild(el("p", { cls: "gate-note",
+      text: "Недостаточно данных \u2014 benchmark включается при 500+ охвата за 28 дней или 10+ постов. Смотрите тренд направления, не абсолют." }));
+    return;
+  }
+
   host.appendChild(el("p", { cls: "bench-note",
     text: "Бенчмарк: средняя вовлечённость в BJJ-нише 1\u20133%." }));
 
@@ -1057,21 +1110,24 @@ function renderVisitFunnel(data) {
 }
 
 // --- 2.5 Anomaly detection ---
+// Below the sample gate (N < 10 published) we don't run any per-post triggers:
+// at 23 followers the old rules fired at every post and produced noise. Instead,
+// we show a single gate message and wait for the data to accumulate. Above the
+// gate we keep only the pattern rule: a like-spike >5x the median of the last
+// 5 posts that ISN'T backed by a corresponding save-rate bump.
 function renderAnomalies(data) {
   const host = $("#anomaly-flags");
   host.textContent = "";
   const published = asList(data.published);
-  if (!published.length) {
-    host.appendChild(noteP("Нет опубликованных постов — нечего проверять."));
+  const N = published.length;
+
+  if (N < SAMPLE_GATE_POSTS) {
+    host.appendChild(el("p", { cls: "gate-note",
+      text: `Правила антифрода включаются с ${SAMPLE_GATE_POSTS} постов — сейчас ${N}.` }));
     return;
   }
-  // Likes median across posts that have likes data.
-  const likeArr = published.map(m => {
-    const s = m && m.stats; return s && !s.error && typeof s.likes === "number" ? s.likes : null;
-  }).filter(v => v !== null);
-  const likeMed = medianOf(likeArr);
 
-  // Reach-spike detection: sort by posted_at to walk chronologically.
+  // Chronological order — we need trailing 5-post windows per post.
   const chrono = published.slice().sort((a, b) =>
     String(a.posted_at || "").localeCompare(String(b.posted_at || "")));
 
@@ -1081,43 +1137,37 @@ function renderAnomalies(data) {
     const s = m && m.stats;
     if (!s || s.error) continue;
     const likes = typeof s.likes === "number" ? s.likes : 0;
-    const comments = typeof s.comments === "number" ? s.comments : 0;
-    const saved = typeof s.saved === "number" ? s.saved : 0;
-    const reach = getReachLike(s) || 0;
 
-    if (likeMed !== null && likeMed > 0 && likes > likeMed * 10) {
-      flags.push({ m, trigger: `лайки ${likes} > медианы \u00d710 (медиана ${likeMed})` });
-    }
-    if (likes > 0 && comments === 0 && saved === 0) {
-      flags.push({ m, trigger: "лайки есть, но 0 комментариев и 0 сохранений — возможен паттерн бот-активности" });
-    }
-    // Reach-spike vs previous 10 posts: 10x reach without saved-rate gain.
-    const prev = chrono.slice(Math.max(0, idx - 10), idx)
-      .map(p => getReachLike(p && p.stats)).filter(v => v && v > 0);
-    if (prev.length >= 3 && reach > 0) {
-      const prevMax = Math.max(...prev);
-      if (reach > prevMax * 10) {
-        const currSave = saveRate(m) || 0;
-        const prevSaveArr = chrono.slice(Math.max(0, idx - 10), idx).map(saveRate).filter(v => v !== null);
-        const prevSaveMed = medianOf(prevSaveArr);
-        if (prevSaveMed === null || currSave <= prevSaveMed * 1.5) {
-          flags.push({ m, trigger: `охват ${reach} > ×10 предыдущих постов, но сохранения не выросли` });
-        }
+    // Need at least 5 prior posts to compute a trailing median.
+    if (idx < 5) continue;
+    const window = chrono.slice(idx - 5, idx);
+    const prevLikes = window.map(p => {
+      const ps = p && p.stats;
+      return ps && !ps.error && typeof ps.likes === "number" ? ps.likes : null;
+    }).filter(v => v !== null);
+    if (prevLikes.length < 3) continue;
+    const med = medianOf(prevLikes);
+    if (med === null || med <= 0) continue;
+
+    if (likes > med * 5) {
+      const currSave = saveRate(m);
+      const prevSaveArr = window.map(saveRate).filter(v => v !== null);
+      const prevSaveMed = medianOf(prevSaveArr);
+      // No save-rate bump: current save-rate is missing OR <= 1.2x the median.
+      const saveBump = currSave !== null && prevSaveMed !== null
+        && prevSaveMed > 0 && currSave > prevSaveMed * 1.2;
+      if (!saveBump) {
+        flags.push({ m, trigger: `лайки ${likes} > медианы последних 5 ×5 (медиана ${med}), сохранения не подтянулись` });
       }
     }
   }
-  // Deduplicate by id (one flag per post even if multiple triggers matched).
-  const seen = new Set(), uniq = [];
-  for (const f of flags) {
-    const id = (f.m && f.m.id) || "";
-    if (seen.has(id)) continue; seen.add(id); uniq.push(f);
-  }
-  if (!uniq.length) {
+
+  if (!flags.length) {
     host.appendChild(noteP("Аномалий не найдено."));
     return;
   }
   const ul = el("ul", { cls: "anomaly-list" });
-  for (const f of uniq) {
+  for (const f of flags) {
     const cap = firstLineOfCaption(f.m) || (f.m && f.m.id) || "(пост)";
     ul.appendChild(el("li", { children: [
       el("div", { children: [
@@ -1226,27 +1276,222 @@ function renderTopHashtags(data) {
   host.appendChild(container);
 }
 
-// --- 2.8 Merch readiness signal ---
+// --- 2.8 Qualified Intent Score (prototype) ---
+// Rewrites the old arbitrary-threshold merch-readiness gate. The thesis: the
+// density of qualified intent matters more than raw follower count. "23
+// followers who save every post" beats "2000 who scroll past."
+//
+// Current backbone: `avg_saves_per_post / followers_count * 1000`. We only
+// have `saves` in the Graph API response right now. Future slots (not yet
+// populated — feed them in as they come):
+//   - DM volume                      (Graph /insights DM inbox, when available)
+//   - Poll votes                     (from story insights, per-story)
+//   - Tagged-friend comments         (comment parser: count @mentions)
+//
+// Thresholds are PLACEHOLDERS — see INTENT_THRESHOLD_* at the top of the file.
+// They need recalibration once the richer slots land with real data.
 function renderMerchReadiness(data) {
   const host = $("#merch-readiness");
   host.textContent = "";
   const published = asList(data.published);
   const followers = data.profile && data.profile.profile && typeof data.profile.profile.followers_count === "number"
     ? data.profile.profile.followers_count : 0;
-  const saveArr = published.map(saveRate).filter(v => v !== null);
-  const engArr = published.map(engagementRate).filter(v => v !== null);
-  const avgSave = saveArr.length ? saveArr.reduce((s, v) => s + v, 0) / saveArr.length : 0;
-  const avgEng = engArr.length ? engArr.reduce((s, v) => s + v, 0) / engArr.length : 0;
 
-  let label = "Мерч: рано", cls = "is-early";
-  if (followers > 2000 && avgSave > 3 && avgEng > 4) { label = "Мерч: можно тестировать"; cls = "is-ready"; }
-  else if (followers >= 500 && followers <= 2000 && avgSave >= 1 && avgSave <= 3) { label = "Мерч: наблюдайте"; cls = "is-watch"; }
-  else if (followers < 500 || avgSave < 1) { label = "Мерч: рано"; cls = "is-early"; }
-  else { label = "Мерч: наблюдайте"; cls = "is-watch"; }
+  const saveArr = published.map(m => {
+    const s = m && m.stats;
+    return s && !s.error && typeof s.saved === "number" ? s.saved : null;
+  }).filter(v => v !== null);
+  const avgSavesPerPost = saveArr.length ? saveArr.reduce((a, b) => a + b, 0) / saveArr.length : 0;
 
-  host.appendChild(el("div", { cls: `merch-signal ${cls}`, text: label }));
+  // Backbone intent score. Protect against div-by-zero at empty accounts.
+  const score = followers > 0 ? (avgSavesPerPost / followers) * 1000 : 0;
+
+  let label, cls;
+  if (score < INTENT_THRESHOLD_EARLY) { label = "Intent: рано"; cls = "is-early"; }
+  else if (score < INTENT_THRESHOLD_WATCH) { label = "Intent: наблюдайте"; cls = "is-watch"; }
+  else { label = "Intent: можно тестировать"; cls = "is-ready"; }
+
+  const wrap = el("div", { cls: `merch-signal ${cls}`, children: [
+    el("span", { cls: "intent-score-val", text: score.toFixed(2) }),
+    el("span", { text: label }),
+  ] });
+  host.appendChild(wrap);
+
   host.appendChild(el("div", { cls: "merch-breakdown",
-    text: `подписчики: ${followers.toLocaleString()} \u00b7 ср. сохранения: ${pct(avgSave, 2)} \u00b7 ср. вовлечённость: ${pct(avgEng, 2)}` }));
+    text: `backbone: avg_saves_per_post / followers × 1000 \u2014 ${avgSavesPerPost.toFixed(2)} / ${followers} × 1000 = ${score.toFixed(2)}` }));
+  host.appendChild(el("p", { cls: "intent-score-desc",
+    text: "Метрика интента важнее числа подписчиков. Идентичность плотнее размера." }));
+  host.appendChild(el("p", { cls: "intent-score-future",
+    text: "Будущие слоты: объём DM, голоса в опросах, комментарии с @упоминанием друга. Пороги 5 / 15 \u2014 прототип, пересчитаем на реальных данных." }));
+}
+
+// --- Content-bucket performance (published-focused) ---
+// Separate from the existing category-table above: that one groups across ALL
+// records in data.json regardless of state, this one is strictly about posts
+// that shipped. Sortable on header click like the other analytics table.
+const bucketState = { rows: [], sortKey: "count", sortDir: -1 };
+
+function renderBucketPerformance(data) {
+  const host = $("#bucket-performance");
+  host.textContent = "";
+  if (data.errors.published) {
+    host.appendChild(noteP("(данные published недоступны)"));
+    return;
+  }
+  const published = asList(data.published);
+  if (!published.length) {
+    host.appendChild(noteP("Пока нет опубликованных постов."));
+    return;
+  }
+
+  // Aggregate per category. Uses the record's own `category` field (same field
+  // the existing table reads) but keeps only buckets with >=1 post.
+  const agg = new Map();
+  for (const m of published) {
+    const cat = (m.category || "uncategorized").toString();
+    if (!agg.has(cat)) agg.set(cat, { category: cat, count: 0,
+      likes_sum: 0, likes_n: 0, comments_sum: 0, comments_n: 0,
+      reach_sum: 0, reach_n: 0, eng_sum: 0, eng_n: 0,
+      score_sum: 0, score_n: 0 });
+    const r = agg.get(cat);
+    r.count += 1;
+    const s = m && m.stats;
+    if (s && !s.error) {
+      if (typeof s.likes === "number") { r.likes_sum += s.likes; r.likes_n++; }
+      if (typeof s.comments === "number") { r.comments_sum += s.comments; r.comments_n++; }
+      const reach = getReachLike(s);
+      if (reach !== null) { r.reach_sum += reach; r.reach_n++; }
+      const eng = engagementRate(m);
+      if (eng !== null) { r.eng_sum += eng; r.eng_n++; }
+    }
+    const ov = overallScore(m && m.claude_score);
+    if (ov !== null) { r.score_sum += ov; r.score_n++; }
+  }
+
+  bucketState.rows = Array.from(agg.values()).map(r => ({
+    category: r.category,
+    count: r.count,
+    avg_likes: r.likes_n > 0 ? r.likes_sum / r.likes_n : null,
+    avg_comments: r.comments_n > 0 ? r.comments_sum / r.comments_n : null,
+    avg_reach: r.reach_n > 0 ? r.reach_sum / r.reach_n : null,
+    avg_eng: r.eng_n > 0 ? r.eng_sum / r.eng_n : null,
+    avg_score: r.score_n > 0 ? r.score_sum / r.score_n : null,
+  }));
+
+  // Only-one-category case: can't compare, leave a note and bail out.
+  if (bucketState.rows.length < 2) {
+    host.appendChild(noteP("Нужно \u22652 категории чтобы сравнивать."));
+    // Still render a single-row table so the one bucket's numbers are visible.
+  }
+
+  drawBucketTable(host);
+}
+
+function drawBucketTable(hostOverride) {
+  const host = hostOverride || $("#bucket-performance");
+  // Preserve any existing note paragraph; replace only the table.
+  const oldTable = host.querySelector("table.bucket-table");
+  if (oldTable) oldTable.remove();
+
+  const { rows, sortKey, sortDir } = bucketState;
+  if (!rows.length) return;
+
+  const COLS = [
+    { key: "category", label: "Категория" },
+    { key: "count", label: "Постов" },
+    { key: "avg_likes", label: "Ср. лайки" },
+    { key: "avg_comments", label: "Ср. комм." },
+    { key: "avg_reach", label: "Ср. охват" },
+    { key: "avg_eng", label: "Ср. вовл." },
+    { key: "avg_score", label: "Ср. \u03a3" },
+  ];
+
+  const table = el("table", { cls: "bucket-table" });
+  const thead = el("thead");
+  const tr = el("tr");
+  for (const c of COLS) {
+    const th = el("th", { text: c.label });
+    th.dataset.sort = c.key;
+    if (sortKey === c.key) {
+      th.classList.add("is-active");
+      th.textContent = `${c.label} ${sortDir === 1 ? "\u2191" : "\u2193"}`;
+    }
+    th.addEventListener("click", () => {
+      if (bucketState.sortKey === c.key) bucketState.sortDir *= -1;
+      else { bucketState.sortKey = c.key; bucketState.sortDir = c.key === "category" ? 1 : -1; }
+      drawBucketTable(host);
+    });
+    tr.appendChild(th);
+  }
+  thead.appendChild(tr);
+  table.appendChild(thead);
+
+  const sorted = rows.slice().sort((a, b) => {
+    const av = a[sortKey], bv = b[sortKey];
+    if (av === null && bv === null) return 0;
+    if (av === null) return 1;
+    if (bv === null) return -1;
+    if (typeof av === "string") return av.localeCompare(bv) * sortDir;
+    return (av - bv) * sortDir;
+  });
+
+  const tbody = el("tbody");
+  const fmtNum = v => (v === null || v === undefined) ? "\u2014"
+    : Number(v).toLocaleString(undefined, { maximumFractionDigits: 1 });
+  const fmtPct = v => (v === null || v === undefined) ? "\u2014"
+    : `${Number(v).toFixed(2)}%`;
+  const fmtScore = v => (v === null || v === undefined) ? "\u2014"
+    : Number(v).toFixed(1);
+
+  for (const r of sorted) {
+    const catCell = el("td", { text: categoryLabel(r.category) });
+    catCell.title = String(r.category);
+    tbody.appendChild(el("tr", { children: [
+      catCell,
+      el("td", { text: r.count.toLocaleString() }),
+      el("td", { text: fmtNum(r.avg_likes) }),
+      el("td", { text: fmtNum(r.avg_comments) }),
+      el("td", { text: fmtNum(r.avg_reach) }),
+      el("td", { text: fmtPct(r.avg_eng) }),
+      el("td", { text: fmtScore(r.avg_score) }),
+    ] }));
+  }
+  table.appendChild(tbody);
+  host.appendChild(table);
+}
+
+// --- Coming-soon placeholder cards ---
+// Three metrics the user's account can't produce yet. Scaffold them as muted
+// cards so when the data starts flowing, a single `if (records carry X)`
+// guard flips each from coming-soon into live rendering.
+function renderComingSoon() {
+  const host = $("#coming-soon-grid");
+  if (!host) return;
+  host.textContent = "";
+  const cards = [
+    {
+      title: "Конверсия в подписку по посту",
+      note: "Нужна метрика profile_views per media \u2014 IG API не отдаёт её для MEDIA_CREATOR. Включится, когда записи начнут нести поле `profile_visits_delta`.",
+    },
+    {
+      title: "Доля возвращающихся комментаторов",
+      note: "Нужна история уникальных commenters. Активируется, когда накопим 30+ комментариев.",
+    },
+    {
+      title: "Ритм публикаций vs результат",
+      note: "Корреляция частоты постов с вовлечённостью. Активируется с 15+ постами.",
+    },
+  ];
+  for (const c of cards) {
+    const card = el("div", { cls: "coming-soon-card", children: [
+      el("div", { cls: "coming-soon-title", children: [
+        el("span", { text: c.title }),
+        el("span", { cls: "coming-soon-badge", text: "coming soon" }),
+      ] }),
+      el("p", { cls: "coming-soon-text", text: c.note }),
+    ] });
+    host.appendChild(card);
+  }
 }
 
 wireCategorySort();

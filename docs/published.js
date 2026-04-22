@@ -1,10 +1,19 @@
 // Read-only view of memes actually shipped to Instagram.
 // Data source: docs/published.json, fetched unauthenticated via raw.githubusercontent.com.
 import { rawJsonFetch, relativeTime, formatTimestamp } from "./auth.js";
-import { createClaudeScoreBadges, computeScoreAverages, renderScoreAveragesInto } from "./claude_score.js";
+import { createClaudeScoreBadges, computeScoreAverages, renderScoreAveragesInto,
+  overallScore } from "./claude_score.js";
 
 const PUBLISHED_PATH = "docs/published.json";
 const CAPTION_COLLAPSED_LINES = 2;
+
+// Sort modes for the gallery.
+const SORT_MODES = {
+  NEWEST: "newest",
+  SCORE: "score",
+};
+let currentSort = SORT_MODES.NEWEST;
+let loadedMemes = [];
 
 // Категории в данных остаются на английском; в UI — таблица соответствия.
 const CATEGORY_LABELS_RU = {
@@ -237,6 +246,52 @@ function renderEmpty(msg) {
   empty.appendChild(p);
 }
 
+function sortMemes(memes, mode) {
+  const copy = memes.slice();
+  if (mode === SORT_MODES.SCORE) {
+    copy.sort((a, b) => {
+      const sa = overallScore(a && a.claude_score);
+      const sb = overallScore(b && b.claude_score);
+      if (sa === null && sb === null) {
+        return String(b.posted_at || "").localeCompare(String(a.posted_at || ""));
+      }
+      if (sa === null) return 1;
+      if (sb === null) return -1;
+      if (sb !== sa) return sb - sa;
+      return String(b.posted_at || "").localeCompare(String(a.posted_at || ""));
+    });
+  } else {
+    copy.sort((a, b) => String(b.posted_at || "").localeCompare(String(a.posted_at || "")));
+  }
+  return copy;
+}
+
+function renderGallery() {
+  const gallery = $("#gallery");
+  $$(".card", gallery).forEach(n => n.remove());
+  const memes = sortMemes(loadedMemes, currentSort);
+  for (const m of memes) gallery.appendChild(renderCard(m));
+}
+
+function wireSortControl() {
+  const btnNewest = $("#sort-newest");
+  const btnScore = $("#sort-score");
+  if (!btnNewest || !btnScore) return;
+  function applyActive() {
+    btnNewest.classList.toggle("is-active", currentSort === SORT_MODES.NEWEST);
+    btnScore.classList.toggle("is-active", currentSort === SORT_MODES.SCORE);
+  }
+  applyActive();
+  btnNewest.addEventListener("click", () => {
+    if (currentSort === SORT_MODES.NEWEST) return;
+    currentSort = SORT_MODES.NEWEST; applyActive(); renderGallery();
+  });
+  btnScore.addEventListener("click", () => {
+    if (currentSort === SORT_MODES.SCORE) return;
+    currentSort = SORT_MODES.SCORE; applyActive(); renderGallery();
+  });
+}
+
 async function load() {
   let payload;
   try {
@@ -251,19 +306,12 @@ async function load() {
     return;
   }
 
-  const memes = payload.memes.slice();
-  memes.sort((a, b) => String(b.posted_at || "").localeCompare(String(a.posted_at || "")));
-
-  const gallery = $("#gallery");
-  $$(".card", gallery).forEach(n => n.remove());
+  loadedMemes = payload.memes.slice();
   $("#empty-state").hidden = true;
+  renderGallery();
 
-  for (const m of memes) {
-    gallery.appendChild(renderCard(m));
-  }
-
-  $("#count-total").textContent = String(memes.length);
-  renderScoreAveragesInto($("#avg-score-line"), computeScoreAverages(memes));
+  $("#count-total").textContent = String(loadedMemes.length);
+  renderScoreAveragesInto($("#avg-score-line"), computeScoreAverages(loadedMemes));
   const gen = $("#generated-at");
   if (payload.generated_at) {
     gen.textContent = `Обновлено ${relativeTime(payload.generated_at)}`;
@@ -273,4 +321,5 @@ async function load() {
   }
 }
 
+wireSortControl();
 load();

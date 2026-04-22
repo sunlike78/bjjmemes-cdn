@@ -1455,9 +1455,27 @@ body {
   background: color-mix(in srgb, #c89840 18%, var(--surface));
   border: 1px solid color-mix(in srgb, #c89840 40%, var(--border));
 }
+.cs-pill--overall {
+  color: #374151;
+  background: color-mix(in srgb, var(--text) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--text) 20%, var(--border));
+}
+.claude-score-pairs.is-high .cs-pill--overall {
+  color: #065f46;
+  background: color-mix(in srgb, var(--approve) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--approve) 45%, var(--border));
+}
+.claude-score-pairs.is-low .cs-pill--overall {
+  color: #991b1b;
+  background: color-mix(in srgb, var(--reject) 16%, var(--surface));
+  border-color: color-mix(in srgb, var(--reject) 50%, var(--border));
+}
 @media (prefers-color-scheme: dark) {
   .cs-pill--text { color: #93c5fd; }
   .cs-pill--image { color: #fbbf24; }
+  .cs-pill--overall { color: #e5e7eb; }
+  .claude-score-pairs.is-high .cs-pill--overall { color: #6ee7b7; }
+  .claude-score-pairs.is-low .cs-pill--overall { color: #fca5a5; }
 }
 .cs-pill--unscored {
   color: var(--text-faint);
@@ -1734,3 +1752,154 @@ body {
 .merch-signal.is-watch { border-color: color-mix(in srgb, #c89840 55%, var(--border)); color: #b45309; }
 .merch-signal.is-ready { border-color: color-mix(in srgb, var(--approve) 55%, var(--border)); color: var(--approve); }
 .merch-breakdown { margin-top: 6px; font-size: 12px; color: var(--text-faint); }
+
+/* Sort control for accepted/published galleries */
+.sort-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+}
+.sort-btn {
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.sort-btn:hover { background: var(--surface); color: var(--text); }
+.sort-btn.is-active {
+  background: color-mix(in srgb, var(--accent, #4a6fa5) 18%, var(--surface));
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent, #4a6fa5) 45%, var(--border));
+}
+
+/* Intent-score prototype chip (rewrites merch-readiness copy) */
+.intent-score-val {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.intent-score-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  max-width: 520px;
+}
+.intent-score-future {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Shareability card inside summary-grid (reuses stat-card sizing) */
+.stat-card-tooltip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 10px;
+  margin-left: 4px;
+  cursor: help;
+  border: 1px solid var(--border);
+}
+
+/* Content-bucket performance table — same look as .analytics-table */
+.bucket-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.bucket-table th, .bucket-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+.bucket-table th {
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  cursor: pointer;
+  user-select: none;
+}
+.bucket-table th.is-active { color: var(--text); }
+.bucket-table tbody tr:hover { background: var(--surface-2); }
+.bucket-table td { font-variant-numeric: tabular-nums; }
+
+/* Sample-size caveat pill next to headline numbers */
+.sample-caveat {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  font-weight: 400;
+  vertical-align: middle;
+}
+
+/* "Coming soon" placeholder cards */
+.coming-soon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.coming-soon-card {
+  padding: 12px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface-2) 60%, var(--surface));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.coming-soon-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.coming-soon-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-faint);
+  font-weight: 500;
+}
+.coming-soon-text {
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Generic gate note (for anomaly / engagement below-threshold) */
+.gate-note {
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--text) 4%, var(--surface-2));
+  border: 1px solid var(--border);
+  border-left: 3px solid color-mix(in srgb, #c89840 55%, var(--border));
+  border-radius: 0 8px 8px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
