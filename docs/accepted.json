@@ -1,6 +1,105 @@
 {
-  "generated_at": "2026-04-22T13:16:03.827820+00:00",
+  "generated_at": "2026-04-22T13:58:10.655156+00:00",
   "memes": [
+    {
+      "id": "bjj_injury_bingo_1546",
+      "folder_name": "2026-04-22_15-46_MEME_bjj_injury_bingo_1546",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_154628_image.png",
+      "caption": "BJJ INJURY BINGO\n\ncauliflower ear • jammed thumb • meniscus\nrolled ankle • staph scare • knee pop\n\nFREE SPACE: EGO\n\nhow many have you collected?\ntag a training partner — compare scores\n\n#bjj #bjjmemes #injurybingo #collectthemall",
+      "explanation": "5×5 bingo-grid, тёмная палитра, 8 'stamped' клеток (red X) как личная демонстрация коллекции. Центральная FREE SPACE — EGO, в ярко-жёлтой обводке (главная 'травма' BJJ). Высокий engagement-потенциал: каждый зритель мысленно считает свои.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T13:46:01.185103+00:00",
+          "event": "generated",
+          "source": "claude_pillow_v2_entertainment"
+        },
+        {
+          "ts": "2026-04-22T13:46:01.274874+00:00",
+          "event": "image_rendered",
+          "source": "claude_pillow_v2_bingo_fixed"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.406002+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T13:58:02.406002+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.416039+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T13:58:02.416039+00:00"
+    },
+    {
+      "id": "bjj_lie_detector_1544",
+      "folder_name": "2026-04-22_15-44_MEME_bjj_lie_detector_1544",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_154622_image.png",
+      "caption": "THE LIE DETECTOR: BJJ GYM EDITION\n\n\"let's go light\" = destroy your neck\n\"just flow\" = prove something\n\"no pressure\" = maximum pressure\n\"i'm tired today\" = new submission unlocked\n\na public service announcement\n\ntag someone fluent in this dialect\n\n#bjj #bjjmemes #lightroll #translated",
+      "explanation": "Neon split-canvas, angled banner, контрастные карточки — эмоциональный lie-detector стиль. 'WHAT THEY SAY' (teal) против 'WHAT THEY MEAN' (magenta). Развлекательный ритм, BJJ-инсайдерский язык, финальный яркий pill 'PUBLIC SERVICE ANNOUNCEMENT'.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T13:44:16.963698+00:00",
+          "event": "generated",
+          "source": "claude_pillow_v2_entertainment"
+        },
+        {
+          "ts": "2026-04-22T13:44:17.069490+00:00",
+          "event": "image_rendered",
+          "source": "claude_pillow_v2"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.394555+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T13:58:02.393558+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.403169+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T13:58:02.403169+00:00"
+    },
+    {
+      "id": "bjj_belt_prophecy_1544",
+      "folder_name": "2026-04-22_15-44_MEME_bjj_belt_prophecy_1544",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_154620_image.png",
+      "caption": "BLUE BELT PROPHECY\n\nday 1: \"probably 3 years\"\nyear 2: \"almost there\"\nyear 5: \"any minute now\"\nyear 8: \"i AM the purple belt\"\n\n*STAMP: STILL BLUE*\n\ntime dilates for those who love the grind\n\n#bjj #bjjmemes #bluebeltforever #prophecy",
+      "explanation": "Вертикальный rainbow gradient с поясо-подобными горизонтальными bars. Каждый ранг — собственный цвет. Финальный красный штамп 'STILL BLUE' повёрнут -6° — эффект pre-approved печати. Эмоциональная эскалация от спокойного к gut-punch.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T13:44:17.187333+00:00",
+          "event": "generated",
+          "source": "claude_pillow_v2_entertainment"
+        },
+        {
+          "ts": "2026-04-22T13:44:17.354912+00:00",
+          "event": "image_rendered",
+          "source": "claude_pillow_v2"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.383044+00:00",
+          "event": "approved_by_user",
+          "comment": "melkovato osobenno vnizu",
+          "reviewed_at": "2026-04-22T13:58:02.382064+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:58:02.393558+00:00",
+          "event": "queued"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": null,
+      "queued_at": "2026-04-22T13:58:02.393558+00:00"
+    },
     {
       "id": "hard_truth_mat_time_1348",
       "folder_name": "2026-04-22_13-48_SERIOUS_hard_truth_mat_time_1348",
