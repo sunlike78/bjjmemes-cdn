@@ -1,4 +1,45 @@
 {
-  "generated_at": "2026-04-22T10:59:48.863513+00:00",
-  "memes": []
+  "generated_at": "2026-04-22T11:00:13.553244+00:00",
+  "memes": [
+    {
+      "id": "hard_truth_teach_down_1224",
+      "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_teach_down_1224",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_122542_image.png",
+      "caption": "The black belt who only rolls with white belts gets worse.\n\nNot slower. Worse.\n\nRolling down lets you stop seeing danger. Stop reacting to real pressure. Your body forgets what urgency feels like.\n\nYou don't maintain a skill by making it comfortable.\n\n#bjj #hardtruth #bjjblackbelt",
+      "explanation": "Парадокс черных поясов — те, кто катает только с новичками, регрессируют. Комфортная тренировка не поддерживает навык.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T10:25:21.947775+00:00",
+          "event": "generated",
+          "source": "manual_regen_v2"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.982859+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T10:59:47.982859+00:00"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.992260+00:00",
+          "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T11:00:13.533460+00:00",
+          "event": "posted",
+          "media_id": "17881248558554864",
+          "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
+          "posted_at": "2026-04-22T11:00:13.533460+00:00"
+        }
+      ],
+      "posted": {
+        "ts": "2026-04-22T11:00:13.533460+00:00",
+        "event": "posted",
+        "media_id": "17881248558554864",
+        "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
+        "posted_at": "2026-04-22T11:00:13.533460+00:00"
+      },
+      "rejected_by_user": null
+    }
+  ]
 }
