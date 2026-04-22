@@ -77,7 +77,16 @@ async function doSave() {
   updateSaveFab();
 
   const inFlight = new Set(state.dirtyIds);
-  const snapshot = { ...state.records };
+  // Send only records that actually have a user decision: non-pending
+  // status OR a non-empty comment. Empty "pending" scaffolding records
+  // (created automatically when the row first rendered) must not pollute
+  // approvals.json — otherwise review_apply gets a file full of no-ops.
+  const snapshot = {};
+  for (const [id, r] of Object.entries(state.records)) {
+    const hasDecision = r && (r.status === "approved" || r.status === "rejected");
+    const hasComment = r && r.comment && r.comment.trim().length > 0;
+    if (hasDecision || hasComment) snapshot[id] = r;
+  }
 
   try {
     let newSha;
