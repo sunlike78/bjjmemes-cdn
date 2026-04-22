@@ -1,4 +1,73 @@
 {
-  "generated_at": "2026-04-22T09:34:30.285066+00:00",
-  "memes": []
+  "generated_at": "2026-04-22T10:59:50.103651+00:00",
+  "memes": [
+    {
+      "id": "hard_truth_belt_lag_1224",
+      "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_belt_lag_1224",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_122540_image.png",
+      "caption": "Your belt color tells the room what you knew six months ago.\nYour rolls today tell them what you know now.\n\nBlue belts who roll like purple belts exist in every gym.\nPurple belts who roll like blue belts exist in every gym too.\n\nTrain for what you want the rolls to say.\n\n#bjj #hardtruth #bjjjourney",
+      "explanation": "Пояс — запаздывающий индикатор. Тебе его дали за то, что ты мог полгода назад. Сегодняшние роли показывают реальный уровень.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T10:25:08.397056+00:00",
+          "event": "generated",
+          "source": "manual_regen_v2"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.982859+00:00",
+          "event": "rejected_by_user",
+          "comment": "Все хорошо, но почему в слове Room первые три буквы красные? Непонятно.",
+          "reviewed_at": "2026-04-22T10:59:47.982859+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T10:59:47.982859+00:00",
+        "event": "rejected_by_user",
+        "comment": "Все хорошо, но почему в слове Room первые три буквы красные? Непонятно.",
+        "reviewed_at": "2026-04-22T10:59:47.982859+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T10:59:47.982859+00:00",
+        "event": "rejected_by_user",
+        "comment": "Все хорошо, но почему в слове Room первые три буквы красные? Непонятно.",
+        "reviewed_at": "2026-04-22T10:59:47.982859+00:00"
+      }
+    },
+    {
+      "id": "bjj_identity_crisis_1224",
+      "folder_name": "2026-04-22_12-24_MEME_bjj_identity_crisis_1224",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_122536_image.png",
+      "caption": "a 65kg white belt with six months on the mat just smashed me in 90 seconds\ni have a blue belt\ni'm having a moment\nhelp\n\n#bjj #bjjmemes #bluebeltblues #humbled",
+      "explanation": "Shitpost-энергия. Момент, когда лёгкий новичок технично сливает тебя за полторы минуты. Играет на экзистенциальной тревоге синих поясов — 'blue belt blues'. Пояс ничего не гарантирует.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T10:25:02.136357+00:00",
+          "event": "generated",
+          "source": "manual_regen_v2"
+        },
+        {
+          "ts": "2026-04-22T10:59:47.974712+00:00",
+          "event": "rejected_by_user",
+          "comment": " Если ты раздален 65 кг человеком, это как-то не звучит. Должно быть 120 кг белый.",
+          "reviewed_at": "2026-04-22T10:59:47.974712+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T10:59:47.974712+00:00",
+        "event": "rejected_by_user",
+        "comment": " Если ты раздален 65 кг человеком, это как-то не звучит. Должно быть 120 кг белый.",
+        "reviewed_at": "2026-04-22T10:59:47.974712+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T10:59:47.974712+00:00",
+        "event": "rejected_by_user",
+        "comment": " Если ты раздален 65 кг человеком, это как-то не звучит. Должно быть 120 кг белый.",
+        "reviewed_at": "2026-04-22T10:59:47.974712+00:00"
+      }
+    }
+  ]
 }
