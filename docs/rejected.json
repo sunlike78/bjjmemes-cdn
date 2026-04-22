@@ -1,6 +1,158 @@
 {
-  "generated_at": "2026-04-22T12:39:21.323012+00:00",
+  "generated_at": "2026-04-22T13:03:09.864790+00:00",
   "memes": [
+    {
+      "id": "bjj_just_move_1348",
+      "folder_name": "2026-04-22_13-48_MEME_bjj_just_move_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143856_image.png",
+      "caption": "coach says \"just move\"\n\nwhite belt: *flops like a fish*\nblue belt: *moves into worse position*\npurple belt: *moves into better position by accident*\nblack belt: already moved, already submitted you\n\n#bjj #bjjmemes #justmove #beltprogression",
+      "explanation": "'Just move' — универсальная тренерская подсказка, которая означает совершенно разные вещи на разных поясах. Шутка раскрывает эволюцию понимания: от рыбьих дёрганий белого пояса до невидимой предсказующей атаки чёрного. Комедия прогрессии через одну и ту же фразу.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:51:23.233202+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:51:44.588854+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 21.4
+        },
+        {
+          "ts": "2026-04-22T11:54:04.269650+00:00",
+          "event": "qa_failed",
+          "reviewer": "claude",
+          "note": "belt color lock FAILED in 2 of 4 panels: BLUE panel shows brown belt, BLACK panel shows blue belt. Regen required."
+        },
+        {
+          "ts": "2026-04-22T12:37:54.720469+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1",
+          "reason": "watermark safe-zone fix",
+          "elapsed_seconds": 25.1
+        },
+        {
+          "ts": "2026-04-22T12:39:24.264683+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "watermark safe-zone fix OK (ALREADY DONE moved to top), but belt color lock failed in 3/4 panels — belts not clearly visible. Consider another regen."
+        },
+        {
+          "ts": "2026-04-22T13:03:02.355077+00:00",
+          "event": "rejected_by_user",
+          "comment": "Не хватает точности на картинки. Картинка пишет про белые поясы, но на картинке у всех пояса черные. Помнишь, я говорил, надо всегда детально описывать картинку.",
+          "reviewed_at": "2026-04-22T13:03:02.355077+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:03:02.355077+00:00",
+        "event": "rejected_by_user",
+        "comment": "Не хватает точности на картинки. Картинка пишет про белые поясы, но на картинке у всех пояса черные. Помнишь, я говорил, надо всегда детально описывать картинку.",
+        "reviewed_at": "2026-04-22T13:03:02.355077+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:03:02.355077+00:00",
+        "event": "rejected_by_user",
+        "comment": "Не хватает точности на картинки. Картинка пишет про белые поясы, но на картинке у всех пояса черные. Помнишь, я говорил, надо всегда детально описывать картинку.",
+        "reviewed_at": "2026-04-22T13:03:02.355077+00:00"
+      }
+    },
+    {
+      "id": "hard_truth_tech_vs_str_1224",
+      "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_tech_vs_str_1224",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143849_image.png",
+      "caption": "\"Technique beats strength\" is true.\n\nBut only when the technique gap is bigger than the strength gap.\n\nThe stronger guy with decent technique beats the skilled guy with no strength.\nEvery. Single. Time.\n\nStop using the phrase as an excuse to skip the weight room.\n\n#bjj #hardtruth #strengthandconditioning",
+      "explanation": "Классическая мантра 'техника побеждает силу' имеет оговорку. Верно, только если разрыв в технике больше, чем разрыв в силе. Сила и техника не конкуренты, а множители.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T10:25:15.453571+00:00",
+          "event": "generated",
+          "source": "manual_regen_v2"
+        },
+        {
+          "ts": "2026-04-22T13:03:02.335164+00:00",
+          "event": "rejected_by_user",
+          "comment": "Буквы прокрасились у strength сила не полностью.",
+          "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:03:02.335164+00:00",
+        "event": "rejected_by_user",
+        "comment": "Буквы прокрасились у strength сила не полностью.",
+        "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:03:02.335164+00:00",
+        "event": "rejected_by_user",
+        "comment": "Буквы прокрасились у strength сила не полностью.",
+        "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+      }
+    },
+    {
+      "id": "bjj_academy_red_flags_1348",
+      "folder_name": "2026-04-22_13-48_MEME_bjj_academy_red_flags_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143851_image.png",
+      "caption": "signs you walked into the wrong open mat\n\n— everyone has four stripes on their black belt\n— the white belts look like they fought in a war\n— the coach is warming up with one-arm handstand pushups\n— someone is taping knuckles\n\nrun. do not bow. run.\n\n#bjj #bjjmemes #wrongacademy #redflag",
+      "explanation": "Пришёл на open mat в незнакомую академию, оглянулся — и понял, что все здесь опаснее чем ты. Шутка перечисляет четыре классических red flag в cartoonish панике: четырёхстрипсовые чёрные пояса, white belts со шрамами, тренер на одноруких handstand pushups, и кто-то обматывает костяшки.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:50:54.792165+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:51:23.233202+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 28.4
+        },
+        {
+          "ts": "2026-04-22T11:54:04.263540+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "atmosphere + 5 black belts, handstand coach, text crisp"
+        },
+        {
+          "ts": "2026-04-22T12:37:29.641995+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1",
+          "reason": "watermark safe-zone fix",
+          "elapsed_seconds": 27.6
+        },
+        {
+          "ts": "2026-04-22T12:39:24.263361+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "watermark safe-zone fix OK, WRONG ACADEMY / RUN both crisp, no overlap"
+        },
+        {
+          "ts": "2026-04-22T13:03:02.335164+00:00",
+          "event": "rejected_by_user",
+          "comment": "На картинке нет ни одного упомянутого белого пояса с ашрамами.",
+          "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T13:03:02.335164+00:00",
+        "event": "rejected_by_user",
+        "comment": "На картинке нет ни одного упомянутого белого пояса с ашрамами.",
+        "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T13:03:02.335164+00:00",
+        "event": "rejected_by_user",
+        "comment": "На картинке нет ни одного упомянутого белого пояса с ашрамами.",
+        "reviewed_at": "2026-04-22T13:03:02.335164+00:00"
+      }
+    },
     {
       "id": "bjj_back_years_1348",
       "folder_name": "2026-04-22_13-48_MEME_bjj_back_years_1348",
