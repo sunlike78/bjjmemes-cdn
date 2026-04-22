@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>BJJ Memes Analytics</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1 class="title">BJJ Memes Analytics</h1>
+    <div class="counters" aria-live="polite">
+      <span class="counter" id="generated-at"></span>
+    </div>
+    <div class="topbar-right">
+      <a class="nav-link" href="index.html">&larr; Review</a>
+      <a class="nav-link" href="accepted.html">Accepted &rarr;</a>
+      <a class="nav-link" href="published.html">Published &rarr;</a>
+      <a class="nav-link" href="rejected.html">Rejected &rarr;</a>
+      <a class="nav-link nav-link-active" href="analytics.html" aria-current="page">Analytics</a>
+      <button id="refresh-btn" class="btn btn-ghost" type="button" title="Re-fetch JSON from GitHub">Refresh stats</button>
+    </div>
+  </div>
+</header>
+
+<main class="analytics-main" aria-live="polite">
+  <div id="refresh-note" class="refresh-note" hidden>
+    Stats are refreshed every 3 hours by a Windows Task Scheduler job on Vladimir's machine (BJJMemes Stats Refresh). Click again to re-fetch the JSON from GitHub in case it was updated since this page loaded.
+  </div>
+
+  <div id="load-error" class="empty-state" hidden></div>
+
+  <!-- Summary cards -->
+  <section class="section">
+    <h2 class="section-title">Overview</h2>
+    <div class="summary-grid" id="summary-grid"></div>
+  </section>
+
+  <!-- Content mix + timeline -->
+  <section class="section analytics-two-col">
+    <div class="panel">
+      <h2 class="section-title">Content mix</h2>
+      <div id="content-mix"></div>
+    </div>
+    <div class="panel">
+      <h2 class="section-title">Posts per day (last 30)</h2>
+      <div id="timeline"></div>
+    </div>
+  </section>
+
+  <!-- Top posts -->
+  <section class="section">
+    <h2 class="section-title">Top 5 posts by likes</h2>
+    <div id="top-posts" class="top-posts"></div>
+  </section>
+
+  <!-- Category engagement table -->
+  <section class="section">
+    <h2 class="section-title">Category engagement</h2>
+    <div class="table-scroll">
+      <table class="analytics-table" id="category-table">
+        <thead>
+          <tr>
+            <th data-sort="category" class="sortable">Category</th>
+            <th data-sort="count" class="sortable">Posts</th>
+            <th data-sort="avg_likes" class="sortable">Avg likes</th>
+            <th data-sort="avg_comments" class="sortable">Avg comments</th>
+            <th data-sort="avg_reach" class="sortable">Avg reach</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="table-hint">Click a column header to sort.</p>
+  </section>
+
+  <!-- Rejected reasons -->
+  <section class="section analytics-two-col">
+    <div class="panel">
+      <h2 class="section-title">Top rejection reasons</h2>
+      <ol id="rejection-reasons" class="rejection-reasons"></ol>
+    </div>
+    <div class="panel">
+      <h2 class="section-title">Rating distribution</h2>
+      <div id="rating-distribution"></div>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="analytics.js"></script>
+</body>
+</html>

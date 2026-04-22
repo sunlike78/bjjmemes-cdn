@@ -59,15 +59,22 @@ const STATS_ICONS = {
 
 function renderStats(containerEl, stats) {
   containerEl.textContent = "";
+  // Legacy-import records may be missing `stats` entirely. Show a muted
+  // note instead of hiding the row silently so the layout is consistent
+  // across cards.
   if (!stats || typeof stats !== "object") {
-    containerEl.hidden = true;
+    containerEl.hidden = false;
+    const span = document.createElement("span");
+    span.className = "stats-unavailable";
+    span.textContent = "(stats unavailable)";
+    containerEl.appendChild(span);
     return;
   }
   if (stats.error) {
     containerEl.hidden = false;
     const span = document.createElement("span");
     span.className = "stats-unavailable";
-    span.textContent = "stats unavailable";
+    span.textContent = "(stats unavailable)";
     containerEl.appendChild(span);
     return;
   }
