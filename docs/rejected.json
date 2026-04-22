@@ -1,6 +1,128 @@
 {
-  "generated_at": "2026-04-22T14:28:28.805027+00:00",
+  "generated_at": "2026-04-22T15:13:11.719368+00:00",
   "memes": [
+    {
+      "id": "bjj_wrestler_arrives_1624",
+      "folder_name": "2026-04-22_16-24_MEME_bjj_wrestler_arrives_1624",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_164234_image.png",
+      "caption": "a wrestler signed up today\n\nfirst 10 minutes: \"i'm just here to learn\"\nnext 10 minutes: flattens the entire open mat\n\nwe regret everything\n\n#bjj #bjjmemes #wrestler #tooleLate",
+      "explanation": "Классика BJJ: 'новичок' wrestler показывается на open mat и методично кладёт всех на лопатки. Two-panel: timid greeting → всеобщее уничтожение. Все BJJ-практикующие сталкивались с этим. Tagging friend — natural engagement.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T14:26:30.210997+00:00",
+          "event": "generated",
+          "source": "batch5_funny_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T14:26:59.079651+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 28.9
+        },
+        {
+          "ts": "2026-04-22T14:28:04.274854+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "speech bubble typos: eorry/forrg/sorry (should be sorry sorry sorry); wrestler belt unclear in panel 1. Recommend regen."
+        },
+        {
+          "ts": "2026-04-22T14:31:32.047317+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1",
+          "reason": "fix speech bubble typos (eorry/forrg -> sorry) + belt visibility panel 1"
+        },
+        {
+          "ts": "2026-04-22T14:38:10.859734+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1",
+          "reason": "fix speech bubble typos (eorry/forrg -> sorry) + belt visibility panel 1"
+        },
+        {
+          "ts": "2026-04-22T14:42:23.978410+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "high quality: sorry/sorry/sorry crisp, p1 white belt visible — but p2 wrestler belt rendered blue instead of white (GPT logic leak). Ship anyway."
+        },
+        {
+          "ts": "2026-04-22T15:13:02.599619+00:00",
+          "event": "rejected_by_user",
+          "comment": "Плохо. Во-первых, стиль картинки такой же, как у предыдущей. Они должны меняться. А во-вторых, чувак пришел как новичок с белом поясе и 10 минутами позже получил синий пояс. Но что за тупизм?",
+          "reviewed_at": "2026-04-22T15:13:02.599619+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T15:13:02.599619+00:00",
+        "event": "rejected_by_user",
+        "comment": "Плохо. Во-первых, стиль картинки такой же, как у предыдущей. Они должны меняться. А во-вторых, чувак пришел как новичок с белом поясе и 10 минутами позже получил синий пояс. Но что за тупизм?",
+        "reviewed_at": "2026-04-22T15:13:02.599619+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T15:13:02.599619+00:00",
+        "event": "rejected_by_user",
+        "comment": "Плохо. Во-первых, стиль картинки такой же, как у предыдущей. Они должны меняться. А во-вторых, чувак пришел как новичок с белом поясе и 10 минутами позже получил синий пояс. Но что за тупизм?",
+        "reviewed_at": "2026-04-22T15:13:02.599619+00:00"
+      }
+    },
+    {
+      "id": "bjj_one_small_adjustment_1624",
+      "folder_name": "2026-04-22_16-24_MEME_bjj_one_small_adjustment_1624",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_164229_image.png",
+      "caption": "coach: \"one small adjustment\"\n\n30 seconds in: grip detail\n2 minutes in: hip angle philosophy\n7 minutes in: 4 concepts i've never heard of\n15 minutes in: whiteboard, arrows, a tangent about judo\n\nmy partner and i just stand there\n\n#bjj #bjjmemes #coachtalk #smalldetail",
+      "explanation": "Классический BJJ-парадокс: 'одно небольшое уточнение' от тренера превращается в 15-минутную лекцию с whiteboard-диаграммами. 4-панельная временная эскалация, whiteboard заполняется всё сильнее. Партнёры стоят статуями — мы все узнаём это.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T14:25:13.055115+00:00",
+          "event": "generated",
+          "source": "batch5_funny_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T14:25:36.674656+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 23.6
+        },
+        {
+          "ts": "2026-04-22T14:28:04.271846+00:00",
+          "event": "qa_warning",
+          "reviewer": "claude",
+          "note": "whiteboard text semi-garbled (LIR ANGE / EASE LEVER) — reads as plausible BJJ whiteboard chaos, keep"
+        },
+        {
+          "ts": "2026-04-22T14:42:02.312243+00:00",
+          "event": "image_regenerated",
+          "source": "openai_gpt_image_1_high",
+          "reason": "higher quality + stricter whiteboard text rules"
+        },
+        {
+          "ts": "2026-04-22T14:42:23.978410+00:00",
+          "event": "qa_passed_pending_review",
+          "reviewer": "claude",
+          "note": "high quality regen completed — manual visual check needed"
+        },
+        {
+          "ts": "2026-04-22T15:13:02.583027+00:00",
+          "event": "rejected_by_user",
+          "comment": "Тут проблема. Якобы тренер что-то там объясняет, но на самом деле на картинке один черный пояс объясняет другому черному поясу. Такое не бывает.",
+          "reviewed_at": "2026-04-22T15:13:02.583027+00:00"
+        }
+      ],
+      "posted": null,
+      "rejected_by_user": {
+        "ts": "2026-04-22T15:13:02.583027+00:00",
+        "event": "rejected_by_user",
+        "comment": "Тут проблема. Якобы тренер что-то там объясняет, но на самом деле на картинке один черный пояс объясняет другому черному поясу. Такое не бывает.",
+        "reviewed_at": "2026-04-22T15:13:02.583027+00:00"
+      },
+      "rejection": {
+        "ts": "2026-04-22T15:13:02.583027+00:00",
+        "event": "rejected_by_user",
+        "comment": "Тут проблема. Якобы тренер что-то там объясняет, но на самом деле на картинке один черный пояс объясняет другому черному поясу. Такое не бывает.",
+        "reviewed_at": "2026-04-22T15:13:02.583027+00:00"
+      }
+    },
     {
       "id": "bjj_tap_gauge_1544",
       "folder_name": "2026-04-22_15-44_MEME_bjj_tap_gauge_1544",
