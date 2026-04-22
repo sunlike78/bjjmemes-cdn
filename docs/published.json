@@ -1,46 +1,6 @@
 {
-  "generated_at": "2026-04-22T12:15:54.004965Z",
+  "generated_at": "2026-04-22T12:17:20.383480+00:00",
   "memes": [
-    {
-      "id": "legacy_17881248558554864",
-      "folder_name": null,
-      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/legacy/17881248558554864.jpg",
-      "caption": "The black belt who only rolls with white belts gets worse.\n\nNot slower. Worse.\n\nRolling down lets you stop seeing danger. Stop reacting to real pressure. Your body forgets what urgency feels like.\n\nYou don't maintain a skill by making it comfortable.\n\n#bjj #hardtruth #bjjblackbelt",
-      "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
-      "posted_at": "2026-04-22T11:00:11+0000",
-      "media_id": "17881248558554864",
-      "category": "legacy_import",
-      "source": "instagram_native_import",
-      "action_log": [
-        {
-          "ts": "2026-04-22T11:00:11+0000",
-          "event": "posted",
-          "media_id": "17881248558554864",
-          "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
-          "note": "imported from Instagram Graph API (posted outside pipeline)"
-        }
-      ]
-    },
-    {
-      "id": "legacy_18359829019233623",
-      "folder_name": null,
-      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/legacy/18359829019233623.jpg",
-      "caption": "wrote my entire LinkedIn bio around it\nmade a youtube short\nturns out he had food poisoning too\n\n#bjj #bjjmemes #purplebelt #bluebelt #humbled",
-      "permalink": "https://www.instagram.com/p/DXZXqEsApel/",
-      "posted_at": "2026-04-21T14:04:30+0000",
-      "media_id": "18359829019233623",
-      "category": "legacy_import",
-      "source": "instagram_native_import",
-      "action_log": [
-        {
-          "ts": "2026-04-21T14:04:30+0000",
-          "event": "posted",
-          "media_id": "18359829019233623",
-          "permalink": "https://www.instagram.com/p/DXZXqEsApel/",
-          "note": "imported from Instagram Graph API (posted outside pipeline)"
-        }
-      ]
-    },
     {
       "id": "hard_truth_teach_down_1224",
       "folder_name": "2026-04-22_12-24_SERIOUS_hard_truth_teach_down_1224",
@@ -80,6 +40,9 @@
         "posted_at": "2026-04-22T11:00:13.533460+00:00"
       },
       "rejected_by_user": null,
+      "media_id": "17881248558554864",
+      "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
+      "posted_at": "2026-04-22T11:00:13.533460+00:00",
       "stats": {
         "likes": 0,
         "comments": 0,
@@ -92,6 +55,26 @@
           "impressions"
         ]
       }
+    },
+    {
+      "id": "legacy_18359829019233623",
+      "folder_name": null,
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/legacy/18359829019233623.jpg",
+      "caption": "wrote my entire LinkedIn bio around it\nmade a youtube short\nturns out he had food poisoning too\n\n#bjj #bjjmemes #purplebelt #bluebelt #humbled",
+      "permalink": "https://www.instagram.com/p/DXZXqEsApel/",
+      "posted_at": "2026-04-21T14:04:30+0000",
+      "media_id": "18359829019233623",
+      "category": "legacy_import",
+      "source": "instagram_native_import",
+      "action_log": [
+        {
+          "ts": "2026-04-21T14:04:30+0000",
+          "event": "posted",
+          "media_id": "18359829019233623",
+          "permalink": "https://www.instagram.com/p/DXZXqEsApel/",
+          "note": "imported from Instagram Graph API"
+        }
+      ]
     }
   ]
 }
