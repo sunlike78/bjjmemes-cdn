@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T11:00:23.304669+00:00",
+  "generated_at": "2026-04-23T11:08:13.937785+00:00",
   "memes": [
     {
       "id": "bjj_gi_smell_1348",
@@ -77,7 +77,7 @@
         "saved": 0,
         "views": 0,
         "impressions": null,
-        "fetched_at": "2026-04-23T11:00:17.869275+00:00",
+        "fetched_at": "2026-04-23T11:08:09.218326+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -158,13 +158,13 @@
         "ts": "2026-04-22T15:34:51.085052+00:00"
       },
       "stats": {
-        "likes": 1,
+        "likes": 2,
         "comments": 0,
-        "reach": 5,
+        "reach": 6,
         "saved": 0,
-        "views": 7,
+        "views": 12,
         "impressions": null,
-        "fetched_at": "2026-04-23T08:08:04.590164+00:00",
+        "fetched_at": "2026-04-23T11:08:04.703474+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -213,13 +213,13 @@
       "permalink": "https://www.instagram.com/p/DXbnWLLDRS2/",
       "posted_at": "2026-04-22T11:00:13.533460+00:00",
       "stats": {
-        "likes": 0,
+        "likes": 2,
         "comments": 0,
-        "reach": 3,
+        "reach": 4,
         "saved": 1,
-        "views": 4,
+        "views": 10,
         "impressions": null,
-        "fetched_at": "2026-04-23T08:08:06.481782+00:00",
+        "fetched_at": "2026-04-23T11:08:06.895380+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -251,7 +251,7 @@
         "saved": 1,
         "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-23T11:00:23.304669+00:00",
+        "fetched_at": "2026-04-23T11:08:13.937785+00:00",
         "_refused_metrics": [
           "impressions"
         ]
