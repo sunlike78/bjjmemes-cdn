@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-22T23:08:12.593688+00:00",
+  "fetched_at": "2026-04-23T02:08:13.934762+00:00",
   "profile": {
     "username": "bjjmemewtf",
     "account_type": "BUSINESS",
@@ -8,14 +8,10 @@
     "follows_count": 26,
     "biography": "BJJ memes created by a singular, concussed brain cell",
     "name": "BJJ Meme WTF",
-    "profile_picture_url": "https://scontent-ham3-1.cdninstagram.com/v/t51.82787-19/658850630_18078008876234978_4716152169109602195_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=111&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDI0LkMzIn0%3D&_nc_ohc=krbVpsXDL30Q7kNvwEUB-hG&_nc_oc=Adrhjv4mV0VjscIMij06pO5_F2Vtkrir4W506nYwmbT5VT8hOXQwH7DYeujzo0qfjBQnrFETIX38QfPB-GzSFyKv&_nc_zt=24&_nc_ht=scontent-ham3-1.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=VQQhD-YqYjAJX1o6LOg5nQ&_nc_tpa=Q5bMBQGHYulYtL98KMAVUsNhSWIoWFeVB2Bm2MoX6jQpzYfAXrz2xpfcmqOekfodPRTCQFa67aAYJcNjUw&oh=00_Af29dn7XMO5MCAWOXTiCmuxTqp4-WT2EqAZB5Wea_KMpCw&oe=69EF19A0"
+    "profile_picture_url": "https://scontent-fra3-2.cdninstagram.com/v/t51.82787-19/658850630_18078008876234978_4716152169109602195_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=111&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDI0LkMzIn0%3D&_nc_ohc=krbVpsXDL30Q7kNvwFd3Oux&_nc_oc=AdqQJbkCSCkUnJLomA6R3dTjetca2NiglD5mLwAJlKOiFjl42MzCRgtuK2zkjr49Owg&_nc_zt=24&_nc_ht=scontent-fra3-2.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=V32u52sOQNq3dRWSrZWFoA&_nc_tpa=Q5bMBQHOf4_7-aAyXpBSdS5dzj5qEDsN5WANTFu-5EdGIlUDQXVlHkX1D7uoMekSLg1fpstmSPaDGYAzFQ&oh=00_Af0DEchC_WCJ9Y2gPNC0SYTGDR7WBWPjeng_GBYlYhKTUw&oe=69EF51E0"
   },
   "trend": {
     "reach": [
-      {
-        "date": "2026-03-23",
-        "value": 0
-      },
       {
         "date": "2026-03-24",
         "value": 0
@@ -131,6 +127,10 @@
       {
         "date": "2026-04-21",
         "value": 6
+      },
+      {
+        "date": "2026-04-22",
+        "value": 6
       }
     ],
     "profile_views": [],
@@ -139,7 +139,7 @@
   },
   "rollups": {
     "reach": {
-      "week": 296,
+      "week": 297,
       "days_28": 1206
     },
     "profile_views": {},
