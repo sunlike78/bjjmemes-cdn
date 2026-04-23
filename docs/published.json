@@ -1,6 +1,88 @@
 {
-  "generated_at": "2026-04-23T08:08:11.322464+00:00",
+  "generated_at": "2026-04-23T11:00:23.304669+00:00",
   "memes": [
+    {
+      "id": "bjj_gi_smell_1348",
+      "folder_name": "2026-04-22_13-48_MEME_bjj_gi_smell_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143854_image.png",
+      "caption": "the three ages of a gi\n\nmonday: fresh, white, hopeful\nwednesday: acceptable\nfriday open mat: weapon of mass destruction\n\ntag the guy who does NOT wash between sessions\n\n#bjj #bjjmemes #washyourgi #openmatcrimes",
+      "explanation": "Любой бжжист знает, что пятничный open mat — зона биологической войны. Три панели: понедельник (чистота), среда (терпимо), пятница (оружие массового поражения). Шуточный upgrade по шкале разрушения — в стиле ядерных предупреждающих знаков.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:49:18.755159+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:49:41.929605+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 23.2
+        },
+        {
+          "ts": "2026-04-22T11:54:04.263540+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "all 3 gi progression panels render cleanly"
+        },
+        {
+          "ts": "2026-04-22T13:03:02.341979+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T13:03:02.341431+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:03:02.353536+00:00",
+          "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.085052+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 7,
+          "image_score": 8,
+          "reasoning": "3 gi progression MONDAY/WEDNESDAY/FRIDAY — biohazard joke lands. Static composition is OK for gear-transformation trope."
+        },
+        {
+          "ts": "2026-04-23T11:00:15.593831+00:00",
+          "event": "posted",
+          "media_id": "18109913761845830",
+          "permalink": "https://www.instagram.com/p/DXeMJR-jTmx/",
+          "posted_at": "2026-04-23T11:00:15.593315+00:00"
+        }
+      ],
+      "posted": {
+        "ts": "2026-04-23T11:00:15.593831+00:00",
+        "event": "posted",
+        "media_id": "18109913761845830",
+        "permalink": "https://www.instagram.com/p/DXeMJR-jTmx/",
+        "posted_at": "2026-04-23T11:00:15.593315+00:00"
+      },
+      "rejected_by_user": null,
+      "media_id": "18109913761845830",
+      "permalink": "https://www.instagram.com/p/DXeMJR-jTmx/",
+      "posted_at": "2026-04-23T11:00:15.593315+00:00",
+      "claude_score": {
+        "text_score": 7,
+        "image_score": 8,
+        "reasoning": "3 gi progression MONDAY/WEDNESDAY/FRIDAY — biohazard joke lands. Static composition is OK for gear-transformation trope.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.085052+00:00"
+      },
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reach": 0,
+        "saved": 0,
+        "views": 0,
+        "impressions": null,
+        "fetched_at": "2026-04-23T11:00:17.869275+00:00",
+        "_refused_metrics": [
+          "impressions"
+        ]
+      }
+    },
     {
       "id": "bjj_inj_esc_1224",
       "folder_name": "2026-04-22_12-24_MEME_bjj_inj_esc_1224",
@@ -163,13 +245,13 @@
         }
       ],
       "stats": {
-        "likes": 0,
+        "likes": 2,
         "comments": 0,
-        "reach": 7,
+        "reach": 8,
         "saved": 1,
-        "views": 9,
+        "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-23T08:08:11.322464+00:00",
+        "fetched_at": "2026-04-23T11:00:23.304669+00:00",
         "_refused_metrics": [
           "impressions"
         ]
