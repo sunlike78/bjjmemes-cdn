@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-04-23T17:08:24.169896+00:00",
+  "fetched_at": "2026-04-23T20:08:15.702812+00:00",
   "profile": {
     "username": "bjjmemewtf",
     "account_type": "BUSINESS",
@@ -8,15 +8,140 @@
     "follows_count": 26,
     "biography": "BJJ memes created by a singular, concussed brain cell",
     "name": "BJJ Meme WTF",
-    "profile_picture_url": "https://scontent-fra3-2.cdninstagram.com/v/t51.82787-19/658850630_18078008876234978_4716152169109602195_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=111&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDI0LkMzIn0%3D&_nc_ohc=oFomcrU4xHwQ7kNvwE_MBmy&_nc_oc=Adp1nbqw-Vu_KOTfDYeU7IBd9BbssF6_npUlQ2yFqyNOQOamtVVQQ-priYvXl9y4JgHLTi4sYhzSqOK13DmWypq8&_nc_zt=24&_nc_ht=scontent-fra3-2.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=DF9tTCz6Fp99LSSTGqYHGg&_nc_tpa=Q5bMBQHqo0vYKJYHxzCadDYUBBk6ReW3yETP8guGnT3mr5vURKdwYtrKU8pE0gRyFwXOvdSE2HcI8UqL4Q&oh=00_Af3Y8wk7SchzIkhzgIFU2ovpWuANDCFr-z5EYb9IYelTaw&oe=69F032E0"
+    "profile_picture_url": "https://scontent-fra3-2.cdninstagram.com/v/t51.82787-19/658850630_18078008876234978_4716152169109602195_n.jpg?stp=dst-jpg_s206x206_tt6&_nc_cat=111&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDI0LkMzIn0%3D&_nc_ohc=oFomcrU4xHwQ7kNvwE_MBmy&_nc_oc=Adp1nbqw-Vu_KOTfDYeU7IBd9BbssF6_npUlQ2yFqyNOQOamtVVQQ-priYvXl9y4JgHLTi4sYhzSqOK13DmWypq8&_nc_zt=24&_nc_ht=scontent-fra3-2.cdninstagram.com&edm=AP4hL3IEAAAA&_nc_gid=sVabLtYEFLd8L2ktT4_Jsg&_nc_tpa=Q5bMBQGdSS_tkiNAgeMvc-dj0_8JRQpzgjbs4EANgD7rK4DFRPMAei5o8r3cU-I6ExRiOr-yDQT2aafsqA&oh=00_Af2Iw1yFRRg5isbh3qlaiiRZkSJ52iK2K63VWsDp8fUU2Q&oe=69F032E0"
   },
   "trend": {
+    "reach": [
+      {
+        "date": "2026-03-24",
+        "value": 0
+      },
+      {
+        "date": "2026-03-25",
+        "value": 0
+      },
+      {
+        "date": "2026-03-26",
+        "value": 0
+      },
+      {
+        "date": "2026-03-27",
+        "value": 0
+      },
+      {
+        "date": "2026-03-28",
+        "value": 0
+      },
+      {
+        "date": "2026-03-29",
+        "value": 0
+      },
+      {
+        "date": "2026-03-30",
+        "value": 0
+      },
+      {
+        "date": "2026-03-31",
+        "value": 0
+      },
+      {
+        "date": "2026-04-01",
+        "value": 0
+      },
+      {
+        "date": "2026-04-02",
+        "value": 0
+      },
+      {
+        "date": "2026-04-03",
+        "value": 0
+      },
+      {
+        "date": "2026-04-04",
+        "value": 0
+      },
+      {
+        "date": "2026-04-05",
+        "value": 0
+      },
+      {
+        "date": "2026-04-06",
+        "value": 0
+      },
+      {
+        "date": "2026-04-07",
+        "value": 0
+      },
+      {
+        "date": "2026-04-08",
+        "value": 0
+      },
+      {
+        "date": "2026-04-09",
+        "value": 19
+      },
+      {
+        "date": "2026-04-10",
+        "value": 206
+      },
+      {
+        "date": "2026-04-11",
+        "value": 4
+      },
+      {
+        "date": "2026-04-12",
+        "value": 3
+      },
+      {
+        "date": "2026-04-13",
+        "value": 234
+      },
+      {
+        "date": "2026-04-14",
+        "value": 29
+      },
+      {
+        "date": "2026-04-15",
+        "value": 28
+      },
+      {
+        "date": "2026-04-16",
+        "value": 7
+      },
+      {
+        "date": "2026-04-17",
+        "value": 127
+      },
+      {
+        "date": "2026-04-18",
+        "value": 10
+      },
+      {
+        "date": "2026-04-19",
+        "value": 0
+      },
+      {
+        "date": "2026-04-20",
+        "value": 2
+      },
+      {
+        "date": "2026-04-21",
+        "value": 6
+      },
+      {
+        "date": "2026-04-22",
+        "value": 6
+      }
+    ],
     "profile_views": [],
     "accounts_engaged": [],
     "follower_count": []
   },
   "rollups": {
-    "reach": {},
+    "reach": {
+      "week": 289,
+      "days_28": 1208
+    },
     "profile_views": {},
     "accounts_engaged": {},
     "views": {},
