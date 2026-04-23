@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T14:08:14.369265+00:00",
+  "generated_at": "2026-04-23T17:08:22.869595+00:00",
   "memes": [
     {
       "id": "bjj_gi_smell_1348",
@@ -77,7 +77,7 @@
         "saved": 0,
         "views": 4,
         "impressions": null,
-        "fetched_at": "2026-04-23T14:08:09.143686+00:00",
+        "fetched_at": "2026-04-23T17:08:13.803699+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -164,7 +164,7 @@
         "saved": 0,
         "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-23T14:08:05.017850+00:00",
+        "fetched_at": "2026-04-23T17:08:04.917806+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -217,9 +217,9 @@
         "comments": 0,
         "reach": 5,
         "saved": 1,
-        "views": 12,
+        "views": 0,
         "impressions": null,
-        "fetched_at": "2026-04-23T14:08:07.097871+00:00",
+        "fetched_at": "2026-04-23T17:08:11.611791+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -247,11 +247,11 @@
       "stats": {
         "likes": 2,
         "comments": 0,
-        "reach": 9,
+        "reach": 0,
         "saved": 1,
-        "views": 15,
+        "views": 16,
         "impressions": null,
-        "fetched_at": "2026-04-23T14:08:14.362125+00:00",
+        "fetched_at": "2026-04-23T17:08:22.869595+00:00",
         "_refused_metrics": [
           "impressions"
         ]
