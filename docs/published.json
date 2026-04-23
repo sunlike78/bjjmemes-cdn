@@ -1,6 +1,88 @@
 {
-  "generated_at": "2026-04-23T20:08:14.429563+00:00",
+  "generated_at": "2026-04-23T23:00:33.860628+00:00",
   "memes": [
+    {
+      "id": "hard_truth_injury_tax_1348",
+      "folder_name": "2026-04-22_13-48_SERIOUS_hard_truth_injury_tax_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143908_image.png",
+      "caption": "Injuries are not badges.\nInjuries are training debt.\n\nEvery 'I'll push through' is two weeks of missed training next month.\n\nToughness is not pretending.\nToughness is coming back healthy.\n\n#bjj #hardtruth #recovery #bjjlongevity",
+      "explanation": "Травмы — не медали, а долги. Каждое 'я потерплю' превращается в недели пропущенной тренировки через месяц. Настоящая крепость — не игнорировать боль, а возвращаться здоровым снова и снова. Правда для тех, кто строит долгосрочную практику, а не короткое 'пока держусь'.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:52:06.107517+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:52:22.813487+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 16.7
+        },
+        {
+          "ts": "2026-04-22T11:54:04.266186+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "DEBT accented red, ice pack backdrop, typography clean"
+        },
+        {
+          "ts": "2026-04-22T13:13:02.332917+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T13:13:02.332917+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:13:02.347227+00:00",
+          "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.092930+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 9,
+          "image_score": 7,
+          "reasoning": "sharp hard-truth quote — INJURIES ARE NOT BADGES, THEY ARE DEBT. DEBT in red accent works. Text is the star; visual support is quiet but appropriate for serious lane."
+        },
+        {
+          "ts": "2026-04-23T23:00:26.325595+00:00",
+          "event": "posted",
+          "media_id": "18325538008251112",
+          "permalink": "https://www.instagram.com/p/DXfejB7grIJ/",
+          "posted_at": "2026-04-23T23:00:26.325595+00:00"
+        }
+      ],
+      "posted": {
+        "ts": "2026-04-23T23:00:26.325595+00:00",
+        "event": "posted",
+        "media_id": "18325538008251112",
+        "permalink": "https://www.instagram.com/p/DXfejB7grIJ/",
+        "posted_at": "2026-04-23T23:00:26.325595+00:00"
+      },
+      "rejected_by_user": null,
+      "media_id": "18325538008251112",
+      "permalink": "https://www.instagram.com/p/DXfejB7grIJ/",
+      "posted_at": "2026-04-23T23:00:26.325595+00:00",
+      "claude_score": {
+        "text_score": 9,
+        "image_score": 7,
+        "reasoning": "sharp hard-truth quote — INJURIES ARE NOT BADGES, THEY ARE DEBT. DEBT in red accent works. Text is the star; visual support is quiet but appropriate for serious lane.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.092930+00:00"
+      },
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reach": 0,
+        "saved": 0,
+        "views": 0,
+        "impressions": null,
+        "fetched_at": "2026-04-23T23:00:28.721153+00:00",
+        "_refused_metrics": [
+          "impressions"
+        ]
+      }
+    },
     {
       "id": "bjj_gi_smell_1348",
       "folder_name": "2026-04-22_13-48_MEME_bjj_gi_smell_1348",
@@ -251,7 +333,7 @@
         "saved": 1,
         "views": 19,
         "impressions": null,
-        "fetched_at": "2026-04-23T20:08:14.427564+00:00",
+        "fetched_at": "2026-04-23T23:00:33.859050+00:00",
         "_refused_metrics": [
           "impressions"
         ]
