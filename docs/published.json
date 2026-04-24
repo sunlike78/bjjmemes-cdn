@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T11:00:26.501845+00:00",
+  "generated_at": "2026-04-24T11:08:20.161377+00:00",
   "memes": [
     {
       "id": "hard_truth_mat_time_1348",
@@ -77,7 +77,7 @@
         "saved": 0,
         "views": 0,
         "impressions": null,
-        "fetched_at": "2026-04-24T11:00:21.022566+00:00",
+        "fetched_at": "2026-04-24T11:08:15.019549+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -155,11 +155,11 @@
       "stats": {
         "likes": 0,
         "comments": 0,
-        "reach": 0,
+        "reach": 1,
         "saved": 0,
-        "views": 0,
+        "views": 4,
         "impressions": null,
-        "fetched_at": "2026-04-24T08:08:10.535603+00:00",
+        "fetched_at": "2026-04-24T11:08:11.787644+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -241,7 +241,7 @@
         "saved": 0,
         "views": 6,
         "impressions": null,
-        "fetched_at": "2026-04-24T08:08:08.400530+00:00",
+        "fetched_at": "2026-04-24T11:08:09.354674+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -328,7 +328,7 @@
         "saved": 0,
         "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-24T08:08:03.772979+00:00",
+        "fetched_at": "2026-04-24T11:08:04.604977+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -383,7 +383,7 @@
         "saved": 1,
         "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-24T08:08:06.172306+00:00",
+        "fetched_at": "2026-04-24T11:08:06.797677+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -415,7 +415,7 @@
         "saved": 1,
         "views": 20,
         "impressions": null,
-        "fetched_at": "2026-04-24T11:00:26.501845+00:00",
+        "fetched_at": "2026-04-24T11:08:20.161377+00:00",
         "_refused_metrics": [
           "impressions"
         ]
