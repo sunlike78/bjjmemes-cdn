@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T11:00:27.743984+00:00",
+  "generated_at": "2026-04-24T23:00:08.367100+00:00",
   "memes": [
     {
       "id": "yoga_class_bro",
@@ -763,61 +763,6 @@
         "text_score": 8,
         "image_score": 8,
         "reasoning": "purple + black belt correct, I CAN SEE SOUNDS NOW bottom-left placement after safe-zone regen, coach + exhausted student chemistry works.",
-        "reviewer": "claude",
-        "ts": "2026-04-22T15:34:51.085052+00:00"
-      }
-    },
-    {
-      "id": "bjj_new_belt_reality_1348",
-      "folder_name": "2026-04-22_13-48_MEME_bjj_new_belt_reality_1348",
-      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143901_image.png",
-      "caption": "belt promotion energy vs next roll energy\n\nceremony day: i am the chosen one\nfive minutes into next roll: i am a lost tourist\n\nthe universe does not care about your ceremony\n\n#bjj #bjjmemes #beltpromotion #humbled",
-      "explanation": "Радость получения нового пояса длится ровно до следующего роллинга, где новоиспечённый пояс получает унизительное напоминание о реальности. Шутка о разрыве между церемонией и матой — самообман стерильной иерархии против беспощадной реальности спарринга.",
-      "category": null,
-      "action_log": [
-        {
-          "ts": "2026-04-22T11:50:07.757352+00:00",
-          "event": "generated",
-          "source": "batch10_openai_gpt_image_1"
-        },
-        {
-          "ts": "2026-04-22T11:50:28.831304+00:00",
-          "event": "image_rendered",
-          "source": "openai_gpt_image_1",
-          "elapsed_seconds": 21.1
-        },
-        {
-          "ts": "2026-04-22T11:54:04.263540+00:00",
-          "event": "qa_passed",
-          "reviewer": "claude",
-          "note": "purple belt consistent both panels, side-control anatomically correct"
-        },
-        {
-          "ts": "2026-04-22T13:13:02.289721+00:00",
-          "event": "approved_by_user",
-          "comment": "",
-          "reviewed_at": "2026-04-22T13:13:02.289721+00:00"
-        },
-        {
-          "ts": "2026-04-22T13:13:02.305037+00:00",
-          "event": "queued"
-        },
-        {
-          "ts": "2026-04-22T15:34:51.085052+00:00",
-          "event": "claude_score",
-          "reviewer": "claude",
-          "text_score": 7,
-          "image_score": 8,
-          "reasoning": "ceremony vs reality 2-panel, purple belt consistent both panels, side-control anatomically correct. Classic expectation-reality format but well-executed."
-        }
-      ],
-      "posted": null,
-      "rejected_by_user": null,
-      "queued_at": "2026-04-22T13:13:02.305037+00:00",
-      "claude_score": {
-        "text_score": 7,
-        "image_score": 8,
-        "reasoning": "ceremony vs reality 2-panel, purple belt consistent both panels, side-control anatomically correct. Classic expectation-reality format but well-executed.",
         "reviewer": "claude",
         "ts": "2026-04-22T15:34:51.085052+00:00"
       }
