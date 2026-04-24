@@ -1,6 +1,88 @@
 {
-  "generated_at": "2026-04-24T08:08:15.493981+00:00",
+  "generated_at": "2026-04-24T11:00:26.501845+00:00",
   "memes": [
+    {
+      "id": "hard_truth_mat_time_1348",
+      "folder_name": "2026-04-22_13-48_SERIOUS_hard_truth_mat_time_1348",
+      "image_url": "https://raw.githubusercontent.com/sunlike78/bjjmemes-cdn/main/memes/2026/04/20260422_143910_image.png",
+      "caption": "Your trophy shelf means nothing.\nYour hours on the mat mean everything.\n\nThe guy who showed up 800 times — unglamorous, unnoticed, often alone — beats the guy who won a regional once.\n\nMedals are a snapshot.\nMat time is the film.\n\n#bjj #hardtruth #mattime #bjjjourney",
+      "explanation": "Трофеи — фотографии одного момента. Часы на мате — это непрерывное кино. Парень, пришедший на тренировку 800 раз, будет стабильно лучше чем парень с одной региональной медалью. Hard truth о том, что БЖЖ вознаграждает частоту, а не разовые вспышки.",
+      "category": null,
+      "action_log": [
+        {
+          "ts": "2026-04-22T11:51:44.588854+00:00",
+          "event": "generated",
+          "source": "batch10_openai_gpt_image_1"
+        },
+        {
+          "ts": "2026-04-22T11:52:06.106962+00:00",
+          "event": "image_rendered",
+          "source": "openai_gpt_image_1",
+          "elapsed_seconds": 21.5
+        },
+        {
+          "ts": "2026-04-22T11:54:04.265616+00:00",
+          "event": "qa_passed",
+          "reviewer": "claude",
+          "note": "quote card crisp, TROPHIES accented red, typography clean"
+        },
+        {
+          "ts": "2026-04-22T13:13:02.347227+00:00",
+          "event": "approved_by_user",
+          "comment": "",
+          "reviewed_at": "2026-04-22T13:13:02.347227+00:00"
+        },
+        {
+          "ts": "2026-04-22T13:13:02.356161+00:00",
+          "event": "queued"
+        },
+        {
+          "ts": "2026-04-22T15:34:51.092930+00:00",
+          "event": "claude_score",
+          "reviewer": "claude",
+          "text_score": 9,
+          "image_score": 7,
+          "reasoning": "TROPHIES ARE A SNAPSHOT / MAT TIME IS THE FILM — excellent rhythm. Red accent on TROPHIES. Grounded editorial poster vibe, works for serious lane."
+        },
+        {
+          "ts": "2026-04-24T11:00:17.656942+00:00",
+          "event": "posted",
+          "media_id": "18093170635930629",
+          "permalink": "https://www.instagram.com/p/DXgw8M_DSfB/",
+          "posted_at": "2026-04-24T11:00:17.656942+00:00"
+        }
+      ],
+      "posted": {
+        "ts": "2026-04-24T11:00:17.656942+00:00",
+        "event": "posted",
+        "media_id": "18093170635930629",
+        "permalink": "https://www.instagram.com/p/DXgw8M_DSfB/",
+        "posted_at": "2026-04-24T11:00:17.656942+00:00"
+      },
+      "rejected_by_user": null,
+      "media_id": "18093170635930629",
+      "permalink": "https://www.instagram.com/p/DXgw8M_DSfB/",
+      "posted_at": "2026-04-24T11:00:17.656942+00:00",
+      "claude_score": {
+        "text_score": 9,
+        "image_score": 7,
+        "reasoning": "TROPHIES ARE A SNAPSHOT / MAT TIME IS THE FILM — excellent rhythm. Red accent on TROPHIES. Grounded editorial poster vibe, works for serious lane.",
+        "reviewer": "claude",
+        "ts": "2026-04-22T15:34:51.092930+00:00"
+      },
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reach": 0,
+        "saved": 0,
+        "views": 0,
+        "impressions": null,
+        "fetched_at": "2026-04-24T11:00:21.022566+00:00",
+        "_refused_metrics": [
+          "impressions"
+        ]
+      }
+    },
     {
       "id": "hard_truth_injury_tax_1348",
       "folder_name": "2026-04-22_13-48_SERIOUS_hard_truth_injury_tax_1348",
@@ -333,7 +415,7 @@
         "saved": 1,
         "views": 20,
         "impressions": null,
-        "fetched_at": "2026-04-24T08:08:15.491964+00:00",
+        "fetched_at": "2026-04-24T11:00:26.501845+00:00",
         "_refused_metrics": [
           "impressions"
         ]
