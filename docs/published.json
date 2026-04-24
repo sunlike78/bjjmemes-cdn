@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T23:08:15.406678+00:00",
+  "generated_at": "2026-04-24T02:08:16.661443+00:00",
   "memes": [
     {
       "id": "hard_truth_injury_tax_1348",
@@ -77,7 +77,7 @@
         "saved": 0,
         "views": 0,
         "impressions": null,
-        "fetched_at": "2026-04-23T23:08:11.043959+00:00",
+        "fetched_at": "2026-04-24T02:08:12.041232+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -159,7 +159,7 @@
         "saved": 0,
         "views": 6,
         "impressions": null,
-        "fetched_at": "2026-04-23T23:08:09.077865+00:00",
+        "fetched_at": "2026-04-24T02:08:09.776536+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -246,7 +246,7 @@
         "saved": 0,
         "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-23T23:08:04.557008+00:00",
+        "fetched_at": "2026-04-24T02:08:05.605407+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -297,11 +297,11 @@
       "stats": {
         "likes": 2,
         "comments": 0,
-        "reach": 5,
+        "reach": 6,
         "saved": 1,
-        "views": 12,
+        "views": 13,
         "impressions": null,
-        "fetched_at": "2026-04-23T23:08:06.869020+00:00",
+        "fetched_at": "2026-04-24T02:08:07.936204+00:00",
         "_refused_metrics": [
           "impressions"
         ]
@@ -331,9 +331,9 @@
         "comments": 0,
         "reach": 12,
         "saved": 1,
-        "views": 19,
+        "views": 20,
         "impressions": null,
-        "fetched_at": "2026-04-23T23:08:15.405678+00:00",
+        "fetched_at": "2026-04-24T02:08:16.659399+00:00",
         "_refused_metrics": [
           "impressions"
         ]
