@@ -1,7 +1,7 @@
 {
-  "fetched_at": "2026-04-24T23:08:05.368402+00:00",
+  "fetched_at": "2026-04-25T02:08:05.406279+00:00",
   "profile": {
-    "error": "{\"error\":{\"message\":\"API access blocked.\",\"type\":\"OAuthException\",\"code\":200,\"fbtrace_id\":\"AEfLECk0r_5Mkq5MMZPc53F\"}}"
+    "error": "{\"error\":{\"message\":\"API access blocked.\",\"type\":\"OAuthException\",\"code\":200,\"fbtrace_id\":\"AEw6PH3v9_z1v8U53Ph8DUb\"}}"
   },
   "trend": {},
   "rollups": {
