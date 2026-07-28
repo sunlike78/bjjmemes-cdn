@@ -285,10 +285,16 @@ async function loadData() {
     state.records = merged;
     state.sha = sha;
   } catch (e) {
-    if (e.message === "401") { showPatModal(); return; }
-    state.lastError = e.message;
-    setSaveStatus("error", e.message.slice(0, 40));
-    return;
+    // Browsing is public: without a PAT, data.json and the public buckets
+    // still provide a fully usable read-only gallery. The PAT is requested
+    // only when the reviewer actually saves a decision.
+    if (e.message === "401") {
+      state.sha = null;
+    } else {
+      state.lastError = e.message;
+      setSaveStatus("error", e.message.slice(0, 40));
+      return;
+    }
   }
 
   // Ensure every local meme has an approvals record so freshly generated
@@ -722,6 +728,6 @@ function wireEvents() {
       }
     }
   } catch {}
-  if (!getPat()) { showPatModal(); updateSaveFab(); return; }
+  // Load public cards first. A PAT is required only by doSave().
   await loadData();
 })();
